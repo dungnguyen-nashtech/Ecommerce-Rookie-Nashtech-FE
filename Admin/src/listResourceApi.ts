@@ -16,9 +16,11 @@ export const listResourceApi = [
         edit: "/category/edit/:id",
         show: "/category/show/:id",
         meta: {
+            label: "Category",
             canDelete: true,
         },
     },
+
     {
         name: "productItem",
         list: "/productItem",
@@ -37,6 +39,17 @@ export const listResourceApi = [
         meta: {
             canDelete: true,
             label: "Product"
+        },
+    },
+    {
+        name: "category/parent",
+        list: "/category/parent",
+        create: "/category/parent/create",
+        edit: "/category/parent/edit/:id",
+        show: "/category/parent/show/:id",
+        meta: {
+            label: "Parent Category",
+            canDelete: true,
         },
     },
 ];

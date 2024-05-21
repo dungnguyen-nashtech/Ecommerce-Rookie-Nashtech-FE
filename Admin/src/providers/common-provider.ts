@@ -50,8 +50,8 @@ export const CommonProvider: DataProvider = {
                 pageRequestDto: {
                     pageNo: pagination?.current as number,
                     pageSize: pagination?.pageSize as number,
-                    sort: sorters ? sorters[0]?.order.toUpperCase() : "",
-                    sortByColumn: sorters ? sorters[0]?.field : "",
+                    sort: sorters ? sorters[0]?.order.toUpperCase() : null,
+                    sortByColumn: sorters ? sorters[0]?.field : null,
                 },
             },
         );

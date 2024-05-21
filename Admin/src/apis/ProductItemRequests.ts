@@ -20,8 +20,8 @@ interface GetSearchPayLoadInterface {
     pageRequestDto: {
         pageNo: number,
         pageSize: number,
-        sort: string,
-        sortByColumn: string
+        sort: string | null,
+        sortByColumn: string | null
     }
 }
 

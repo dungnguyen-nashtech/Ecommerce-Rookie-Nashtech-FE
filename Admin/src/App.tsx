@@ -37,6 +37,12 @@ import {ProductShow} from "./pages/products/show";
 import {CommonProvider} from "./providers/common-provider";
 import {getProductItemsByProductId} from "./providers/getProductItemsByProductId-provider";
 import {ProductCreate} from "./pages/products/create";
+import {
+    ParentCategoryCreate,
+    ParentCategoryEdit,
+    ParentCategoryList,
+    ParentCategoryShow
+} from "./pages/parent-categories";
 
 function App() {
 
@@ -48,7 +54,6 @@ function App() {
                     <GlobalStyles styles={{html: {WebkitFontSmoothing: "auto"}}}/>
                     <RefineSnackbarProvider>
                         <Refine
-                            // dataProvider={dataProvider("https://api.fake-rest.refine.dev")}
                             dataProvider={
                                 {
                                     default: CommonProvider,
@@ -102,6 +107,12 @@ function App() {
                                         <Route path="create" element={<CategoryCreate/>}/>
                                         <Route path="edit/:id" element={<CategoryEdit/>}/>
                                         <Route path="show/:id" element={<CategoryShow/>}/>
+                                    </Route>
+                                    <Route path="/category/parent">
+                                        <Route index element={<ParentCategoryList/>}/>
+                                        <Route path="create" element={<ParentCategoryCreate/>}/>
+                                        <Route path="edit/:id" element={<ParentCategoryEdit/>}/>
+                                        <Route path="show/:id" element={<ParentCategoryShow/>}/>
                                     </Route>
                                     <Route path="/productItem">
                                         <Route index element={<ProductItemList/>}/>

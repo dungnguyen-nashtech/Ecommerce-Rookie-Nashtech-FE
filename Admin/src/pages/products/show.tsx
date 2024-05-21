@@ -2,7 +2,6 @@ import {DataGrid, GridColDef} from "@mui/x-data-grid";
 import {DateField, DeleteButton, EditButton, List, useDataGrid} from "@refinedev/mui";
 import React from "react";
 import {commonFilterOperators} from "../../commonFilters";
-import {getProductItemsByProductId} from "../../providers/getProductItemsByProductId-provider";
 import {useParams} from "react-router-dom";
 import axios from "axios";
 

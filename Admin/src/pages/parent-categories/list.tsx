@@ -1,8 +1,9 @@
 import {DataGrid, GridColDef} from "@mui/x-data-grid";
-import {DeleteButton, EditButton, List, ShowButton, useDataGrid,} from "@refinedev/mui";
+import {DateField, DeleteButton, EditButton, List, useDataGrid} from "@refinedev/mui";
 import React from "react";
+import {commonFilterOperators} from "../../commonFilters";
 
-export const CategoryList = () => {
+export const ParentCategoryList = () => {
     const {dataGridProps} = useDataGrid({});
 
     const columns = React.useMemo<GridColDef[]>(
@@ -11,34 +12,52 @@ export const CategoryList = () => {
                 field: "id",
                 headerName: "ID",
                 type: "number",
-                minWidth: 50,
+                minWidth: 40,
+                maxWidth: 50,
+                filterOperators: commonFilterOperators,
             },
             {
-                field: "name",
+                field: "parentCategoryName",
                 flex: 1,
                 headerName: "Name",
                 minWidth: 200,
+                filterOperators: commonFilterOperators,
             },
             {
                 field: "description",
                 flex: 1,
                 headerName: "Description",
-                minWidth: 200,
+                minWidth: 250,
+                filterOperators: commonFilterOperators,
+            },
+            {
+                field: "createdOn",
+                flex: 1,
+                headerName: "Created On",
+                minWidth: 70,
+                maxWidth: 100,
+                filterOperators: commonFilterOperators,
+                renderCell: ({value}) => <DateField value={value}/>,
+            },
+            {
+                field: "lastUpdatedOn",
+                flex: 1,
+                headerName: "Last Updated",
+                minWidth: 70,
+                maxWidth: 100,
+                filterOperators: commonFilterOperators,
+                renderCell: ({value}) => <DateField value={value}/>,
             },
             {
                 field: "actions",
                 headerName: "Actions",
                 sortable: false,
-                renderCell: function render({row}) {
-                    console.log(row)
-                    return (
-                        <>
-                            <EditButton hideText recordItemId={row.id}/>
-                            <ShowButton hideText recordItemId={row.id}/>
-                            <DeleteButton hideText recordItemId={row.id}/>
-                        </>
-                    );
-                },
+                renderCell: ({row}) => (
+                    <>
+                        <EditButton hideText recordItemId={row.id}/>
+                        <DeleteButton hideText recordItemId={row.id}/>
+                    </>
+                ),
                 align: "center",
                 headerAlign: "center",
                 minWidth: 80,
