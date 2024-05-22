@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {TOKEN_KEY} from "../authProviders";
 
 const commonAxiosInstance = axios.create({
     baseURL: 'http://localhost:8080/api/v1',
@@ -10,11 +11,13 @@ const commonAxiosInstance = axios.create({
 
 commonAxiosInstance.interceptors.request.use(
     (config) => {
-        // Do something before request is sent
+        const token = localStorage.getItem(TOKEN_KEY);
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
+        }
         return config;
     },
     (error) => {
-        // Do something with request error
         return Promise.reject(error);
     }
 );

@@ -2,7 +2,7 @@ import {AuthProvider} from "@refinedev/core";
 import commonAxiosInstance from "./axios/axiosInstance";
 import {jwtDecode, JwtPayload} from "jwt-decode";
 
-export const TOKEN_KEY = "TOKEN_KEY";
+export const TOKEN_KEY = "refine-auth";
 export const TOKEN_ROLE = "TOKEN_ROLE";
 
 interface CustomJwtPayload extends JwtPayload {
@@ -10,21 +10,18 @@ interface CustomJwtPayload extends JwtPayload {
 }
 
 export const authProviders: AuthProvider = {
-    login: async ({username, email, password}) => {
-        if ((username || email) && password) {
+    login: async ({email, password}) => {
+        if (email && password) {
             try {
                 const loginResponse = await commonAxiosInstance.post("/auth/login", {
-                    email: email || username, // Ensure email is used correctly
+                    email, // Ensure email is used correctly
                     password,
                 });
-
                 const accessToken = loginResponse?.data?.accessToken;
                 if (!accessToken) {
                     throw new Error("No access token received");
                 }
-
                 const claims = jwtDecode<CustomJwtPayload>(accessToken);
-
                 if (claims?.authorities.includes("ROLE_ADMIN")) {
                     localStorage.setItem('TOKEN_ROLE', "ROLE_ADMIN");
                 } else if (claims?.authorities.includes("ROLE_INVENTORY_MANAGER")) {
@@ -38,12 +35,10 @@ export const authProviders: AuthProvider = {
                         },
                     };
                 }
-
-                localStorage.setItem('TOKEN_KEY', accessToken);
-
+                localStorage.setItem(TOKEN_KEY, accessToken);
                 return {
                     success: true,
-                    redirectTo: "/",
+                    redirectTo: "/productItem",
                 };
             } catch (error) {
                 return {
