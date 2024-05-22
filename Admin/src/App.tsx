@@ -3,10 +3,10 @@ import {RefineKbar, RefineKbarProvider} from "@refinedev/kbar";
 
 import {
     ErrorComponent,
-    notificationProvider,
     RefineSnackbarProvider,
     ThemedLayoutV2,
     ThemedTitleV2,
+    useNotificationProvider,
 } from "@refinedev/mui";
 
 import CssBaseline from "@mui/material/CssBaseline";
@@ -20,9 +20,8 @@ import routerBindings, {
 import {BrowserRouter, Outlet, Route, Routes} from "react-router-dom";
 import {authProvider} from "./authProvider";
 import {AppIcon} from "./components/app-icon";
-import {Header} from "./components/header";
+import {Header} from "./components";
 import {ColorModeContextProvider} from "./contexts/color-mode";
-import {BlogPostCreate, BlogPostEdit, BlogPostList, BlogPostShow,} from "./pages/blog-posts";
 import {CategoryCreate, CategoryEdit, CategoryList, CategoryShow,} from "./pages/categories";
 import {ForgotPassword} from "./pages/forgotPassword";
 import {Login} from "./pages/login";
@@ -45,6 +44,18 @@ import {
 } from "./pages/parent-categories";
 
 function App() {
+    const dataProvider = {
+        default: CommonProvider,
+        "getProductItemsByProductId": getProductItemsByProductId,
+        // etc
+    };
+
+    const options = {
+        syncWithLocation: false,
+        warnWhenUnsavedChanges: true,
+        useNewQueryKeys: true,
+        projectId: import.meta.env.VITE_PROJECT_ID,
+    };
 
     return (
         <BrowserRouter>
@@ -54,54 +65,26 @@ function App() {
                     <GlobalStyles styles={{html: {WebkitFontSmoothing: "auto"}}}/>
                     <RefineSnackbarProvider>
                         <Refine
-                            dataProvider={
-                                {
-                                    default: CommonProvider,
-                                    "getProductItemsByProductId": getProductItemsByProductId,
-                                }
-                            }
-                            notificationProvider={notificationProvider}
+                            dataProvider={dataProvider}
+                            notificationProvider={useNotificationProvider}
                             authProvider={authProvider}
                             routerProvider={routerBindings}
                             resources={listResourceApi}
-                            options={{
-                                syncWithLocation: false,
-                                warnWhenUnsavedChanges: true,
-                                useNewQueryKeys: true,
-                                projectId: "qtkIQe-ytZUwH-qaRplr",
-                            }}>
+                            options={options}>
                             <Routes>
                                 <Route
                                     element={
                                         <Authenticated
-                                            key="authenticated-inner"
-                                            fallback={<CatchAllNavigate to="/login"/>}
+                                            key="authenticated-inner" fallback={<CatchAllNavigate to="/login"/>}
                                             v3LegacyAuthProviderCompatible>
-                                            <ThemedLayoutV2
-                                                Header={() => <Header sticky/>}
-                                                Title={({collapsed}) => (
-                                                    <ThemedTitleV2
-                                                        collapsed={collapsed}
-                                                        text="Admin Dashboard"
-                                                        icon={<AppIcon/>}
-                                                    />
-                                                )}
-                                            >
-                                                <Outlet/>
-                                            </ThemedLayoutV2>
-                                        </Authenticated>
-                                    }
-                                >
-                                    {/*<Route*/}
-                                    {/*    index*/}
-                                    {/*    element={<NavigateToResource resource="blog_posts"/>}*/}
-                                    {/*/>*/}
-                                    <Route path="/blog-posts">
-                                        <Route index element={<BlogPostList/>}/>
-                                        <Route path="create" element={<BlogPostCreate/>}/>
-                                        <Route path="edit/:id" element={<BlogPostEdit/>}/>
-                                        <Route path="show/:id" element={<BlogPostShow/>}/>
-                                    </Route>
+                                            <ThemedLayoutV2 Header={() => <Header sticky/>} Title={({collapsed}) => (
+                                                <ThemedTitleV2 collapsed={collapsed} text="Admin Dashboard"
+                                                               icon={
+                                                                   <AppIcon/>}/>)}><Outlet/></ThemedLayoutV2></Authenticated>}>
+                                    <Route // index route page
+                                        index
+                                        element={<NavigateToResource resource="productItem"/>}
+                                    />
                                     <Route path="/category">
                                         <Route index element={<CategoryList/>}/>
                                         <Route path="create" element={<CategoryCreate/>}/>

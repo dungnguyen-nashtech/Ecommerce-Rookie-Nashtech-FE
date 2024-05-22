@@ -8,9 +8,7 @@ export const ProductCreate = () => {
     const [age, setAge] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
 
-
     const {
-        // refineCore: {onFinish},
         register,
         formState: {errors},
         handleSubmit
@@ -21,15 +19,6 @@ export const ProductCreate = () => {
         sorters: [{field: "id", order: "asc"}],
     });
 
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
-
-    // const onFinishHandler = async (data: FieldValues) => {
-    //     console.log(data)
-    //
-    //     await onFinish({});
-    // };
 
     const onSubmit: SubmitHandler<any> = async (dataSubmit) => {
         dataSubmit.averageRating = 0;
@@ -41,11 +30,11 @@ export const ProductCreate = () => {
         }
     }
 
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
 
     return (
-        // <Create isLoading={formLoading}
-        //     // saveButtonProps={saveButtonProps}
-        // >
         <form
             onSubmit={handleSubmit(onSubmit)}
             style={{display: "flex", flexDirection: "column"}}
@@ -123,6 +112,5 @@ export const ProductCreate = () => {
             <br/>
             <Button type={"submit"}>Submit</Button>
         </form>
-        // </Create>
     );
 };

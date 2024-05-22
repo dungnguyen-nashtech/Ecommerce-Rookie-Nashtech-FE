@@ -1,6 +1,6 @@
 import type {DataProvider} from "@refinedev/core";
 import axios from "axios";
-import {GetOnePayLoad, GetSearchPayLoad} from "../apis/ProductItemRequests";
+import {GetOnePayLoad, GetSearchPayLoad} from "../payloads/ProductItemRequests";
 
 const API_URL = "http://localhost:8080/api/v1";
 
