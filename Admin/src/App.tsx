@@ -18,7 +18,7 @@ import routerBindings, {
     UnsavedChangesNotifier,
 } from "@refinedev/react-router-v6";
 import {BrowserRouter, Outlet, Route, Routes} from "react-router-dom";
-import {authProvider} from "./authProvider";
+import {authProviders} from "./authProviders";
 import {AppIcon} from "./components/app-icon";
 import {Header} from "./components";
 import {ColorModeContextProvider} from "./contexts/color-mode";
@@ -67,16 +67,15 @@ function App() {
                         <Refine
                             dataProvider={dataProvider}
                             notificationProvider={useNotificationProvider}
-                            authProvider={authProvider}
+                            authProvider={authProviders}
                             routerProvider={routerBindings}
                             resources={listResourceApi}
                             options={options}>
                             <Routes>
                                 <Route
                                     element={
-                                        <Authenticated
-                                            key="authenticated-inner" fallback={<CatchAllNavigate to="/login"/>}
-                                            v3LegacyAuthProviderCompatible>
+                                        <Authenticated key="authenticated-inner"
+                                                       fallback={<CatchAllNavigate to="/login"/>}>
                                             <ThemedLayoutV2 Header={() => <Header sticky/>} Title={({collapsed}) => (
                                                 <ThemedTitleV2 collapsed={collapsed} text="Admin Dashboard"
                                                                icon={
@@ -112,10 +111,7 @@ function App() {
                                 </Route>
                                 <Route
                                     element={
-                                        <Authenticated
-                                            key="authenticated-outer"
-                                            fallback={<Outlet/>}
-                                            v3LegacyAuthProviderCompatible>
+                                        <Authenticated key="authenticated-outer" fallback={<Outlet/>}>
                                             <NavigateToResource/>
                                         </Authenticated>
                                     }
