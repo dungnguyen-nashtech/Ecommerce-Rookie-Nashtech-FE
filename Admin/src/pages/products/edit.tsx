@@ -23,7 +23,7 @@ export const ProductEdit = () => {
 
     const listCurrentCategories = () => {
         let categories = "";
-        data?.categories.map((category) => (
+        data?.categories.map((category: { name: string; }) => (
             categories += ", " + category.name
         ))
         return categories.slice(1);

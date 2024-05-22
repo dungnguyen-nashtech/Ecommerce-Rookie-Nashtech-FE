@@ -1,6 +1,6 @@
 import type {DataProvider} from "@refinedev/core";
 import {GetOnePayLoad} from "../payloads/ProductItemRequests";
-import commonAxiosInstance from "../axios/axiosInstance";
+import commonAxiosInstance from "../axios/commonAxiosInstance";
 
 const API_URL = "http://localhost:8080/api/v1";
 

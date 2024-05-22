@@ -1,5 +1,5 @@
 import {AuthProvider} from "@refinedev/core";
-import commonAxiosInstance from "./axios/axiosInstance";
+import commonAxiosInstance from "./axios/commonAxiosInstance";
 import {jwtDecode, JwtPayload} from "jwt-decode";
 
 export const TOKEN_KEY = "refine-auth";

@@ -2,7 +2,7 @@ import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@mui
 import {SubmitHandler, useForm} from "react-hook-form";
 import {useState} from "react";
 import {useList} from "@refinedev/core";
-import commonAxiosInstance from "../../axios/axiosInstance";
+import commonAxiosInstance from "../../axios/commonAxiosInstance";
 
 export const ProductCreate = () => {
     const [featured, setFeatured] = useState('');
