@@ -2,10 +2,10 @@ import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@mui
 import {SubmitHandler, useForm} from "react-hook-form";
 import {useState} from "react";
 import {useList} from "@refinedev/core";
-import axios from "axios";
+import commonAxiosInstance from "../../axios/axiosInstance";
 
 export const ProductCreate = () => {
-    const [age, setAge] = useState('');
+    const [featured, setFeatured] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
 
     const {
@@ -22,7 +22,7 @@ export const ProductCreate = () => {
 
     const onSubmit: SubmitHandler<any> = async (dataSubmit) => {
         dataSubmit.averageRating = 0;
-        const submittedValue = await axios.post('http://localhost:8080/api/v1/product', dataSubmit)
+        const submittedValue = await commonAxiosInstance.post('http://localhost:8080/api/v1/product', dataSubmit)
         if (submittedValue.status === 200) {
             window.location.href = "/product";
         } else {
@@ -99,10 +99,10 @@ export const ProductCreate = () => {
                 <Select
                     labelId="featured-select-label"
                     id="featured"
-                    value={age}
+                    value={featured}
                     label="Featured"
                     {...register("isFeatured")}
-                    onChange={(event) => setAge(event.target.value as string)}
+                    onChange={(event) => setFeatured(event.target.value as string)}
                 >
                     <MenuItem value={"true"}>True</MenuItem>
                     <MenuItem value={"false"}>False</MenuItem>

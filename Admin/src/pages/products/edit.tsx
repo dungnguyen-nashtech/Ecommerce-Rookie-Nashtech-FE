@@ -1,17 +1,33 @@
-import {Box, Stack, TextField, Typography} from "@mui/material";
+import {Box, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography} from "@mui/material";
 import {DateField, Edit} from "@refinedev/mui";
 import {useForm} from "@refinedev/react-hook-form";
-import React from "react";
+import React, {useState} from "react";
+import {useList} from "@refinedev/core";
 
 export const ProductEdit = () => {
+    const [featured, setFeatured] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
+
     const {
         saveButtonProps,
         refineCore: {queryResult, formLoading}, // queryResult?.data?.data
         register,
-        formState: {errors},
     } = useForm({});
 
     const data = queryResult?.data?.data;
+
+    const {data: allCategories, isLoading} = useList({
+        resource: "category",
+        sorters: [{field: "id", order: "asc"}],
+    });
+
+    const listCurrentCategories = () => {
+        let categories = "";
+        data?.categories.map((category) => (
+            categories += ", " + category.name
+        ))
+        return categories.slice(1);
+    }
 
     if (formLoading) {
         return <div>Loading...</div>;
@@ -25,50 +41,65 @@ export const ProductEdit = () => {
                     autoComplete="off"
                 >
                     <TextField
-                        {...register("price")}
-                        error={!!(errors as any)?.price}
-                        helperText={(errors as any)?.price?.message}
+                        {...register("name")}
                         margin="normal"
                         fullWidth
                         InputLabelProps={{shrink: true}}
                         type="text"
-                        label={"Price"}
-                        name="price"
+                        label={"Name"}
+                        name="name"
                     />
                     <TextField
-                        {...register("imageUrl")}
-                        error={!!(errors as any)?.imageUrl}
-                        helperText={(errors as any)?.imageUrl?.message}
+                        {...register("description")}
                         margin="normal"
                         fullWidth
                         InputLabelProps={{shrink: true}}
                         multiline
-                        label={"Image"}
-                        name="image"
+                        label={"Description"}
+                        name="description"
                         rows={4}
                     />
-                    <TextField
-                        {...register("availableStock")}
-                        error={!!(errors as any)?.availableStock}
-                        helperText={(errors as any)?.availableStock?.message}
-                        margin="normal"
-                        fullWidth
-                        InputLabelProps={{shrink: true}}
-                        type="text"
-                        label={"Available Stock"}
-                        name="availableStock"
-                    />
-                    <TextField
-                        {...register("variationCombination")}
-                        error={!!(errors as any)?.variationCombination}
-                        helperText={(errors as any)?.variationCombination?.message}
-                        margin="normal"
-                        fullWidth
-                        InputLabelProps={{shrink: true}}
-                        type="text"
-                        label={"Variation"}
-                        name="variationCombination"
-                    />
+                    <FormControl style={{marginTop: "25px"}} fullWidth>
+                        <InputLabel id="featured-select-label">Featured</InputLabel>
+                        <Select
+                            labelId="featured-select-label"
+                            id="featured"
+                            value={data?.isFeatured ? "true" : "false"}
+                            label="Featured"
+                            {...register("isFeatured")}
+                            onChange={(event) => setFeatured(event.target.value as string)}
+                        >
+                            <MenuItem value={"true"}>True</MenuItem>
+                            <MenuItem value={"false"}>False</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <FormControl style={{marginTop: "12px"}} fullWidth>
+                        <InputLabel id="category-select-label">Category</InputLabel>
+                        <Select
+                            labelId="category-select-label"
+                            id="category"
+                            multiple
+                            value={selectedCategory}
+                            label="Category"
+                            {...register("categoryIds")}
+                            onChange={(event) => setSelectedCategory(event.target.value as string[])}
+                        >
+                            {allCategories?.data.map((category) => (
+                                <MenuItem key={category.id} value={category.id}>
+                                    {category.name}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                        <TextField
+                            margin="normal"
+                            fullWidth
+                            InputLabelProps={{shrink: true}}
+                            type="text"
+                            label={"Current Categories"}
+                            disabled={true}
+                            value={listCurrentCategories()}
+                        />
+                    </FormControl>
                 </Box>
             </Edit>
             <br/>

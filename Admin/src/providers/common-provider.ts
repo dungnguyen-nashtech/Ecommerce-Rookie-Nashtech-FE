@@ -1,6 +1,6 @@
 import type {DataProvider} from "@refinedev/core";
-import axios from "axios";
 import {GetOnePayLoad, GetSearchPayLoad} from "../payloads/ProductItemRequests";
+import commonAxiosInstance from "../axios/axiosInstance";
 
 const API_URL = "http://localhost:8080/api/v1";
 
@@ -10,7 +10,7 @@ export const CommonProvider: DataProvider = {
 
     getOne: async ({resource, id}) => {
         const requestPayload = GetOnePayLoad(id.toString());
-        const response = await axios.post(
+        const response = await commonAxiosInstance.post(
             `${API_URL}/${resource}/search`, requestPayload
         );
         if (response.status < 200 || response.status > 299) throw response;
@@ -18,7 +18,7 @@ export const CommonProvider: DataProvider = {
     },
 
     update: async ({resource, id, variables}) => {
-        const response = await axios.put(
+        const response = await commonAxiosInstance.put(
             `${API_URL}/${resource}/${id}`, variables
         );
 
@@ -55,7 +55,7 @@ export const CommonProvider: DataProvider = {
                 },
             },
         );
-        const response = await axios.post(
+        const response = await commonAxiosInstance.post(
             `${API_URL}/${resource}/search/paginated`, requestPayload
         );
 
@@ -67,7 +67,7 @@ export const CommonProvider: DataProvider = {
         };
     },
     create: async ({resource, variables}) => {
-        const response = await axios.post(
+        const response = await commonAxiosInstance.post(
             `${API_URL}/${resource}`, variables
         );
 
@@ -78,7 +78,7 @@ export const CommonProvider: DataProvider = {
         };
     },
     deleteOne: async ({resource, id}) => {
-        const response = await axios.delete(
+        const response = await commonAxiosInstance.delete(
             `${API_URL}/${resource}/${id}`
         );
         if (response.status < 200 || response.status > 299) throw response;

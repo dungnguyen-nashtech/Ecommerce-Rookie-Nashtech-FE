@@ -1,5 +1,5 @@
-import axios from 'axios';
 import {TOKEN_KEY} from "../authProviders";
+import axios from "axios";
 
 const commonAxiosInstance = axios.create({
     baseURL: 'http://localhost:8080/api/v1',

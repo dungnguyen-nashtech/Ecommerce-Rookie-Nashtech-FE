@@ -3,7 +3,7 @@ import {DateField, DeleteButton, EditButton, List, useDataGrid} from "@refinedev
 import React from "react";
 import {commonFilterOperators} from "../../commonFilters";
 import {useParams} from "react-router-dom";
-import axios from "axios";
+import commonAxiosInstance from "../../axios/axiosInstance";
 
 export const ProductShow = () => {
     const {id} = useParams();
@@ -19,7 +19,7 @@ export const ProductShow = () => {
 
     const deleteProductItem = async (id: string) => {
         if (window.confirm("Are you sure you want to delete this item?")) {
-            await axios.delete(`http://localhost:8080/api/v1/productItem/${id}`)
+            await commonAxiosInstance.delete(`http://localhost:8080/api/v1/productItem/${id}`)
             window.location.reload();
         }
     }

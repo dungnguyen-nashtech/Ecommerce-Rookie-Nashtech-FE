@@ -23,7 +23,6 @@ import {AppIcon} from "./components/app-icon";
 import {Header} from "./components";
 import {ColorModeContextProvider} from "./contexts/color-mode";
 import {CategoryCreate, CategoryEdit, CategoryList, CategoryShow,} from "./pages/categories";
-import {ForgotPassword} from "./pages/forgotPassword";
 import {Login} from "./pages/login";
 import {Register} from "./pages/register";
 import {listResourceApi} from "./listResourceApi";
@@ -118,10 +117,6 @@ function App() {
                                 >
                                     <Route path="/login" element={<Login/>}/>
                                     <Route path="/register" element={<Register/>}/>
-                                    <Route
-                                        path="/forgot-password"
-                                        element={<ForgotPassword/>}
-                                    />
                                 </Route>
                             </Routes>
 

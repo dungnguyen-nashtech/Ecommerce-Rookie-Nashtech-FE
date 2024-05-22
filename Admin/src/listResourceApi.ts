@@ -1,12 +1,12 @@
 import {TOKEN_ROLE} from "./authProviders";
 
 const roleCanAccess = (roles: string[]) => {
-    const role = localStorage.getItem(TOKEN_ROLE) || "ROLE_USER";
+    const role = localStorage.getItem(TOKEN_ROLE) || "USER";
     return roles.includes(role);
 }
 
-const ADMIN_INVENTORY_PERMISSION: string[] = ["ROLE_ADMIN, ROLE_INVENTORY_MANAGER"];
-const INVENTORY_PERMISSION = ["ROLE_INVENTORY_MANAGER"];
+const ADMIN_INVENTORY_PERMISSION: string[] = ["ADMIN, INVENTORY_MANAGER"];
+const INVENTORY_PERMISSION = ["INVENTORY_MANAGER"];
 const NO_ACCESS = [""]
 
 

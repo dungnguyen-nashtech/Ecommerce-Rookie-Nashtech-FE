@@ -22,10 +22,10 @@ export const authProviders: AuthProvider = {
                     throw new Error("No access token received");
                 }
                 const claims = jwtDecode<CustomJwtPayload>(accessToken);
-                if (claims?.authorities.includes("ROLE_ADMIN")) {
-                    localStorage.setItem('TOKEN_ROLE', "ROLE_ADMIN");
-                } else if (claims?.authorities.includes("ROLE_INVENTORY_MANAGER")) {
-                    localStorage.setItem('TOKEN_ROLE', "ROLE_INVENTORY_MANAGER");
+                if (claims?.authorities.includes("ADMIN")) {
+                    localStorage.setItem('TOKEN_ROLE', "ADMIN");
+                } else if (claims?.authorities.includes("INVENTORY_MANAGER")) {
+                    localStorage.setItem('TOKEN_ROLE', "INVENTORY_MANAGER");
                 } else {
                     return {
                         success: false,
@@ -76,7 +76,7 @@ export const authProviders: AuthProvider = {
     },
     getPermissions: async () => {
         const role = localStorage.getItem(TOKEN_ROLE);
-        return role ? {role} : {role: "ROLE_USER"};
+        return role ? {role} : {role: "USER"};
     },
     getIdentity: async () => {
         const token = localStorage.getItem(TOKEN_KEY);
