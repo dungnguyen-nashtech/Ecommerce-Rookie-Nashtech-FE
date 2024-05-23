@@ -22,6 +22,7 @@ export const ProductCreate = () => {
 
     const onSubmit: SubmitHandler<any> = async (dataSubmit) => {
         dataSubmit.averageRating = 0;
+        dataSubmit.isFeatured = featured;
         const submittedValue = await commonAxiosInstance.post('http://localhost:8080/api/v1/product', dataSubmit)
         if (submittedValue.status === 200) {
             window.location.href = "/product";

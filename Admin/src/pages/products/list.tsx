@@ -62,7 +62,7 @@ export const ProductList = () => {
                 maxWidth: 70,
                 align: "center",
                 filterOperators: commonFilterOperators,
-                renderCell: ({row}) => (<>{row.featured ? "✔️" : "❌"}</>),
+                renderCell: ({row}) => (<>{row?.isFeatured ? "✔️" : "❌"}</>),
             },
             {
                 field: "createdOn",

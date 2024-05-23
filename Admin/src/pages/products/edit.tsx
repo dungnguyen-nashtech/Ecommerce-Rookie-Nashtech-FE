@@ -8,6 +8,7 @@ export const ProductEdit = () => {
     const [featured, setFeatured] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
 
+
     const {
         saveButtonProps,
         refineCore: {queryResult, formLoading}, // queryResult?.data?.data
@@ -29,7 +30,7 @@ export const ProductEdit = () => {
         return categories.slice(1);
     }
 
-    if (formLoading) {
+    if (formLoading || isLoading) {
         return <div>Loading...</div>;
     }
     return (
@@ -64,7 +65,7 @@ export const ProductEdit = () => {
                         <Select
                             labelId="featured-select-label"
                             id="featured"
-                            value={data?.isFeatured ? "true" : "false"}
+                            value={featured == '' ? data?.isFeatured : featured}
                             label="Featured"
                             {...register("isFeatured")}
                             onChange={(event) => setFeatured(event.target.value as string)}

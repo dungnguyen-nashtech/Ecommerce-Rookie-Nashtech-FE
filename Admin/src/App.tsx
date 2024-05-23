@@ -103,6 +103,7 @@ function App() {
                                     <Route path="/product">
                                         <Route index element={<ProductList/>}/>
                                         <Route path="create" element={<ProductCreate/>}/>
+                                        {/*<Route path="create/productItem/:id" element={<ProductCreate/>}/>*/}
                                         <Route path=":id/edit" element={<ProductEdit/>}/>
                                         <Route path="show/:id" element={<ProductShow/>}/>
                                     </Route>

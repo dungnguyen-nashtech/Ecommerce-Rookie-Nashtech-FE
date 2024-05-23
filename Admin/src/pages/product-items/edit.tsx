@@ -84,8 +84,7 @@ export const ProductItemEdit = () => {
                         alt={"Uploaded file"}
                         style={{maxWidth: '20%', height: 'auto'}}/> :
                     <img
-                        src={data?.imageUrl ? data?.imageUrl :
-                            "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/4b1ceee5-9458-4434-80bc-fc5d83a2ea88/de1noau-2dbb58f5-1c72-4b2b-b2a4-6849226fef79.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzRiMWNlZWU1LTk0NTgtNDQzNC04MGJjLWZjNWQ4M2EyZWE4OFwvZGUxbm9hdS0yZGJiNThmNS0xYzcyLTRiMmItYjJhNC02ODQ5MjI2ZmVmNzkucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.rIhXLvW4X1ju2BZynu8N52kEhC7xvPP6gr3jmGYgrPc"}
+                        src={data?.imageUrl ? data?.imageUrl : import.meta.env.VITE_IMAGE_SHOW_WHEN_NOT_FOUND}
                         alt={"Uploaded file"}
                         style={{maxWidth: '20%', height: 'auto'}}/>}
                 <TextField
