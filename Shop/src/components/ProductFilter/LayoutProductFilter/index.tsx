@@ -1,10 +1,13 @@
-import React from 'react';
+import React from "react";
 
 import { Breadcrumbs, Checkbox, FormControlLabel, Slider } from "@mui/material";
 import { ArrowDownNarrowWide, ChevronRight, ChevronsLeft, ChevronsRight, Heart, Settings } from "lucide-react";
-import CategoryItemChildren from './CategoryItemChildren';
+import CategoryItemChildren from "./CategoryItemChildren";
+import { QueryListCategory } from "../../../services/queries/query-get.ts";
+import { CreateCategoryMenu } from "../../../config/utils.ts";
 
 export interface IItemCategory {
+  id?: number,
   name: string,
   path: string,
   children?: IItemCategory[]
@@ -12,71 +15,24 @@ export interface IItemCategory {
 
 function LayoutProductFilter() {
   const [value, setValue] = React.useState<number[]>([20, 37]);
-  const listCategory: IItemCategory[] = [
-    {
-      name: "Sản phẩm mới",
-      path: ""
-    },
-    {
-      name: "Sản phẩm hay mua",
-      path: ""
-    },
-    {
-      name: "Áo nữ",
-      path: "",
-      children: [
-        {
-          name: "Áo thun nữ",
-          path: ""
-        },
-        {
-          name: "Áo sơ mi nữ",
-          path: ""
-        }, {
-          name: "Áo kiểu nữ",
-          path: ""
-        }
-      ]
-    },
-    {
-      name: "Áo nữ",
-      path: "",
-      children: [
-        {
-          name: "Áo thun nữ",
-          path: ""
-        },
-        {
-          name: "Áo sơ mi nữ",
-          path: ""
-        }, {
-          name: "Áo kiểu nữ",
-          path: ""
-        }
-      ]
-    }
-  ]
+
+  const queryListCategory = QueryListCategory();
+
+  if (queryListCategory.isLoading) {
+    return <div>Loading...</div>;
+  }
+
   const handleChange = (_event: Event, newValue: number | number[]) => {
     setValue(newValue as number[]);
   };
-  const breadcrumbs: JSX.Element[] = [
-    <span className="breadcrumb-item">
-      Trang chủ
-    </span>,
-    <span className="breadcrumb-item active">
-      Thời trang Nữ
-    </span>
-  ]
   return (
     <main className="main-content">
       <div className="main-content-breadcrumb">
         <div className="main-content-breadcrumb-list">
           <Breadcrumbs
             separator={<ChevronRight className="icon" />}
-            aria-label="breadcrumb"
-
-          >
-            {breadcrumbs}
+            aria-label="breadcrumb">
+            <br />
           </Breadcrumbs>
         </div>
       </div>
@@ -84,26 +40,26 @@ function LayoutProductFilter() {
         <div className="main-content-product-filter">
           <div className="filter-product-left">
             <div className="filter-product-left-category">
-              <h2 className='title'>DANH MỤC SẢN PHẨM</h2>
+              <h2 className="title">DANH MỤC SẢN PHẨM</h2>
               <ul className="category-list">
                 {
-                  listCategory.map((item: IItemCategory, index: number) => (
-                    <CategoryItemChildren key={index} item={item} itemChildren={item.children} />
+                  CreateCategoryMenu(queryListCategory?.data)?.map((item: IItemCategory) => (
+                    <CategoryItemChildren key={item.id} item={item} itemChildren={item.children} />
                   ))
                 }
               </ul>
             </div>
             <div className="filter-list">
               <div className="filter-list-item">
-                <h2 className='name'>Nơi bán</h2>
+                <h2 className="name">Nơi bán</h2>
                 <div className="filter-list-item-option">
-                  <FormControlLabel control={<Checkbox size='small' defaultChecked />} label="TP.Hồ Chí Minh" />
-                  <FormControlLabel control={<Checkbox size='small' defaultChecked />} label="TP.Hồ Chí Minh" />
-                  <FormControlLabel control={<Checkbox size='small' defaultChecked />} label="TP.Hồ Chí Minh" />
+                  <FormControlLabel control={<Checkbox size="small" defaultChecked />} label="TP.Hồ Chí Minh" />
+                  <FormControlLabel control={<Checkbox size="small" defaultChecked />} label="TP.Hồ Chí Minh" />
+                  <FormControlLabel control={<Checkbox size="small" defaultChecked />} label="TP.Hồ Chí Minh" />
                 </div>
               </div>
               <div className="filter-list-item">
-                <h2 className='name'>Chọn mức giá </h2>
+                <h2 className="name">Chọn mức giá </h2>
                 <div className="filter-list-item-option">
                   <Slider
                     value={value}
@@ -113,11 +69,11 @@ function LayoutProductFilter() {
                 </div>
               </div>
               <div className="filter-list-item">
-                <h2 className='name'>Màu sắc</h2>
+                <h2 className="name">Màu sắc</h2>
                 <div className="filter-list-item-option">
-                  <FormControlLabel control={<Checkbox size='small' defaultChecked />} label="Trắng" />
-                  <FormControlLabel control={<Checkbox size='small' defaultChecked />} label="Đen " />
-                  <FormControlLabel control={<Checkbox size='small' defaultChecked />} label="Hồng" />
+                  <FormControlLabel control={<Checkbox size="small" defaultChecked />} label="Trắng" />
+                  <FormControlLabel control={<Checkbox size="small" defaultChecked />} label="Đen " />
+                  <FormControlLabel control={<Checkbox size="small" defaultChecked />} label="Hồng" />
                 </div>
               </div>
             </div>
@@ -141,8 +97,8 @@ function LayoutProductFilter() {
                         <span>
                           <Settings />
                         </span>
-                        <span className=''>
-                          <Heart className='wishList'  />
+                        <span className="">
+                          <Heart className="wishList" />
                         </span>
                       </div>
                       <img
@@ -152,7 +108,9 @@ function LayoutProductFilter() {
                       />
                     </div>
                     <div className="item-content">
-                      <h2 className="title">Quần dài nữ Yaki Jan Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores at cum consectetur, ipsam qui quidem debitis tempore voluptate, voluptatibus laudantium deleniti quae doloribus pariatur sit ullam quia ex dolor fugit.</h2>
+                      <h2 className="title">Quần dài nữ Yaki Jan Lorem ipsum dolor sit amet consectetur adipisicing
+                        elit. Dolores at cum consectetur, ipsam qui quidem debitis tempore voluptate, voluptatibus
+                        laudantium deleniti quae doloribus pariatur sit ullam quia ex dolor fugit.</h2>
                       <span className="price">
                         450,000đ
                       </span>
@@ -161,25 +119,25 @@ function LayoutProductFilter() {
                 ))
               }
             </div>
-            <div className='list-product-filter-pagination'>
-              <ul className='list-product-filter-pagination-list'>
-                <li className='list-product-filter-pagination-item'>
+            <div className="list-product-filter-pagination">
+              <ul className="list-product-filter-pagination-list">
+                <li className="list-product-filter-pagination-item">
                   <ChevronsLeft size={16} />
                 </li>
                 {
                   Array.from({ length: 3 }).map((_, index: number) => (
-                    <li key={index} className='list-product-filter-pagination-item'>
+                    <li key={index} className="list-product-filter-pagination-item">
                       {index + 1}
                     </li>
                   ))
                 }
-                <li className='list-product-filter-pagination-item'>
+                <li className="list-product-filter-pagination-item">
                   ...
                 </li>
-                <li className='list-product-filter-pagination-item active'>
-                 9
+                <li className="list-product-filter-pagination-item active">
+                  9
                 </li>
-                <li className='list-product-filter-pagination-item'>
+                <li className="list-product-filter-pagination-item">
                   <ChevronsRight size={16} />
                 </li>
               </ul>

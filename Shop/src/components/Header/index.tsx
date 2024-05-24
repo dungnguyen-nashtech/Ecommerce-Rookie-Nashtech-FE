@@ -1,6 +1,6 @@
 import { ChevronDown, Heart, MapPin, Phone, Search, ShoppingCart, User } from "lucide-react";
 import { listHeaderItem } from "../../data";
-import { IHeaderItem } from "../../interface";
+import { IHeaderItem } from "../../payloads/interface";
 
 function Header() {
 

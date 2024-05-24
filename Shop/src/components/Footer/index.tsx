@@ -13,7 +13,7 @@ function Footer() {
           </span>
           <span>47 - 49 Trần Quang Diệu, Phường 14, Quận 3, TP. HCM</span>
           <b>Điện thoại: 070 347 0938</b>
-          <b>Email: rubiesin2015@gmail.com  </b>
+          <b>Email: rubiesin2015@gmail.com </b>
           <div className="footer-container-item-socials">
             <div className="footer-container-item-socials-icon">
               <Facebook />
@@ -33,7 +33,7 @@ function Footer() {
           </span>
           <span>47 - 49 Trần Quang Diệu, Phường 14, Quận 3, TP. HCM</span>
           <b>Điện thoại: 070 347 0938</b>
-          <b>Email: rubiesin2015@gmail.com  </b>
+          <b>Email: rubiesin2015@gmail.com </b>
           <div className="footer-container-item-socials">
             <div className="footer-container-item-socials-icon">
               <Facebook />
@@ -53,7 +53,7 @@ function Footer() {
           </span>
           <span>47 - 49 Trần Quang Diệu, Phường 14, Quận 3, TP. HCM</span>
           <b>Điện thoại: 070 347 0938</b>
-          <b>Email: rubiesin2015@gmail.com  </b>
+          <b>Email: rubiesin2015@gmail.com </b>
           <div className="footer-container-item-socials">
             <div className="footer-container-item-socials-icon">
               <Facebook />
@@ -73,7 +73,7 @@ function Footer() {
           </span>
           <span>47 - 49 Trần Quang Diệu, Phường 14, Quận 3, TP. HCM</span>
           <b>Điện thoại: 070 347 0938</b>
-          <b>Email: rubiesin2015@gmail.com  </b>
+          <b>Email: rubiesin2015@gmail.com </b>
           <div className="footer-container-item-socials">
             <div className="footer-container-item-socials-icon">
               <Facebook />
