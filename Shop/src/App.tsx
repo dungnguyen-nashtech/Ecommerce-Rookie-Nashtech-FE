@@ -1,16 +1,15 @@
-import ResponsiveNavbar from "./components/ResponsiveNavbar";
-import SampleGrid from "./components/SampleGrid";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import ProductFilter from "./components/ProductFilter";
 
 function App() {
 
   return (
-    // <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
     <>
-      <ResponsiveNavbar />
-      <SampleGrid />
+      <Header />
+      <ProductFilter />
+      <Footer />
     </>
-
-    // {/*</Box>*/}
   );
 }
 

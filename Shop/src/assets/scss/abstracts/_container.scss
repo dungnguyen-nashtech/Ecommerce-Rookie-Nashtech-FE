@@ -1,0 +1,32 @@
+@import '../base/responsive';
+@import '../abstracts/variable';
+
+@mixin container() {
+    margin-left: auto;
+    margin-right: auto;
+
+    @include desktop {
+        max-width: $desktop-width;
+    }
+
+    @include desktop-lg {
+        max-width: $desktop-lg-width;
+    }
+
+    @include tablet {
+        max-width: $tablet-width;
+    }
+
+    @include mobile {
+        max-width: $mobile-width;
+    }
+}
+
+@mixin gridColumn($number-span){
+    display: grid;
+    grid-template-columns: repeat($number-span, minmax(0, 1fr));
+}
+
+@mixin colSpan($number-span){
+    grid-column: span $number-span / span $number-span;
+}
