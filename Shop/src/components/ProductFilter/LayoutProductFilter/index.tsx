@@ -1,7 +1,16 @@
 import React from "react";
 
-import { Breadcrumbs, Checkbox, FormControlLabel, Slider } from "@mui/material";
-import { ArrowDownNarrowWide, ChevronRight, ChevronsLeft, ChevronsRight, Heart, Settings } from "lucide-react";
+import {
+  Breadcrumbs, Button,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  InputLabel,
+  MenuItem, Rating,
+  Select,
+  Slider
+} from "@mui/material";
+import { ChevronRight, ChevronsLeft, ChevronsRight, Heart, Settings } from "lucide-react";
 import CategoryItemChildren from "./CategoryItemChildren";
 import { QueryListCategory } from "../../../services/queries/query-get.ts";
 import { CreateCategoryMenu } from "../../../config/utils.ts";
@@ -14,7 +23,8 @@ export interface IItemCategory {
 }
 
 function LayoutProductFilter() {
-  const [value, setValue] = React.useState<number[]>([20, 37]);
+  const [priceRange, setPriceRange] = React.useState<number[]>([300_000, 1_500_000]);
+  const [value, setValue] = React.useState<number | null>(2);
 
   const queryListCategory = QueryListCategory();
 
@@ -22,9 +32,10 @@ function LayoutProductFilter() {
     return <div>Loading...</div>;
   }
 
-  const handleChange = (_event: Event, newValue: number | number[]) => {
-    setValue(newValue as number[]);
-  };
+  // const handleChange = (_event: Event, newValue: number | number[]) => {
+  //   setPriceRange(newValue as number[]);
+  // };
+
   return (
     <main className="main-content">
       <div className="main-content-breadcrumb">
@@ -51,21 +62,56 @@ function LayoutProductFilter() {
             </div>
             <div className="filter-list">
               <div className="filter-list-item">
-                <h2 className="name">Nơi bán</h2>
                 <div className="filter-list-item-option">
-                  <FormControlLabel control={<Checkbox size="small" defaultChecked />} label="TP.Hồ Chí Minh" />
-                  <FormControlLabel control={<Checkbox size="small" defaultChecked />} label="TP.Hồ Chí Minh" />
-                  <FormControlLabel control={<Checkbox size="small" defaultChecked />} label="TP.Hồ Chí Minh" />
+                  <FormControl fullWidth>
+                    <InputLabel id="sort-label">Sắp Xếp</InputLabel>
+                    <Select
+                      labelId="sort-label"
+                      id="sort-label-select"
+                      value={10}
+                      label="Sắp Xếp"
+                      // onChange={handleChange}
+                    >
+                      <MenuItem value={10}>Ngày tạo</MenuItem>
+                      <MenuItem value={20}>Ngày cập nhật</MenuItem>
+                      <MenuItem value={30}>Tên</MenuItem>
+                      <MenuItem value={40}>Giá</MenuItem>
+                      <MenuItem value={50}>Đánh giá</MenuItem>
+                      <MenuItem value={60}>Nổi bật</MenuItem>
+                    </Select>
+                  </FormControl>
+                  <FormControl style={{ marginTop: "10px" }} fullWidth>
+                    <InputLabel id="sort-label">Loại</InputLabel>
+                    <Select
+                      labelId="sort-label"
+                      id="sort-label-select"
+                      value={20}
+                      label="Loại"
+                      // onChange={handleChange}
+                    >
+                      <MenuItem value={10}>Tăng dần</MenuItem>
+                      <MenuItem value={20}>Giảm dần</MenuItem>
+                    </Select>
+                  </FormControl>
+                </div>
+                <Button>Xoá sắp xếp</Button>
+              </div>
+
+              <div className="filter-list-item">
+                <h2 className="name">Màu sắc</h2>
+                <div className="filter-list-item-option">
+                  <FormControlLabel control={<Checkbox size="small" defaultChecked />} label="Trắng" />
+                  <FormControlLabel control={<Checkbox size="small" defaultChecked />} label="Đen " />
+                  <FormControlLabel control={<Checkbox size="small" defaultChecked />} label="Hồng" />
                 </div>
               </div>
+              {/*  */}
               <div className="filter-list-item">
-                <h2 className="name">Chọn mức giá </h2>
+                <h2 className="name">Màu sắc</h2>
                 <div className="filter-list-item-option">
-                  <Slider
-                    value={value}
-                    onChange={handleChange}
-                    valueLabelDisplay="auto"
-                  />
+                  <FormControlLabel control={<Checkbox size="small" defaultChecked />} label="Trắng" />
+                  <FormControlLabel control={<Checkbox size="small" defaultChecked />} label="Đen " />
+                  <FormControlLabel control={<Checkbox size="small" defaultChecked />} label="Hồng" />
                 </div>
               </div>
               <div className="filter-list-item">
@@ -76,17 +122,35 @@ function LayoutProductFilter() {
                   <FormControlLabel control={<Checkbox size="small" defaultChecked />} label="Hồng" />
                 </div>
               </div>
+              <div className="filter-list-item">
+                <h2 className="name">Màu sắc</h2>
+                <div className="filter-list-item-option">
+                  <FormControlLabel control={<Checkbox size="small" defaultChecked />} label="Trắng" />
+                  <FormControlLabel control={<Checkbox size="small" defaultChecked />} label="Đen " />
+                  <FormControlLabel control={<Checkbox size="small" defaultChecked />} label="Hồng" />
+                </div>
+              </div>
+              <div className="filter-list-item">
+                <h2 className="name">Màu sắc</h2>
+                <div className="filter-list-item-option">
+                  <FormControlLabel control={<Checkbox size="small" defaultChecked />} label="Trắng" />
+                  <FormControlLabel control={<Checkbox size="small" defaultChecked />} label="Đen " />
+                  <FormControlLabel control={<Checkbox size="small" defaultChecked />} label="Hồng" />
+                </div>
+              </div>
+              
+              {/*  */}
             </div>
           </div>
           <div className="list-product-right">
             <div className="category-product-title">
               <h3 className="name">THỜI TRANG NỮ</h3>
-              <span className="icon-filter">
-                <ArrowDownNarrowWide />
-                <span>
-                  Sắp xếp
-                </span>
-              </span>
+              {/*<span className="icon-filter">*/}
+              {/*  <ArrowDownNarrowWide />*/}
+              {/*  <span>*/}
+              {/*    Sắp xếp*/}
+              {/*  </span>*/}
+              {/*</span>*/}
             </div>
             <div className="list-product-filter-category">
               {
@@ -111,8 +175,15 @@ function LayoutProductFilter() {
                       <h2 className="title">Quần dài nữ Yaki Jan Lorem ipsum dolor sit amet consectetur adipisicing
                         elit. Dolores at cum consectetur, ipsam qui quidem debitis tempore voluptate, voluptatibus
                         laudantium deleniti quae doloribus pariatur sit ullam quia ex dolor fugit.</h2>
-                      <span className="price">
-                        450,000đ
+                      <Rating
+                        name="simple-controlled"
+                        value={value}
+                        onChange={(_, newValue) => {
+                          setValue(newValue);
+                        }}
+                      />
+                      <span style={{ marginLeft: "4px" }} className="price">
+                         450,000đ
                       </span>
                     </div>
                   </div>

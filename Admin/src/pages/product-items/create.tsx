@@ -1,5 +1,4 @@
-import {Button, Input, Stack, TextField, Typography} from "@mui/material";
-import {DateField} from "@refinedev/mui";
+import {Button, Input, TextField} from "@mui/material";
 import {useForm} from "@refinedev/react-hook-form";
 import React, {useState} from "react";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -8,19 +7,16 @@ import {SubmitHandler} from "react-hook-form";
 import commonAxiosInstance from "../../axios/commonAxiosInstance";
 import {useLocation} from "react-router-dom";
 
-export const ProductItemEdit = () => {
-    const [selectedImgUrl, setSelectedImgUrl] = useState(null);
+export const ProductItemCreate = () => {
+    const [selectedImgUrl, setSelectedImgUrl] = useState(import.meta.env.VITE_IMAGE_SHOW_WHEN_NOT_FOUND);
     const location = useLocation();
     const fromProduct = new URLSearchParams(location.search).get("fromProduct");
 
     const {
-        refineCore: {queryResult, formLoading}, // queryResult?.data?.data
         register,
         formState: {errors},
         handleSubmit
     } = useForm({});
-
-    const data = queryResult?.data?.data;
 
     const handleFileChange = async (event: { target: { files: any[]; }; }) => {
         const file = event.target.files[0];
@@ -36,12 +32,9 @@ export const ProductItemEdit = () => {
     }
 
     const onSubmit: SubmitHandler<any> = async (dataSubmit) => {
-        if (!selectedImgUrl) {
-            dataSubmit.imageUrl = data?.imageUrl;
-        } else {
-            dataSubmit.imageUrl = selectedImgUrl;
-        }
-        const submittedValue = await commonAxiosInstance.put(`/productItem/${data?.id}`, dataSubmit)
+        dataSubmit.imageUrl = selectedImgUrl;
+        dataSubmit.productId = fromProduct;
+        const submittedValue = await commonAxiosInstance.post(`/productItem`, dataSubmit)
         if (submittedValue.status === 200) {
             if (fromProduct) {
                 window.location.href = `/product/show/${fromProduct}`;
@@ -51,11 +44,6 @@ export const ProductItemEdit = () => {
         } else {
             alert("Failed to submit")
         }
-    }
-
-
-    if (formLoading) {
-        return <div>Loading...</div>;
     }
 
     return (
@@ -86,15 +74,12 @@ export const ProductItemEdit = () => {
                 >
                     <Input fullWidth={true} type="file"/>
                 </Button>
-                {selectedImgUrl ?
-                    <img
-                        src={selectedImgUrl}
-                        alt={"Uploaded file"}
-                        style={{maxWidth: '20%', height: 'auto'}}/> :
-                    <img
-                        src={data?.imageUrl ? data?.imageUrl : import.meta.env.VITE_IMAGE_SHOW_WHEN_NOT_FOUND}
-                        alt={"Uploaded file"}
-                        style={{maxWidth: '20%', height: 'auto'}}/>}
+                <img
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    src={selectedImgUrl}
+                    alt={"Uploaded file"}
+                    style={{maxWidth: '20%', height: 'auto'}}/>
                 <TextField
                     {...register("availableStock")}
                     error={!!(errors as any)?.availableStock}
@@ -120,27 +105,6 @@ export const ProductItemEdit = () => {
                 <br/>
                 <Button type={"submit"}>Submit</Button>
             </form>
-            <br/>
-            <Stack gap={1}>
-                <Typography variant="body1" fontWeight="bold">
-                    {"ID"} : {data?.id}
-                </Typography>
-                <Typography variant="body1" fontWeight="bold">
-                    {"Product ID"} : {data?.productId}
-                </Typography>
-                <Typography variant="body1" fontWeight="bold">
-                    {"Created On"}
-                </Typography>
-                <DateField
-                    format={"DD:MM:YYYY HH:mm hh:mm:ss A"}
-                    value={data?.createdOn}/>
-                <Typography variant="body1" fontWeight="bold">
-                    {"Last Updated On"}
-                </Typography>
-                <DateField
-                    format={"DD:MM:YYYY HH:mm hh:mm:ss A"}
-                    value={data?.lastUpdatedOn}/>
-            </Stack>
         </>
     );
 }

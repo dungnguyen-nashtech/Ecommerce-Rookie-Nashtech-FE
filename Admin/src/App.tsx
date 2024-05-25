@@ -41,6 +41,9 @@ import {
     ParentCategoryList,
     ParentCategoryShow
 } from "./pages/parent-categories";
+import {ProductItemCreate} from "./pages/product-items/create";
+import {UserList} from "./pages/users/list";
+import {UserEdit} from "./pages/users/edit";
 
 function App() {
     const dataProvider = {
@@ -97,14 +100,19 @@ function App() {
                                     </Route>
                                     <Route path="/productItem">
                                         <Route index element={<ProductItemList/>}/>
-                                        {/*<Route path="create" element={<ProductItemCreate/>}/>*/}
+                                        <Route path="create" element={<ProductItemCreate/>}/>
                                         <Route path=":id/edit" element={<ProductItemEdit/>}/>
                                     </Route>
                                     <Route path="/product">
                                         <Route index element={<ProductList/>}/>
                                         <Route path="create" element={<ProductCreate/>}/>
-                                        {/*<Route path="create/productItem/:id" element={<ProductCreate/>}/>*/}
                                         <Route path=":id/edit" element={<ProductEdit/>}/>
+                                        <Route path="show/:id" element={<ProductShow/>}/>
+                                    </Route>
+                                    <Route path="/user">
+                                        <Route index element={<UserList/>}/>
+                                        <Route path="create" element={<ProductCreate/>}/>
+                                        <Route path=":id/edit" element={<UserEdit/>}/>
                                         <Route path="show/:id" element={<ProductShow/>}/>
                                     </Route>
                                     <Route path="*" element={<ErrorComponent/>}/>

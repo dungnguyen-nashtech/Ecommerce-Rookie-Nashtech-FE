@@ -63,7 +63,7 @@ export const CommonProvider: DataProvider = {
 
         return {
             data: response?.data.content,
-            total: response?.data.totalElements, // We'll cover this in the next steps.
+            total: response?.data.totalElements,
         };
     },
     create: async ({resource, variables}) => {

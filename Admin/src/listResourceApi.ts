@@ -53,11 +53,24 @@ export const listResourceApi = [
     {
         name: "productItem",
         list: "/productItem",
+        create: "/productItem/create",
         edit: "/productItem/:id/edit",
         meta: {
             canDelete: true,
             label: "Product Item",
             parent: "Products",
+            hide: roleCanAccess(ADMIN_INVENTORY_PERMISSION)
+        },
+    },
+    {
+        name: "user",
+        list: "/user",
+        create: "/user/create",
+        edit: "/user/:id/edit",
+        meta: {
+            canDelete: true,
+            label: "User Info",
+            parent: "User",
             hide: roleCanAccess(ADMIN_INVENTORY_PERMISSION)
         },
     },
