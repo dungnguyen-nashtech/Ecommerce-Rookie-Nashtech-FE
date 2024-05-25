@@ -38,6 +38,16 @@ export const listResourceApi = [
         },
     },
     {
+        name: "category-product",
+        list: "/category-product",
+        meta: {
+            label: "Category - Product",
+            canDelete: true,
+            parent: "Categories",
+            hide: roleCanAccess(ADMIN_INVENTORY_PERMISSION)
+        },
+    },
+    {
         name: "product",
         list: "/product",
         create: "/product/create",
@@ -70,6 +80,17 @@ export const listResourceApi = [
         meta: {
             canDelete: true,
             label: "User Info",
+            parent: "User",
+            hide: roleCanAccess(ADMIN_INVENTORY_PERMISSION)
+        },
+    },
+    {
+        name: "address",
+        list: "/address",
+        create: "/address/create",
+        meta: {
+            canDelete: true,
+            label: "Address Info",
             parent: "User",
             hide: roleCanAccess(ADMIN_INVENTORY_PERMISSION)
         },

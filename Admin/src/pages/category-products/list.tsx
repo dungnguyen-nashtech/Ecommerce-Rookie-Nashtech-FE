@@ -1,10 +1,20 @@
 import {DataGrid, GridColDef} from "@mui/x-data-grid";
 import {DateField, DeleteButton, EditButton, List, ShowButton, useDataGrid} from "@refinedev/mui";
-import React from "react";
+import React, {useState} from "react";
 import {commonFilterOperators} from "../../commonFilters";
+import {Button, TextField} from "@mui/material";
+import {SubmitHandler, useForm} from "react-hook-form";
 
-export const ProductList = () => {
-    const {dataGridProps} = useDataGrid();
+export const CategoryProductList = () => {
+    const [categorySearchName, setCategorySearchName] = useState("");
+    const {dataGridProps} = useDataGrid({
+        dataProviderName: "getProducsByCategoryName",
+        sorters: {mode: "off"},
+        filters: {mode: "off"},
+        meta: {
+            categoryName: categorySearchName,
+        }
+    });
 
     const columns = React.useMemo<GridColDef[]>(
         () => [
@@ -100,8 +110,34 @@ export const ProductList = () => {
         []
     );
 
+    const {
+        register,
+        handleSubmit
+    } = useForm({});
+
+    const onSubmit: SubmitHandler<any> = async (dataSubmit) => {
+        setCategorySearchName(dataSubmit.categoryName);
+    }
+
     return (
         <List>
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                style={{display: "flex", flexDirection: "column"}}
+            >
+                <TextField
+                    {...register("categoryName", {
+                        required: "This field is required",
+                    })}
+                    margin="normal"
+                    fullWidth
+                    InputLabelProps={{shrink: true}}
+                    type="text"
+                    label={"Name"}
+                    name="categoryName"
+                />
+                <Button type={"submit"}>Find</Button>
+            </form>
             <DataGrid {...dataGridProps} columns={columns} autoHeight/>
         </List>
     );

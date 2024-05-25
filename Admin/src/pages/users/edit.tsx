@@ -2,11 +2,11 @@ import {Box, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typogr
 import {DateField, Edit} from "@refinedev/mui";
 import {useForm} from "@refinedev/react-hook-form";
 import React, {useState} from "react";
-import commonAxiosInstance from "../../axios/commonAxiosInstance";
+import {QueryListRole} from "../../services/queries/query-get";
 
 export const UserEdit = () => {
-    const [featured, setFeatured] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
+    const [enabled, setEnabled] = useState('');
+    const [selectedRole, setSelectedRole] = useState<string[]>([]);
 
 
     const {
@@ -17,21 +17,21 @@ export const UserEdit = () => {
 
     const data = queryResult?.data?.data;
 
-    const dataRoles = async () => {
-        const rolesFetch = await commonAxiosInstance.get("/role/all")
-        return rolesFetch.data;
-    };
-    console.log(dataRoles())
+    const queryListRole = QueryListRole();
 
-    const listCurrentCategories = () => {
-        let categories = "";
-        data?.roles.map((category: { name: string; }) => (
-            categories += ", " + category.roleName
-        ))
-        return categories.slice(1);
+    if (queryListRole.isLoading) {
+        return <div>Loading...</div>;
     }
 
-    if (formLoading || dataRoles.) {
+    const listCurrentRoles = () => {
+        let roles = "";
+        data?.roles.map((role: { roleName: string; }) => (
+            roles += ", " + role?.roleName
+        ))
+        return roles.slice(1);
+    }
+
+    if (formLoading) {
         return <div>Loading...</div>;
     }
     return (
@@ -43,52 +43,51 @@ export const UserEdit = () => {
                     autoComplete="off"
                 >
                     <TextField
-                        {...register("name")}
+                        {...register("firstName")}
                         margin="normal"
                         fullWidth
                         InputLabelProps={{shrink: true}}
                         type="text"
-                        label={"Name"}
-                        name="name"
+                        label={"First Name"}
+                        name="firstName"
                     />
                     <TextField
-                        {...register("description")}
+                        {...register("lastName")}
                         margin="normal"
                         fullWidth
                         InputLabelProps={{shrink: true}}
-                        multiline
-                        label={"Description"}
-                        name="description"
-                        rows={4}
+                        type="text"
+                        label={"Last Name"}
+                        name="lastName"
                     />
                     <FormControl style={{marginTop: "25px"}} fullWidth>
-                        <InputLabel id="featured-select-label">Featured</InputLabel>
+                        <InputLabel id="featured-select-label">Enabled</InputLabel>
                         <Select
                             labelId="featured-select-label"
-                            id="featured"
-                            value={featured == '' ? data?.isFeatured : featured}
-                            label="Featured"
-                            {...register("isFeatured")}
-                            onChange={(event) => setFeatured(event.target.value as string)}
+                            id="enabled"
+                            value={enabled == '' ? data?.enabled : enabled}
+                            label="Enabled"
+                            {...register("enabled")}
+                            onChange={(event) => setEnabled(event.target.value as string)}
                         >
                             <MenuItem value={"true"}>True</MenuItem>
                             <MenuItem value={"false"}>False</MenuItem>
                         </Select>
                     </FormControl>
                     <FormControl style={{marginTop: "12px"}} fullWidth>
-                        <InputLabel id="category-select-label">Category</InputLabel>
+                        <InputLabel id="role-select-label">Roles</InputLabel>
                         <Select
-                            labelId="category-select-label"
-                            id="category"
+                            labelId="role-select-label"
+                            id="roles"
                             multiple
-                            value={selectedCategory}
-                            label="Category"
-                            {...register("categoryIds")}
-                            onChange={(event) => setSelectedCategory(event.target.value as string[])}
+                            value={selectedRole}
+                            label="Roles"
+                            {...register("roleNames")}
+                            onChange={(event) => setSelectedRole(event.target.value as string[])}
                         >
-                            {allCategories?.data.map((category) => (
-                                <MenuItem key={category.id} value={category.id}>
-                                    {category.name}
+                            {queryListRole.data.map((role: { roleName: string }) => (
+                                <MenuItem key={role.roleName} value={role.roleName}>
+                                    {role.roleName}
                                 </MenuItem>
                             ))}
                         </Select>
@@ -97,9 +96,9 @@ export const UserEdit = () => {
                             fullWidth
                             InputLabelProps={{shrink: true}}
                             type="text"
-                            label={"Current Categories"}
+                            label={"Current Roles"}
                             disabled={true}
-                            value={listCurrentCategories()}
+                            value={listCurrentRoles()}
                         />
                     </FormControl>
                 </Box>

@@ -44,11 +44,14 @@ import {
 import {ProductItemCreate} from "./pages/product-items/create";
 import {UserList} from "./pages/users/list";
 import {UserEdit} from "./pages/users/edit";
+import {CategoryProductList} from "./pages/category-products/list";
+import {getProductsByCategoryName} from "./providers/getProductsByCategoryName";
 
 function App() {
     const dataProvider = {
         default: CommonProvider,
         "getProductItemsByProductId": getProductItemsByProductId,
+        "getProducsByCategoryName": getProductsByCategoryName,
         // etc
     };
 
@@ -91,6 +94,9 @@ function App() {
                                         <Route path="create" element={<CategoryCreate/>}/>
                                         <Route path="edit/:id" element={<CategoryEdit/>}/>
                                         <Route path="show/:id" element={<CategoryShow/>}/>
+                                    </Route>
+                                    <Route path="/category-product">
+                                        <Route index element={<CategoryProductList/>}/>
                                     </Route>
                                     <Route path="/category/parent">
                                         <Route index element={<ParentCategoryList/>}/>
