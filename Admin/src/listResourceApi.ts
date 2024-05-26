@@ -20,7 +20,7 @@ export const listResourceApi = [
         meta: {
             label: "Parent Category",
             canDelete: true,
-            parent: "Categories",
+            parent: "Product Attributes",
             hide: roleCanAccess(ADMIN_INVENTORY_PERMISSION)
         },
     },
@@ -33,7 +33,7 @@ export const listResourceApi = [
         meta: {
             label: "Category",
             canDelete: true,
-            parent: "Categories",
+            parent: "Product Attributes",
             hide: roleCanAccess(ADMIN_INVENTORY_PERMISSION)
         },
     },
@@ -43,7 +43,7 @@ export const listResourceApi = [
         meta: {
             label: "Category - Product",
             canDelete: true,
-            parent: "Categories",
+            parent: "Product Attributes",
             hide: roleCanAccess(ADMIN_INVENTORY_PERMISSION)
         },
     },
@@ -88,10 +88,33 @@ export const listResourceApi = [
         name: "address",
         list: "/address",
         create: "/address/create",
+        edit: "/user/:id/edit",
         meta: {
             canDelete: true,
             label: "Address Info",
             parent: "User",
+            hide: roleCanAccess(ADMIN_INVENTORY_PERMISSION)
+        },
+    },
+    {
+        name: "variation",
+        list: "/variation",
+        create: "/variation/create",
+        meta: {
+            canDelete: true,
+            label: "Variation",
+            parent: "Product Attributes",
+            hide: roleCanAccess(ADMIN_INVENTORY_PERMISSION)
+        },
+    },
+    {
+        name: "variationValue",
+        list: "/variationValue",
+        create: "/variationValues/create",
+        meta: {
+            canDelete: true,
+            label: "Variation Value",
+            parent: "Product Attributes",
             hide: roleCanAccess(ADMIN_INVENTORY_PERMISSION)
         },
     },

@@ -46,12 +46,16 @@ import {UserList} from "./pages/users/list";
 import {UserEdit} from "./pages/users/edit";
 import {CategoryProductList} from "./pages/category-products/list";
 import {getProductsByCategoryName} from "./providers/getProductsByCategoryName";
+import {VariationValueList} from "./pages/variationValues";
+import {getAllVariations} from "./providers/getAllVariation";
+import {VariationList} from "./pages/variations";
 
 function App() {
     const dataProvider = {
         default: CommonProvider,
         "getProductItemsByProductId": getProductItemsByProductId,
         "getProducsByCategoryName": getProductsByCategoryName,
+        "getAllVariations": getAllVariations
         // etc
     };
 
@@ -120,6 +124,16 @@ function App() {
                                         <Route path="create" element={<ProductCreate/>}/>
                                         <Route path=":id/edit" element={<UserEdit/>}/>
                                         <Route path="show/:id" element={<ProductShow/>}/>
+                                    </Route>
+                                    <Route path="/variation">
+                                        <Route index element={<VariationList/>}/>
+                                        {/*<Route path="create" element={<ProductCreate/>}/>*/}
+                                        {/*<Route path="show/:id" element={<ProductShow/>}/>*/}
+                                    </Route>
+                                    <Route path="/variationValue">
+                                        <Route index element={<VariationValueList/>}/>
+                                        {/*<Route path="create" element={<ProductCreate/>}/>*/}
+                                        {/*<Route path="show/:id" element={<ProductShow/>}/>*/}
                                     </Route>
                                     <Route path="*" element={<ErrorComponent/>}/>
                                 </Route>
