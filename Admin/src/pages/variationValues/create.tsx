@@ -1,11 +1,11 @@
 import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import {SubmitHandler, useForm} from "react-hook-form";
-import {useState} from "react";
-import {useList} from "@refinedev/core";
 import commonAxiosInstance from "../../axios/commonAxiosInstance";
+import {QueryAllVariation} from "../../services/queries/query-get";
+import React, {useState} from "react";
 
-export const CategoryCreate = () => {
-    const [selectedCategory, setSelectedCategory] = useState<string | null>('');
+export const VariationValueCreate = () => {
+    const [selectVariation, setSelectVariation] = useState<string>('');
 
     const {
         register,
@@ -13,22 +13,29 @@ export const CategoryCreate = () => {
         handleSubmit
     } = useForm({});
 
-    const {data, isLoading} = useList({
-        resource: "category/parent",
-        sorters: [{field: "id", order: "asc"}],
-    });
+    const queryAllVariation = QueryAllVariation();
+
+    if (queryAllVariation.isLoading) {
+        return <div>Loading...</div>;
+    }
+
+    console.log(queryAllVariation)
 
     const onSubmit: SubmitHandler<any> = async (dataSubmit) => {
-        const submittedValue = await commonAxiosInstance.post('/category', dataSubmit)
+        const submittedValue = await commonAxiosInstance.post(`/variationValue/${selectVariation}`,
+            dataSubmit.name,
+            {
+                headers: {
+                    'Content-Type': 'text/plain',
+                }
+            }
+        )
+
         if (submittedValue.status === 200) {
-            window.location.href = "/category";
+            // window.location.href = "/variationValue";
         } else {
             alert("Failed to submit")
         }
-    }
-
-    if (isLoading) {
-        return <div>Loading...</div>;
     }
 
     return (
@@ -49,39 +56,25 @@ export const CategoryCreate = () => {
                 label={"Name"}
                 name="name"
             />
-            <TextField
-                {...register("description", {
-                    required: "This field is required",
-                })}
-                error={!!(errors as any)?.content}
-                helperText={(errors as any)?.content?.message}
-                margin="normal"
-                fullWidth
-                InputLabelProps={{shrink: true}}
-                multiline
-                label={"Description"}
-                name="description"
-            />
+
             <FormControl style={{marginTop: "12px"}} fullWidth>
-                <InputLabel id="category-select-label">Category</InputLabel>
+                <InputLabel id="role-select-label">Roles</InputLabel>
                 <Select
-                    labelId="category-select-label"
-                    id="category"
-                    value={selectedCategory}
-                    label="Category"
-                    {...register("parentCategoryId")}
-                    onChange={(event) => setSelectedCategory(event.target.value as string)}
+                    labelId="role-select-label"
+                    id="roles"
+                    value={selectVariation}
+                    label="Roles"
+                    {...register("roleNames")}
+                    onChange={(event) => setSelectVariation(event.target.value as string)}
                 >
-                    {data?.data.map((category) => (
-                        <MenuItem key={category.id} value={category.id}>
-                            {category.parentCategoryName}
+                    {queryAllVariation.data.map((variation: { id: number, name: string }) => (
+                        <MenuItem key={variation.id} value={variation.id}>
+                            {variation.name}
                         </MenuItem>
                     ))}
                 </Select>
             </FormControl>
 
-            <br/>
-            <br/>
             <Button type={"submit"}>Submit</Button>
         </form>
     );

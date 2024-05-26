@@ -100,6 +100,7 @@ export const listResourceApi = [
         name: "variation",
         list: "/variation",
         create: "/variation/create",
+        edit: "/variation/:id/edit",
         meta: {
             canDelete: true,
             label: "Variation",
@@ -110,7 +111,7 @@ export const listResourceApi = [
     {
         name: "variationValue",
         list: "/variationValue",
-        create: "/variationValues/create",
+        create: "/variationValue/create",
         meta: {
             canDelete: true,
             label: "Variation Value",

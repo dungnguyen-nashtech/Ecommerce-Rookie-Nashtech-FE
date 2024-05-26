@@ -92,7 +92,7 @@ export const VariationList = () => {
                 sortable: false,
                 renderCell: ({row}) => (
                     <>
-                        <EditButton hideText recordItemId={row.id}/>
+                        <EditButton hideText onClick={() => window.location.href = `/variation/${row.id}/edit`}/>
                         <DeleteButton hideText onClick={() => handleClickOpen(row.id)}/>
                     </>
                 ),

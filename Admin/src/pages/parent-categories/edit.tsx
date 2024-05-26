@@ -4,12 +4,10 @@ import {useForm} from "@refinedev/react-hook-form";
 
 export const ParentCategoryEdit = () => {
     const {
-        refineCore: {queryResult},
         saveButtonProps,
         register,
         formState: {errors},
     } = useForm({});
-    console.log(queryResult)
     return (
         <Edit saveButtonProps={saveButtonProps}>
             <Box
