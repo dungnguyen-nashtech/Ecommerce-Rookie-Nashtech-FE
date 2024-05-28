@@ -28,8 +28,6 @@ export default function SignIn() {
   const onSubmit: SubmitHandler<IFormLogin> = (loginRequest) => {
     queryPostLogin.mutate(loginRequest);
     if (queryPostLogin.isSuccess) {
-      console.log(queryPostLogin.data);
-      console.log(jwtDecode(queryPostLogin.data?.accessToken));
       userStore.addUserInfoAndLogin(jwtDecode(queryPostLogin.data?.accessToken));
       userStore.addToken(queryPostLogin.data);
     } else if (queryPostLogin.isError) {

@@ -22,3 +22,13 @@ export const postRegister = async (data: IFormRegister) => {
   );
   return response.data;
 };
+
+export const postActiveAccount = async (data: { email: string, verificationCode: string }) => {
+  const response = await axiosInstance.post(`/auth/active`,
+    {
+      email: data.email,
+      verificationCode: data.verificationCode
+    }
+  );
+  return response.data;
+};
