@@ -1,10 +1,13 @@
-import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@mui/material";
+import {Button, FormControl, Input, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import {SubmitHandler, useForm} from "react-hook-form";
-import {useState} from "react";
+import React, {useState} from "react";
 import {useList} from "@refinedev/core";
 import commonAxiosInstance from "../../axios/commonAxiosInstance";
+import normalAxiosInstance from "../../axios/normalAxiosInstance";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 export const ProductCreate = () => {
+    const [selectedImgUrl, setSelectedImgUrl] = useState('');
     const [featured, setFeatured] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
 
@@ -19,8 +22,22 @@ export const ProductCreate = () => {
         sorters: [{field: "id", order: "asc"}],
     });
 
+    const handleFileChange = async (event: { target: { files: any[]; }; }) => {
+        const file = event.target.files[0];
+        if (file) {
+            const imgSent = new FormData();
+            imgSent.append("image", file);
+            const imageResponse = await normalAxiosInstance.post(import.meta.env.VITE_IMAGE_CLOUD
+                , imgSent, {headers: {'Content-Type': 'multipart/form-data',}});
+            if (imageResponse?.data?.success) {
+                setSelectedImgUrl(imageResponse?.data?.data?.url);
+            }
+        }
+    }
+
 
     const onSubmit: SubmitHandler<any> = async (dataSubmit) => {
+        dataSubmit.imageUrl = selectedImgUrl;
         dataSubmit.averageRating = 0;
         dataSubmit.isFeatured = featured;
         const submittedValue = await commonAxiosInstance.post('http://localhost:8080/api/v1/product', dataSubmit)
@@ -66,6 +83,25 @@ export const ProductCreate = () => {
                 label={"Description"}
                 name="description"
             />
+            <Button
+                component="label"
+                role={undefined}
+                variant="contained"
+                tabIndex={-1}
+                startIcon={<CloudUploadIcon/>}
+                style={{"margin": "10px 0 10px 0"}}
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                onChange={handleFileChange}
+            >
+                <Input fullWidth={true} type="file"/>
+            </Button>
+            <img
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                src={selectedImgUrl != '' ? selectedImgUrl : import.meta.env.VITE_IMAGE_SHOW_WHEN_NOT_FOUND}
+                alt={"Uploaded file"}
+                style={{maxWidth: '20%', height: 'auto'}}/>
             <TextField
                 {...register("averageRating")}
                 margin="normal"

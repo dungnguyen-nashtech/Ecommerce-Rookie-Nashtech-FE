@@ -1,3 +1,3 @@
 export const MailVerifyCode = () => {
-  return <div>Mail Verify Code</div>;
+  return <><br /><br /><br /><br />asdsad</>;
 };

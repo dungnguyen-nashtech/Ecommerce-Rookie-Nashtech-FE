@@ -6,7 +6,6 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { IHeaderItem } from "../../payloads/interface/formInput.ts";
 
 function Header() {
-
   return (
     <header className="header">
       <div className="header_container header-content-header">

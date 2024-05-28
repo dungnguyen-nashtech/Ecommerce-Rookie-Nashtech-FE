@@ -31,6 +31,14 @@ export const ProductList = () => {
                 filterOperators: commonFilterOperators,
             },
             {
+                field: "imageUrl",
+                flex: 1,
+                headerName: "Image",
+                minWidth: 70,
+                filterOperators: commonFilterOperators,
+                renderCell: ({value}) => <img src={value} style={{width: 40, height: 50}} alt=""/>,
+            },
+            {
                 field: "categories",
                 flex: 1,
                 headerName: "Categories",

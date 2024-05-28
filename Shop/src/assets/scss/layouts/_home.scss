@@ -1,0 +1,230 @@
+@import '../abstracts/container';
+@import '../abstracts/style';
+@import '../abstracts/variable';
+
+.main-content {
+    &-slider {
+        margin-top: 100px;
+        width: 100%;
+        height: 70vh;
+
+        &-item {
+            height: 65vh;
+            width: 100%;
+
+            .image {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+    }
+
+    &-home {
+        @include container();
+
+        .content-home-shipping {
+            @include gridColumn(4);
+            gap: 20px;
+
+            &-item {
+                border: 2px solid #bfbfbf;
+                border-radius: 10px;
+                padding: 10px;
+                @include flexCenter();
+                gap: 20px;
+
+                .content {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                    font-size: 18px;
+
+                    b {
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+
+        .content-home-category {
+            margin: 30px 0;
+
+            &-item {
+                width: 100%;
+                height: 420px;
+
+                &-content {
+                    padding: 0 30px;
+                    position: relative;
+
+                    .image {
+                        height: 100%;
+                        width: 100%;
+                        object-fit: cover;
+                    }
+
+                    .name {
+                        position: absolute;
+                        bottom: 50px;
+                        left: 30px;
+                        background-color: white;
+                        padding: 20px 25px;
+                        color: black;
+                        font-size: 18px;
+                        text-transform: uppercase;
+
+                        .quantity-category {
+                            position: absolute;
+                            top: 10px;
+                            right: 10px;
+                            font-size: 12px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .content-home-heading {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+            gap: 20px;
+
+            .title {
+                font-size: 28px;
+            }
+
+            .line {
+                width: 300px;
+                position: relative;
+                height: 5px;
+                border-radius: 10px;
+                background-color: #bfbfbf;
+                display: inline-block;
+
+                &::before {
+                    content: '';
+                    position: absolute;
+                    height: 100%;
+                    width: 20%;
+                    left: 50%;
+                    top: 0;
+                    border-radius: 10px;
+                    transform: translateX(-50%);
+                    background-color: black;
+                    display: inline-block;
+                }
+            }
+        }
+
+        .content-home-products {
+            .item {
+                .content {
+                    padding: 0 20px;
+                }
+
+                &-image {
+                    width: 100%;
+                    position: relative;
+                    z-index: 10;
+
+                    .rank {
+                        width: 30px;
+                        height: 30px;
+                        @include flexCenter();
+                        background-color: black;
+                        color: white;
+                        position: absolute;
+                        top: 10px;
+                        left: 10px;
+                        border-radius: 100%;
+                        .rank-ping{
+                            position: absolute;
+                            width: 100%;
+                            height: 100%;
+                            border-radius: 100%;
+                            background-color: black;
+                            animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+                            @keyframes ping {
+    
+                                75%,
+                                100% {
+                                    transform: scale(2);
+                                    opacity: 0;
+                                }
+                            }
+
+                        }
+                    }
+
+                    &-content {
+                        width: 100%;
+                    }
+
+                    &-bg {
+                        position: absolute;
+                        width: 100%;
+                        height: 100%;
+                        @include flexCenter();
+                        gap: 20px;
+                        color: $white;
+                        display: none;
+
+                        .item {
+                            @include flexCenter();
+                            width: 35px;
+                            height: 35px;
+                            cursor: pointer;
+                            border-radius: 100%;
+                            transition: all 0.3s linear;
+
+                            &:hover {
+                                background-color: black;
+                            }
+                        }
+                    }
+
+                    &:hover {
+                        transition: all 0.3 linear;
+
+                        .item-image-bg {
+                            background-color: #0000008c;
+                            display: flex;
+                        }
+                    }
+
+                }
+
+                &-content {
+                    font-size: 18px;
+                    padding: 0 0 40px 0;
+
+                    .title {
+                        overflow: hidden;
+                        display: -webkit-box;
+                        -webkit-box-orient: vertical;
+                        -webkit-line-clamp: 2;
+                        font-size: 20px;
+                        margin: 10px 0;
+                    }
+
+                    .price {
+                        display: block;
+                    }
+                }
+            }
+        }
+    }
+    .bg-img-sub-footer{
+        width: 100%;
+        height: 60vh;
+        .image{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+}

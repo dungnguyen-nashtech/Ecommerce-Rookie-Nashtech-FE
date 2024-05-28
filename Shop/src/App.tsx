@@ -6,8 +6,14 @@ import SignIn from "./components/Login";
 import ProductFilter from "./components/ProductFilter";
 import NotFoundPage from "./components/Common/NotFoundPage.tsx";
 import { MailVerifyCode } from "./components/Mail";
+import Home from "./components/Home";
 
 const router = createBrowserRouter([
+  {
+    path: "/home",
+    element: <Home />,
+    errorElement: <NotFoundPage />
+  },
   {
     path: "/shop",
     element: <ProductFilter />,
