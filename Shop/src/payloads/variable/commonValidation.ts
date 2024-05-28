@@ -1,0 +1,1 @@
+export const CommonValidation = { required: true, minLength: 1, maxLength: 30 };

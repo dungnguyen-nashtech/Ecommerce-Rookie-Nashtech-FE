@@ -8,7 +8,7 @@ import commonAxiosInstance from "../../axios/commonAxiosInstance";
 import {useLocation} from "react-router-dom";
 
 export const ProductItemCreate = () => {
-    const [selectedImgUrl, setSelectedImgUrl] = useState(import.meta.env.VITE_IMAGE_SHOW_WHEN_NOT_FOUND);
+    const [selectedImgUrl, setSelectedImgUrl] = useState('');
     const location = useLocation();
     const fromProduct = new URLSearchParams(location.search).get("fromProduct");
 
@@ -77,7 +77,7 @@ export const ProductItemCreate = () => {
                 <img
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
-                    src={selectedImgUrl}
+                    src={selectedImgUrl != '' ? selectedImgUrl : import.meta.env.VITE_IMAGE_SHOW_WHEN_NOT_FOUND}
                     alt={"Uploaded file"}
                     style={{maxWidth: '20%', height: 'auto'}}/>
                 <TextField

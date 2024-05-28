@@ -1,14 +1,15 @@
 import React from "react";
 
 import {
-  Breadcrumbs, Button,
+  Breadcrumbs,
+  Button,
   Checkbox,
   FormControl,
   FormControlLabel,
   InputLabel,
-  MenuItem, Rating,
-  Select,
-  Slider
+  MenuItem,
+  Rating,
+  Select
 } from "@mui/material";
 import { ChevronRight, ChevronsLeft, ChevronsRight, Heart, Settings } from "lucide-react";
 import CategoryItemChildren from "./CategoryItemChildren";
@@ -138,7 +139,7 @@ function LayoutProductFilter() {
                   <FormControlLabel control={<Checkbox size="small" defaultChecked />} label="Hồng" />
                 </div>
               </div>
-              
+
               {/*  */}
             </div>
           </div>
