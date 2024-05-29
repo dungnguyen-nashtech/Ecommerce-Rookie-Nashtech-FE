@@ -2,14 +2,20 @@ import {Button, FormControl, Input, InputLabel, MenuItem, Select, TextField} fro
 import {SubmitHandler, useForm} from "react-hook-form";
 import React, {useState} from "react";
 import {useList} from "@refinedev/core";
-import commonAxiosInstance from "../../axios/commonAxiosInstance";
-import normalAxiosInstance from "../../axios/normalAxiosInstance";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import {QueryPostCreateProduct, QueryPostUploadImage} from "./queries";
+import CenteredLoader from "../../components/CenteredLoader";
 
 export const ProductCreate = () => {
-    const [selectedImgUrl, setSelectedImgUrl] = useState('');
+    const [selectedImgBase64, setSelectedImgBase64] = useState(import.meta.env.VITE_IMAGE_SHOW_WHEN_NOT_FOUND);
+    const [selectedImgFile, setSelectedImgFile] = useState<FormData | null>(null);
+
     const [featured, setFeatured] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
+    
+    const queryPostUploadImage = QueryPostUploadImage()
+    const queryPostCreateProduct = QueryPostCreateProduct()
+
 
     const {
         register,
@@ -22,34 +28,59 @@ export const ProductCreate = () => {
         sorters: [{field: "id", order: "asc"}],
     });
 
+    const fileToBase64 = (file: Blob) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error);
+        });
+    };
+
     const handleFileChange = async (event: { target: { files: any[]; }; }) => {
         const file = event.target.files[0];
+        const base64 = await fileToBase64(file);
         if (file) {
+            setSelectedImgBase64(base64);
             const imgSent = new FormData();
             imgSent.append("image", file);
-            const imageResponse = await normalAxiosInstance.post(import.meta.env.VITE_IMAGE_CLOUD
-                , imgSent, {headers: {'Content-Type': 'multipart/form-data',}});
-            if (imageResponse?.data?.success) {
-                setSelectedImgUrl(imageResponse?.data?.data?.url);
-            }
+            setSelectedImgFile(imgSent)
         }
     }
 
 
     const onSubmit: SubmitHandler<any> = async (dataSubmit) => {
-        dataSubmit.imageUrl = selectedImgUrl;
+        dataSubmit.imageUrl = "";
         dataSubmit.averageRating = 0;
         dataSubmit.isFeatured = featured;
-        const submittedValue = await commonAxiosInstance.post('http://localhost:8080/api/v1/product', dataSubmit)
-        if (submittedValue.status === 200) {
-            window.location.href = "/product";
+        if (selectedImgFile != null) {
+            queryPostUploadImage.mutate(selectedImgFile, {
+                onSettled: (data) => {
+                    dataSubmit.imageUrl = data.data?.url
+                    queryPostCreateProduct.mutate(dataSubmit, {
+                        onSettled: () => {
+                            window.location.href = "/product";
+                        },
+                        onError: () => {
+                            alert("Failed to submit")
+                        },
+                    })
+                },
+            })
         } else {
-            alert("Failed to submit")
+            queryPostCreateProduct.mutate(dataSubmit, {
+                onSettled: () => {
+                    window.location.href = "/product";
+                },
+                onError: () => {
+                    alert("Failed to submit")
+                }
+            })
         }
     }
 
-    if (isLoading) {
-        return <div>Loading...</div>;
+    if (isLoading || queryPostUploadImage.isPending || queryPostCreateProduct.isPending) {
+        return <CenteredLoader/>;
     }
 
     return (
@@ -83,6 +114,19 @@ export const ProductCreate = () => {
                 label={"Description"}
                 name="description"
             />
+            <TextField
+                {...register("price", {
+                    required: "This field is required",
+                })}
+                error={!!(errors as any)?.content}
+                helperText={(errors as any)?.content?.message}
+                margin="normal"
+                fullWidth
+                InputLabelProps={{shrink: true}}
+                multiline
+                label={"Display Price"}
+                name="price"
+            />
             <Button
                 component="label"
                 role={undefined}
@@ -99,7 +143,7 @@ export const ProductCreate = () => {
             <img
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
-                src={selectedImgUrl != '' ? selectedImgUrl : import.meta.env.VITE_IMAGE_SHOW_WHEN_NOT_FOUND}
+                src={selectedImgBase64}
                 alt={"Uploaded file"}
                 style={{maxWidth: '20%', height: 'auto'}}/>
             <TextField

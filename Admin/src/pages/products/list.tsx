@@ -31,6 +31,13 @@ export const ProductList = () => {
                 filterOperators: commonFilterOperators,
             },
             {
+                field: "price",
+                flex: 1,
+                headerName: "Display Price",
+                minWidth: 200,
+                filterOperators: commonFilterOperators,
+            },
+            {
                 field: "imageUrl",
                 flex: 1,
                 headerName: "Image",
