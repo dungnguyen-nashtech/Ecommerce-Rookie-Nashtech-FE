@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { postActiveAccount, postLogin, postRegister } from "../api-post.ts";
+import { postActiveAccount, postLogin, postRegister } from "../apis/api-post.ts";
 import { IFormLogin, IFormRegister } from "../../payloads/interface/formInput.ts";
 
 

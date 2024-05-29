@@ -4,8 +4,13 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { IHeaderItem } from "../../payloads/interface/formInput.ts";
+import { useLocalStorageValue } from "@react-hookz/web";
+import useRetrieveLocalStorage from "../../utils/useRetrieveLocalStorage.ts";
+import { UserStoreState } from "../../stores/userStore.ts";
+import { LOCALSTORAGE_USER_STORE } from "../../utils/constant.ts";
 
 function Header() {
+  const { state } = useRetrieveLocalStorage<UserStoreState>(LOCALSTORAGE_USER_STORE);
   return (
     <header className="header">
       <div className="header_container header-content-header">

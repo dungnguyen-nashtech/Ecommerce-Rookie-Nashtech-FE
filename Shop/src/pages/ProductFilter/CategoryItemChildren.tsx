@@ -1,5 +1,5 @@
 import React from "react";
-import { IItemCategory } from ".";
+import { IItemCategory } from "./index.tsx";
 import { Minus, Plus } from "lucide-react";
 
 interface ICategoryItemChildren {

@@ -1,4 +1,4 @@
-import { IItemCategory } from "../../components/ProductFilter/LayoutProductFilter";
+import { IItemCategory } from "../../pages/ProductFilter";
 
 export const listCategory: IItemCategory[] = [
   {

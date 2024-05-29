@@ -12,9 +12,9 @@ import {
   Select
 } from "@mui/material";
 import { ChevronRight, ChevronsLeft, ChevronsRight, Heart, Settings } from "lucide-react";
-import CategoryItemChildren from "./CategoryItemChildren";
-import { QueryListCategory } from "../../../services/queries/query-get.ts";
-import { CreateCategoryMenu } from "../../../config/utils.ts";
+import CategoryItemChildren from "./CategoryItemChildren.tsx";
+import { QueryListCategory } from "../../services/queries/query-get.ts";
+import { CreateCategoryMenu } from "../../config/utils.ts";
 
 export interface IItemCategory {
   id?: number,

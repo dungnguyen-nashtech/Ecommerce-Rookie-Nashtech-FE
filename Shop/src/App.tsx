@@ -1,14 +1,20 @@
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import SignUp from "./components/Register";
+import Header from "./layouts/Header";
+import Footer from "./layouts/Footer";
+import SignUp from "./pages/Register";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import SignIn from "./components/Login";
-import ProductFilter from "./components/ProductFilter";
-import NotFoundPage from "./components/Common/NotFoundPage.tsx";
-import { MailVerifyCode } from "./components/Mail";
-import Home from "./components/Home";
+import ProductFilter from "./pages/ProductFilter";
+import NotFoundPage from "./components/NotFoundPage.tsx";
+import Home from "./pages/Home";
+import SignIn from "./pages/Login";
+import { MailVerifyCode } from "./pages/Mail";
+import { PrivateRoute } from "./components/PrivateRoute.tsx";
 
 const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />,
+    errorElement: <NotFoundPage />
+  },
   {
     path: "/home",
     element: <Home />,
@@ -21,15 +27,22 @@ const router = createBrowserRouter([
   },
   {
     path: "/sign-up",
-    element: <SignUp />
+    element: <SignUp />,
+    errorElement: <NotFoundPage />
   },
   {
     path: "/sign-in",
-    element: <SignIn />
+    element: <SignIn />,
+    errorElement: <NotFoundPage />
   },
   {
     path: "/mail/verify",
-    element: <MailVerifyCode />
+    element: (
+      <PrivateRoute>
+        <MailVerifyCode />
+      </PrivateRoute>
+    ),
+    errorElement: <NotFoundPage />
   },
   {
     path: "/*",

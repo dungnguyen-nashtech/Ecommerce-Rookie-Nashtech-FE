@@ -1,6 +1,6 @@
-import { IFieldRequestDto, IFormLogin } from "../payloads/interface/formInput.ts";
-import axiosInstance from "../config/axiosInstance.ts";
-import { GetSearchPayLoad } from "../payloads/ProductItemRequests.ts";
+import { IFieldRequestDto, IFormLogin } from "../../payloads/interface/formInput.ts";
+import axiosInstance from "../../config/axiosInstance.ts";
+import { GetSearchPayLoad } from "../../payloads/ProductItemRequests.ts";
 
 
 export const searchOneFilter = async (data: IFieldRequestDto) => {

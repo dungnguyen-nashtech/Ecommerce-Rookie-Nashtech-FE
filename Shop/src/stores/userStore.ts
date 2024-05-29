@@ -2,6 +2,7 @@ import { create, StateCreator } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { devtools, persist } from "zustand/middleware";
 import { createSelectors } from "../utils/createSelectors.ts";
+import { LOCALSTORAGE_USER_STORE } from "../utils/constant.ts";
 
 type UserInfo = {
   email: string;
@@ -11,7 +12,7 @@ type UserInfo = {
 };
 type TokenInfo = { accessToken: string; refreshToken: string };
 
-type UserStoreState = {
+export type UserStoreState = {
   token: {
     accessToken: string;
     refreshToken: string;
@@ -68,7 +69,7 @@ export const useUserStore = createSelectors(
     immer(
       devtools(
         persist(createUserSlice, {
-          name: "user store"
+          name: LOCALSTORAGE_USER_STORE
         })
       )
     )

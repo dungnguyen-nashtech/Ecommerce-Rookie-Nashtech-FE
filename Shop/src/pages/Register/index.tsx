@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -8,35 +9,38 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import Copyright from "./Copyright.tsx";
-import { IFormLogin } from "../../payloads/interface/formInput.ts";
+import { IFormLogin, IFormRegister } from "../../payloads/interface/formInput.ts";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { CommonValidation } from "../../payloads/variable/commonValidation.ts";
-import { QueryPostLogin } from "../../services/queries/query-post.ts";
+import { QueryPostLogin, QueryPostRegister } from "../../services/queries/query-post.ts";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { PopupModal } from "../Common/PopupModal.tsx";
+import { PopupModal } from "../../components/PopupModal.tsx";
 import { useUserStore } from "../../stores/userStore.ts";
 import { jwtDecode } from "jwt-decode";
+import { CloudUploadIcon } from "lucide-react";
+import { Input } from "@mui/material";
+import axiosInstance from "../../config/axiosInstance.ts";
 
-export default function SignIn() {
+export default function SignUp() {
 
-  const { register, handleSubmit, formState: { errors } } = useForm<IFormLogin>();
-  const queryPostLogin = QueryPostLogin();
+  const { register, handleSubmit, formState: { errors } } = useForm<IFormRegister>();
+
+  const queryPostRegister = QueryPostRegister();
   const userStore = useUserStore();
 
-  const onSubmit: SubmitHandler<IFormLogin> = (loginRequest) => {
-    queryPostLogin.mutate(loginRequest);
-    if (queryPostLogin.isSuccess) {
-      userStore.addUserInfoAndLogin(jwtDecode(queryPostLogin.data?.accessToken));
-      userStore.addToken(queryPostLogin.data);
-    } else if (queryPostLogin.isError) {
-      toast.error(queryPostLogin.error.message);
+  const onSubmit: SubmitHandler<IFormRegister> = (registerRequest) => {
+    queryPostRegister.mutate(registerRequest);
+    if (queryPostRegister.isSuccess) {
+      userStore.addUserInfoAndLogin(jwtDecode(queryPostRegister.data?.accessToken));
+      userStore.addToken(queryPostRegister.data);
+    } else if (queryPostRegister.isError) {
+      toast.error(queryPostRegister.error.message);
     }
   };
 
   return (
-    <Container style={{ marginTop: "8rem" }} component="main" maxWidth="xs">
+    <Container style={{ marginTop: "8rem", marginBottom: "5rem" }} component="main" maxWidth="xs">
       <Box
         sx={{
           marginTop: 8,
@@ -49,7 +53,7 @@ export default function SignIn() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Sign up
         </Typography>
         <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
           <TextField
@@ -61,7 +65,6 @@ export default function SignIn() {
             id="email"
             label="Email"
             name="email"
-            autoComplete="email"
             autoFocus
           />
           <TextField
@@ -70,11 +73,33 @@ export default function SignIn() {
             margin="normal"
             required
             fullWidth
-            name="password"
             label="Password"
             type="password"
-            id="password"
-            autoComplete="current-password"
+          />
+          <TextField
+            {...register("confirmPassword", CommonValidation)}
+            helperText={errors.password ? "Invalid Confirm Password" : ""}
+            margin="normal"
+            required
+            fullWidth
+            label="Confirm Password"
+            type="password"
+          />
+          <TextField
+            {...register("firstName", CommonValidation)}
+            helperText={errors.password ? "Invalid First Name" : ""}
+            margin="normal"
+            required
+            fullWidth
+            label="First Name"
+          />
+          <TextField
+            {...register("lastName", CommonValidation)}
+            helperText={errors.password ? "Invalid Last Name" : ""}
+            margin="normal"
+            required
+            fullWidth
+            label="Last Name"
           />
           <Button
             type="submit"
@@ -82,7 +107,7 @@ export default function SignIn() {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Sign In
+            Sign Up
           </Button>
           <Grid container>
             <Grid item xs>
@@ -92,14 +117,13 @@ export default function SignIn() {
             </Grid>
             <Grid item>
               <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
+                {"Have an account? Sign In"}
               </Link>
             </Grid>
           </Grid>
         </Box>
       </Box>
 
-      <Copyright sx={{ mt: 8, mb: 4 }} />
       <PopupModal />
     </Container>
   );

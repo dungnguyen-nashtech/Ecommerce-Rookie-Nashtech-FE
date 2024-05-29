@@ -1,5 +1,5 @@
-import axiosInstance from "../config/axiosInstance.ts";
-import { GetSearchPayLoad } from "../payloads/ProductItemRequests.ts";
+import axiosInstance from "../../config/axiosInstance.ts";
+import { GetSearchPayLoad } from "../../payloads/ProductItemRequests.ts";
 
 const SEARCH = "search";
 // const PAGINATED = "search/paginated";

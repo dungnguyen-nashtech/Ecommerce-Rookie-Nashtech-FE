@@ -1,5 +1,5 @@
-import axiosInstance from "../config/axiosInstance.ts";
-import { IFormLogin, IFormRegister } from "../payloads/interface/formInput.ts";
+import axiosInstance from "../../config/axiosInstance.ts";
+import { IFormLogin, IFormRegister } from "../../payloads/interface/formInput.ts";
 
 export const postLogin = async (data: IFormLogin) => {
   const response = await axiosInstance.post(`/auth/login`,
