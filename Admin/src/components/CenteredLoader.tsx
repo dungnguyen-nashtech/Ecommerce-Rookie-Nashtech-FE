@@ -16,12 +16,12 @@ const CenteredLoader: React.FC = () => {
 
 const styles = {
     loaderContainer: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh', // Full viewport height
-        width: '100vw', // Full viewport width
-        position: 'fixed', // Position fixed to cover the entire viewport
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+        width: "100vw",
+        position: "fixed",
         top: 0,
         left: 0,
     }

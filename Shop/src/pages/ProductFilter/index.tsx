@@ -15,6 +15,7 @@ import { ChevronRight, ChevronsLeft, ChevronsRight, Heart, Settings } from "luci
 import CategoryItemChildren from "./CategoryItemChildren.tsx";
 import { QueryListCategory } from "../../services/queries/query-get.ts";
 import { CreateCategoryMenu } from "../../config/utils.ts";
+import CenteredLoader from "../../components/CenteredLoader.tsx";
 
 export interface IItemCategory {
   id?: number,
@@ -30,7 +31,7 @@ function LayoutProductFilter() {
   const queryListCategory = QueryListCategory();
 
   if (queryListCategory.isLoading) {
-    return <div>Loading...</div>;
+    return <CenteredLoader />;
   }
 
   // const handleChange = (_event: Event, newValue: number | number[]) => {

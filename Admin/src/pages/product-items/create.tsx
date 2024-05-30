@@ -102,6 +102,23 @@ export const ProductItemCreate = () => {
                     label={"Variation"}
                     name="variationCombination"
                 />
+                <TextField
+                    disabled={true}
+                    margin="normal"
+                    fullWidth
+                    InputLabelProps={{shrink: true}}
+                    type="text"
+                    label={"SIZE"}
+                    value={"XS, S, M, L, XL"}
+                /> <TextField
+                disabled={true}
+                margin="normal"
+                fullWidth
+                InputLabelProps={{shrink: true}}
+                type="text"
+                label={"COLOR"}
+                value={"Trắng, Đen, Hồng Nhạt, Cam Nhạt, Da Đậm, Nâu, Xanh Lá, Tím Nhạt, Xám, Đỏ"}
+            />
                 <br/>
                 <Button type={"submit"}>Submit</Button>
             </form>
