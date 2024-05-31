@@ -2,9 +2,10 @@ import { create, StateCreator } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { devtools, persist } from "zustand/middleware";
 import { createSelectors } from "../utils/createSelectors.ts";
-import { LOCALSTORAGE_USER_STORE } from "../utils/constant.ts";
+import { LOCALSTORAGE_USER_STORE } from "../utils/constants.ts";
 
 type UserInfo = {
+  id: string;
   email: string;
   firstName: string;
   lastName: string;
@@ -18,6 +19,7 @@ export type UserStoreState = {
     refreshToken: string;
   };
   user: {
+    id: string;
     email: string;
     firstName: string;
     lastName: string;
@@ -26,6 +28,7 @@ export type UserStoreState = {
   isAuthenticated: boolean;
   addToken: (token: TokenInfo) => void;
   addUserInfoAndLogin: (user: any) => void;
+  removeUser: () => void;  // Add the removeUser function definition
 };
 
 const createUserSlice: StateCreator<
@@ -41,6 +44,7 @@ const createUserSlice: StateCreator<
     refreshToken: null
   },
   user: {
+    id: null,
     email: null,
     firstName: null,
     lastName: null,
@@ -54,12 +58,26 @@ const createUserSlice: StateCreator<
     });
   },
   addUserInfoAndLogin: (user) => {
+    console.log(user);
     set((state) => {
+      state.user.id = user.userId;
       state.user.email = user.sub;
       state.user.firstName = user.firstName;
       state.user.lastName = user.lastName;
       state.user.authorities = user.authorities;
       state.isAuthenticated = true;
+    });
+  },
+  removeUser: () => {
+    set((state) => {
+      state.token.accessToken = null;
+      state.token.refreshToken = null;
+      state.user.id = null;
+      state.user.email = null;
+      state.user.firstName = null;
+      state.user.lastName = null;
+      state.user.authorities = null;
+      state.isAuthenticated = false;
     });
   }
 });
