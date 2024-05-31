@@ -1,9 +1,6 @@
-import { CreditCard, Package, PackageOpen } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
 import styles from "./mail.module.css";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { QueryPostActiveAccount } from "../../services/queries/query-post.ts";
 import { Button } from "@mui/material";
 
