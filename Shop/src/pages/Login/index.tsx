@@ -17,7 +17,8 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useUserStore } from "../../stores/userStore.ts";
 import { jwtDecode } from "jwt-decode";
-import { PopupModal } from "../../components/PopupModal.tsx";
+import { PopupModal } from "../../components/Common/PopupModal.tsx";
+import { Navigate } from "react-router";
 
 export default function SignIn() {
 
@@ -26,14 +27,20 @@ export default function SignIn() {
   const userStore = useUserStore();
 
   const onSubmit: SubmitHandler<IFormLogin> = (loginRequest) => {
-    queryPostLogin.mutate(loginRequest);
-    if (queryPostLogin.isSuccess) {
-      userStore.addUserInfoAndLogin(jwtDecode(queryPostLogin.data?.accessToken));
-      userStore.addToken(queryPostLogin.data);
-    } else if (queryPostLogin.isError) {
-      toast.error(queryPostLogin.error.message);
-    }
+    queryPostLogin.mutate(loginRequest, {
+      onSuccess: (dataLoginResponse) => {
+        userStore.addUserInfoAndLogin(jwtDecode(dataLoginResponse.accessToken));
+        userStore.addToken(dataLoginResponse);
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      }
+    });
   };
+
+  if (userStore?.isAuthenticated) {
+    return <Navigate to="/home" />;
+  }
 
   return (
     <Container style={{ marginTop: "8rem" }} component="main" maxWidth="xs">
