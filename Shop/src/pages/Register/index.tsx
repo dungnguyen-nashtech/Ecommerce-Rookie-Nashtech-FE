@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -9,35 +8,42 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { IFormLogin, IFormRegister } from "../../payloads/interface/formInput.ts";
+import { IFormRegister } from "../../payloads/interface/formInput.ts";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { CommonValidation } from "../../payloads/variable/commonValidation.ts";
-import { QueryPostLogin, QueryPostRegister } from "../../services/queries/query-post.ts";
-import { toast } from "react-toastify";
+import { QueryPostRegister } from "../../services/queries/query-post.ts";
 import "react-toastify/dist/ReactToastify.css";
-import { PopupModal } from "../../components/PopupModal.tsx";
 import { useUserStore } from "../../stores/userStore.ts";
-import { jwtDecode } from "jwt-decode";
-import { CloudUploadIcon } from "lucide-react";
-import { Input } from "@mui/material";
-import axiosInstance from "../../config/axiosInstance.ts";
+import { Navigate, useNavigate } from "react-router";
+import { toast } from "react-toastify";
+import { PopupModal } from "../../components/Common/PopupModal.tsx";
+
 
 export default function SignUp() {
 
   const { register, handleSubmit, formState: { errors } } = useForm<IFormRegister>();
-
+  const navigate = useNavigate();
   const queryPostRegister = QueryPostRegister();
   const userStore = useUserStore();
 
   const onSubmit: SubmitHandler<IFormRegister> = (registerRequest) => {
-    queryPostRegister.mutate(registerRequest);
-    if (queryPostRegister.isSuccess) {
-      userStore.addUserInfoAndLogin(jwtDecode(queryPostRegister.data?.accessToken));
-      userStore.addToken(queryPostRegister.data);
-    } else if (queryPostRegister.isError) {
-      toast.error(queryPostRegister.error.message);
-    }
+    queryPostRegister.mutate(registerRequest, {
+      onSuccess: () => {
+        toast.info("Please check your email to verify your account before login.");
+        setTimeout(() => {
+          navigate("/sign-in");
+        }, 4000);
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      }
+    });
+
   };
+
+  if (userStore?.isAuthenticated) {
+    return <Navigate to="/home" />;
+  }
 
   return (
     <Container style={{ marginTop: "8rem", marginBottom: "5rem" }} component="main" maxWidth="xs">
