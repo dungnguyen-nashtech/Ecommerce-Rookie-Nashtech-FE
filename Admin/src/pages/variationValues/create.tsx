@@ -32,7 +32,7 @@ export const VariationValueCreate = () => {
         )
 
         if (submittedValue.status === 200) {
-            // window.location.href = "/variationValue";
+            window.location.href = "/variationValue";
         } else {
             alert("Failed to submit")
         }

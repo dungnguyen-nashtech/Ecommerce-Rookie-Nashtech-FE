@@ -130,28 +130,28 @@ export const commonFilterOperators: GridFilterOperator[] = [
             />
         ),
     },
-    {
-        label: 'In',
-        value: 'inm',
-        getApplyFilterFn: (filterItem) => {
-            if (!filterItem.value) {
-                return null;
-            }
-            const values = filterItem.value.split(',').map((v: string) => v.trim());
-            return ({value}) => {
-                return values.includes(value);
-            };
-        },
-        InputComponent: (props) => (
-            <input
-                style={inputStyle}
-                type="text"
-                placeholder="1,2,3"
-                value={props.item.value || ''}
-                onChange={(e) => props.applyValue({...props.item, value: e.target.value})}
-            />
-        ),
-    },
+    // {
+    //     label: 'In',
+    //     value: 'inm',
+    //     getApplyFilterFn: (filterItem) => {
+    //         if (!filterItem.value) {
+    //             return null;
+    //         }
+    //         const values = filterItem.value.split(',').map((v: string) => v.trim());
+    //         return ({value}) => {
+    //             return values.includes(value);
+    //         };
+    //     },
+    //     InputComponent: (props) => (
+    //         <input
+    //             style={inputStyle}
+    //             type="text"
+    //             placeholder="1,2,3"
+    //             value={props.item.value || ''}
+    //             onChange={(e) => props.applyValue({...props.item, value: e.target.value})}
+    //         />
+    //     ),
+    // },
     {
         label: 'Between',
         value: 'between',
