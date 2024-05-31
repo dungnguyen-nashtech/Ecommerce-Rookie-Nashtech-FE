@@ -1,10 +1,10 @@
-import { IFieldRequestDto, IFormLogin } from "../../payloads/interface/formInput.ts";
+import { IFieldRequestDto } from "../../payloads/interface/formInput.ts";
 import axiosInstance from "../../config/axiosInstance.ts";
 import { GetSearchPayLoad } from "../../payloads/ProductItemRequests.ts";
 
 
-export const searchOneFilter = async (data: IFieldRequestDto) => {
-  const response = await axiosInstance.post(`/product/search`,
+export const searchOneFilter = async (data: IFieldRequestDto, url: string) => {
+  const response = await axiosInstance.post(url,
     GetSearchPayLoad({
       fieldRequestDtos: [
         {

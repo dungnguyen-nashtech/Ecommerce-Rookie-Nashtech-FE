@@ -32,3 +32,19 @@ export const postActiveAccount = async (data: { email: string, verificationCode:
   );
   return response.data;
 };
+
+export const postCreateOrder = async (data: { order: object, orderDetails: object[] }) => {
+  const response = await axiosInstance.post(`/order`, {
+    order: data.order,
+    orderDetails: data.orderDetails
+  });
+  return response.data;
+};
+
+export const postCanUserComment = async (data: { productId: string, userId: string }) => {
+  const response = await axiosInstance.post(`/rating/can-comment`, {
+    productId: data.productId,
+    userId: data.userId
+  });
+  return response.data;
+};

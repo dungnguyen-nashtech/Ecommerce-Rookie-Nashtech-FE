@@ -13,3 +13,18 @@ export const getListCategory = async () => {
   );
   return response.data;
 };
+
+export const getAllProduct = async () => {
+  const response = await axiosInstance.post(`/product/search`,
+    GetSearchPayLoad({
+      fieldRequestDtos: [],
+      pageRequestDto: null
+    })
+  );
+  return response.data;
+};
+
+export const getProductItemByProductId = async (id: string) => {
+  const response = await axiosInstance.get(`/productItem/product/${id}`);
+  return response.data;
+};

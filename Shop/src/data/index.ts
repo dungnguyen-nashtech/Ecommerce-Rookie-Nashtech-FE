@@ -1,13 +1,13 @@
-import { IHeaderItem } from "../payloads/interface/formInput.ts";
+import { IHeaderItem } from "../interface";
 
 export const listHeaderItem: IHeaderItem[] = [
   {
     name: "Trang chủ",
-    path: "/"
+    path: "/home"
   },
   {
     name: "Thời trang nữ",
-    path: "/",
+    path: "/shop",
     children: [
       {
         name: "Áo thun nữ",

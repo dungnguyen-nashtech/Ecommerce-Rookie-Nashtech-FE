@@ -1,11 +1,16 @@
 import { useMutation } from "@tanstack/react-query";
-import { IFieldRequestDto, IFormLogin } from "../../payloads/interface/formInput.ts";
-import { postLogin } from "../apis/api-post.ts";
+import { IFieldRequestDto } from "../../payloads/interface/formInput.ts";
 import { searchOneFilter } from "../apis/api-search.ts";
+
+
+interface SearchOneFilterArgs {
+  data: IFieldRequestDto;
+  url: string;
+}
 
 export function QuerySearchOneFilter() {
   return useMutation({
     mutationKey: ["searchOneFilter"],
-    mutationFn: (data: IFieldRequestDto) => searchOneFilter(data)
+    mutationFn: ({ data, url }: SearchOneFilterArgs) => searchOneFilter(data, url)
   });
 }
