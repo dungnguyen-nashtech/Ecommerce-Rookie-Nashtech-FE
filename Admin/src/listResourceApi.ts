@@ -113,7 +113,17 @@ export const listResourceApi = [
         create: "/order/create",
         meta: {
             canDelete: true,
-            label: "Order Value",
+            label: "Order",
+            parent: "Order",
+            hide: roleCanAccess(ADMIN_INVENTORY_PERMISSION)
+        },
+    },
+    {
+        name: "orderDetail",
+        list: "/orderDetail",
+        meta: {
+            canDelete: true,
+            label: "Order Detail",
             parent: "Order",
             hide: roleCanAccess(ADMIN_INVENTORY_PERMISSION)
         },

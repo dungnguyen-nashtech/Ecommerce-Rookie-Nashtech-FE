@@ -16,7 +16,7 @@ export const ParentCategoryEdit = () => {
                 autoComplete="off"
             >
                 <TextField
-                    {...register("title", {
+                    {...register("name", {
                         required: "This field is required",
                     })}
                     error={!!(errors as any)?.title}
@@ -25,7 +25,20 @@ export const ParentCategoryEdit = () => {
                     fullWidth
                     InputLabelProps={{shrink: true}}
                     type="text"
-                    label={"Title"}
+                    label={"Name"}
+                    name="name"
+                />
+                <TextField
+                    {...register("description", {
+                        required: "This field is required",
+                    })}
+                    error={!!(errors as any)?.title}
+                    helperText={(errors as any)?.title?.message}
+                    margin="normal"
+                    fullWidth
+                    InputLabelProps={{shrink: true}}
+                    type="text"
+                    label={"Description"}
                     name="title"
                 />
             </Box>

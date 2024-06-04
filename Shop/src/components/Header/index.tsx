@@ -212,10 +212,10 @@ function Header() {
 
             </div>
           </div>
-          <div onClick={() => navigate(CART_URL)} className="header-account-item">
+          <div className="header-account-item">
             <div className="header-account-item-handle">
               <span className="background-icon">
-                <ShoppingCart />
+                <ShoppingCart onClick={() => navigate(CART_URL)} />
               </span>
               <span className="title">
                 Giỏ hàng

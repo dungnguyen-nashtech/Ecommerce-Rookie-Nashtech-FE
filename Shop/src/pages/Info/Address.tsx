@@ -4,7 +4,7 @@ import { CONSTANT_PROVINCE } from "../../utils/addres_constants/province.ts";
 import { getDistrictsByProvinceCode } from "../../utils/addres_constants/getDistrictsByProvinceCode.ts";
 import { useInput } from "../../utils/useInput.ts";
 import { useUserStore } from "../../stores/userStore.ts";
-import { QueryPostCreateAddressForUser } from "../../services/queries/query-post.ts";
+import { QueryPostCreateAddressForUser, QueryPostUpdateAddressForUser } from "../../services/queries/query-post.ts";
 import { QueryGetAddressByUserId } from "../../services/queries/query-get.ts";
 import CenteredLoader from "../../components/Common/CenteredLoader.tsx";
 
@@ -22,8 +22,9 @@ export function AddressInfo() {
 
 
   const queryPostCreateAddressForUser = QueryPostCreateAddressForUser();
-  const queryGetAddressByUserId = QueryGetAddressByUserId(userStore.user.id);
+  const queryPostUpdateAddressForUser = QueryPostUpdateAddressForUser();
 
+  const queryGetAddressByUserId = QueryGetAddressByUserId(userStore.user.id);
 
   const districtsByProvince = useMemo(() => {
     return getDistrictsByProvinceCode(provinceCode);
@@ -40,19 +41,37 @@ export function AddressInfo() {
     queryPostCreateAddressForUser.mutate(addressSend, {
       onSuccess: () => {
         alert("Thêm địa chỉ thành công");
+        queryGetAddressByUserId.refetch().then(r => console.log(r));
       },
       onError: () => {
         alert("Thêm địa chỉ thất bại");
       }
+    });
+  };
 
+  const updateAddress = () => {
+    const addressSend: any = {
+      id: queryGetAddressByUserId?.data?.id,
+      country: "Việt Nam",
+      province: findProvinceNameByCode(provinceCode),
+      city: districtValue,
+      address: addressInput.value,
+      userId: userStore.user.id
+    };
+    queryPostUpdateAddressForUser.mutate(addressSend, {
+      onSuccess: () => {
+        alert("Sửa địa chỉ thành công");
+        queryGetAddressByUserId.refetch().then(r => console.log(r));
+      },
+      onError: () => {
+        alert("Sửa địa chỉ thất bại");
+      }
     });
   };
 
   if (queryGetAddressByUserId?.isLoading) {
     return <CenteredLoader />;
   }
-
-  console.log(queryGetAddressByUserId?.data);
 
   return (
     <>
@@ -122,22 +141,42 @@ export function AddressInfo() {
           />
         </div>
       </div>
-      <button style={{
-        backgroundColor: "#871b1b",
-        borderRadius: "5px",
-        padding: "10px 30px",
-        display: "inline-flex",
-        alignItems: "center",
-        justifyContent: "center",
-        color: "white",
-        width: "auto",
-        marginTop: "50px",
-        border: "none"
-      }}
-              onClick={submitAddress}
-      >
-        {queryGetAddressByUserId?.data === "" ? "Thêm địa chỉ" : "Update địa chỉ"}
-      </button>
+      {queryGetAddressByUserId?.data === "" ?
+        <button style={{
+          backgroundColor: "#871b1b",
+          borderRadius: "5px",
+          padding: "10px 30px",
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: "white",
+          width: "auto",
+          marginTop: "50px",
+          border: "none"
+        }}
+                onClick={submitAddress}
+        >
+          Thêm địa chỉ
+        </button>
+        :
+        <button style={{
+          backgroundColor: "#871b1b",
+          borderRadius: "5px",
+          padding: "10px 30px",
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: "white",
+          width: "auto",
+          marginTop: "50px",
+          border: "none"
+        }}
+                onClick={updateAddress}
+        >
+          Update địa chỉ"
+        </button>
+      }
+
     </>
   );
 }

@@ -19,7 +19,7 @@ export type CartStoreState = {
   totalPrice: number;
   addProductItemToCart: (productItem: {
     quantity: number;
-    productId: string;
+    productId: number;
     price: number;
     imageUrl: string;
     description: string;

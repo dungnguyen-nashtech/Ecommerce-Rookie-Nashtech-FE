@@ -1,12 +1,27 @@
-import {Box, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography} from "@mui/material";
+import {
+    Box,
+    Button,
+    FormControl,
+    Input,
+    InputLabel,
+    MenuItem,
+    Select,
+    Stack,
+    TextField,
+    Typography
+} from "@mui/material";
 import {DateField, Edit} from "@refinedev/mui";
 import {useForm} from "@refinedev/react-hook-form";
 import React, {useState} from "react";
 import {useList} from "@refinedev/core";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 export const ProductEdit = () => {
     const [featured, setFeatured] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
+
+    const [selectedImgBase64, setSelectedImgBase64] = useState<any>(null);
+    const [selectedImgFile, setSelectedImgFile] = useState<FormData | null>(null);
 
 
     const {
@@ -30,9 +45,30 @@ export const ProductEdit = () => {
         return categories.slice(1);
     }
 
+    const fileToBase64 = (file: Blob) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error);
+        });
+    };
+
+    const handleFileChange = async (event: { target: { files: any[]; }; }) => {
+        const file = event.target.files[0];
+        const base64 = await fileToBase64(file);
+        if (file) {
+            setSelectedImgBase64(base64);
+            const imgSent = new FormData();
+            imgSent.append("image", file);
+            setSelectedImgFile(imgSent)
+        }
+    }
+
     if (formLoading || isLoading) {
         return <div>Loading...</div>;
     }
+
     return (
         <>
             <Edit isLoading={formLoading} saveButtonProps={saveButtonProps}>
@@ -59,6 +95,34 @@ export const ProductEdit = () => {
                         label={"Description"}
                         name="description"
                         rows={4}
+                    />
+                    <Button
+                        component="label"
+                        role={undefined}
+                        variant="contained"
+                        tabIndex={-1}
+                        startIcon={<CloudUploadIcon/>}
+                        style={{"margin": "10px 0 10px 0"}}
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
+                        onChange={handleFileChange}
+                    >
+                        <Input fullWidth={true} type="file"/>
+                    </Button>
+                    <img
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
+                        src={!selectedImgBase64 ? queryResult?.data?.data?.imageUrl : selectedImgBase64}
+                        alt={"Uploaded file"}
+                        style={{maxWidth: '20%', height: 'auto'}}/>
+                    <TextField
+                        {...register("price")}
+                        margin="normal"
+                        fullWidth
+                        InputLabelProps={{shrink: true}}
+                        type="text"
+                        label={"Price"}
+                        name="price"
                     />
                     <FormControl style={{marginTop: "25px"}} fullWidth>
                         <InputLabel id="featured-select-label">Featured</InputLabel>

@@ -1,5 +1,5 @@
 import {DataGrid, GridColDef} from "@mui/x-data-grid";
-import {DateField, DeleteButton, EditButton, List, useDataGrid} from "@refinedev/mui";
+import {DateField, DeleteButton, List, useDataGrid} from "@refinedev/mui";
 import React from "react";
 import {commonFilterOperators} from "../../commonFilters";
 
@@ -65,7 +65,6 @@ export const VariationValueList = () => {
                 sortable: false,
                 renderCell: ({row}) => (
                     <>
-                        <EditButton hideText recordItemId={row.id}/>
                         <DeleteButton hideText recordItemId={row.id}/>
                     </>
                 ),

@@ -55,3 +55,10 @@ export const postCreateAddressForUser = async (data: any) => {
   );
   return response.data;
 };
+
+export const postUpdateAddressForUser = async (data: any) => {
+  const response = await axiosInstance.put(`/address`,
+    data
+  );
+  return response.data;
+};

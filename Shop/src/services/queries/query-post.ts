@@ -5,7 +5,8 @@ import {
   postCreateAddressForUser,
   postCreateOrder,
   postLogin,
-  postRegister
+  postRegister,
+  postUpdateAddressForUser
 } from "../apis/api-post.ts";
 import { IFormLogin, IFormRegister } from "../../payloads/interface/formInput.ts";
 
@@ -49,5 +50,12 @@ export function QueryPostCreateAddressForUser() {
   return useMutation({
     mutationKey: ["createAddressForUser"],
     mutationFn: (data: any) => postCreateAddressForUser(data)
+  });
+}
+
+export function QueryPostUpdateAddressForUser() {
+  return useMutation({
+    mutationKey: ["updateAddressForUser"],
+    mutationFn: (data: any) => postUpdateAddressForUser(data)
   });
 }

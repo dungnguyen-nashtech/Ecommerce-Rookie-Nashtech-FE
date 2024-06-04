@@ -2,25 +2,9 @@ import {DataGrid, GridColDef} from "@mui/x-data-grid";
 import {DateField, DeleteButton, List, useDataGrid} from "@refinedev/mui";
 import React from "react";
 import {commonFilterOperators} from "../../commonFilters";
-import PriceCheckIcon from '@mui/icons-material/PriceCheck';
-import {QueryPostApproveOrder} from "./queries";
 
-export const OrderList = () => {
-    const {dataGridProps, tableQueryResult: {refetch,}} = useDataGrid();
-
-    const queryPostApproveOrder = QueryPostApproveOrder();
-
-    const approveOrder = async (row: { id: any; }) => {
-        const confirmed = window.confirm("Are you sure you want to approve this order and send email to customer?");
-        if (confirmed) {
-            queryPostApproveOrder.mutate({orderId: row.id}, {
-                onSuccess: async () => {
-                    await refetch();
-                }
-            });
-        }
-
-    }
+export const OrderDetailList = () => {
+    const {dataGridProps} = useDataGrid();
 
     const columns = React.useMemo<GridColDef[]>(
         () => [
@@ -32,54 +16,74 @@ export const OrderList = () => {
                 filterOperators: commonFilterOperators,
             },
             {
-                field: "commodityCode",
+                field: "productName",
+                headerName: "Product Name",
+                minWidth: 250,
+                filterOperators: commonFilterOperators,
+            },
+            {
+                field: "price",
                 flex: 1,
-                headerName: "Code",
+                headerName: "Price",
                 minWidth: 200,
                 filterOperators: commonFilterOperators,
             },
             {
-                field: "totalQuantity",
+                field: "orderDetailProductId",
                 flex: 1,
-                headerName: "Total Quantity",
+                headerName: "ProductId",
+                minWidth: 80,
+                filterOperators: commonFilterOperators,
+            },
+            {
+                field: "orderDetailOrderId",
+                flex: 1,
+                headerName: "OrderId",
+                minWidth: 80,
+                filterOperators: commonFilterOperators,
+            },
+            {
+                field: "userId",
+                flex: 1,
+                headerName: "UserId",
+                minWidth: 80,
+                filterOperators: commonFilterOperators,
+            },
+            {
+                field: "quantity",
+                flex: 1,
+                headerName: "Quantity",
+                minWidth: 80,
+                filterOperators: commonFilterOperators,
+            },
+            {
+                field: "description",
+                flex: 1,
+                headerName: "Description",
+                minWidth: 250,
+                filterOperators: commonFilterOperators,
+            },
+            {
+                field: "imageUrl",
+                flex: 1,
+                headerName: "Image",
                 minWidth: 70,
                 filterOperators: commonFilterOperators,
+                renderCell: ({value}) => <img src={value} style={{width: 40, height: 50}} alt=""/>,
             },
             {
-                field: "totalPrice",
+                field: "createdOn",
                 flex: 1,
-                headerName: "Total Price",
-                minWidth: 100,
+                headerName: "Created On",
+                minWidth: 130,
                 filterOperators: commonFilterOperators,
+                renderCell: ({value}) => <DateField value={value}/>,
             },
             {
-                field: "orderUserId",
+                field: "lastUpdatedOn",
                 flex: 1,
-                headerName: "User Id",
-                minWidth: 70,
-                filterOperators: commonFilterOperators,
-            },
-            {
-                field: "orderProductId",
-                flex: 1,
-                headerName: "Product Id",
-                minWidth: 70,
-                filterOperators: commonFilterOperators,
-            },
-            {
-                field: "approved",
-                flex: 1,
-                headerName: "Approved",
-                maxWidth: 80,
-                filterOperators: commonFilterOperators,
-                renderCell: ({row}) => (<>{row?.approved ? "✔️" : "❌"}</>),
-            },
-            {
-                field: "issuedAt",
-                flex: 1,
-                headerName: "Issued At",
-                minWidth: 70,
-                maxWidth: 100,
+                headerName: "Last Updated On",
+                minWidth: 130,
                 filterOperators: commonFilterOperators,
                 renderCell: ({value}) => <DateField value={value}/>,
             },
@@ -89,10 +93,6 @@ export const OrderList = () => {
                 sortable: false,
                 renderCell: ({row}) => (
                     <>
-                        {!row?.approved && <PriceCheckIcon
-                            onClick={() => approveOrder(row)}
-                            style={{cursor: "pointer"}}/>}
-
                         <DeleteButton hideText recordItemId={row.id}/>
                     </>
                 ),

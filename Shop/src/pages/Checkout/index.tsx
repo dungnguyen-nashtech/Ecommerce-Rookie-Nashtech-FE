@@ -1,26 +1,24 @@
-import {
-  Autocomplete,
-  Box,
-  Divider,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  Stack,
-  TextField,
-  Typography
-} from "@mui/material";
+import { Box, Divider, FormControlLabel, Radio, RadioGroup, Stack, TextField, Typography } from "@mui/material";
 import { Banknote, ChevronLeft } from "lucide-react";
 import { VNDCurrency } from "../../utils/functions.ts";
 import { useCartStore } from "../../stores/cartStore.ts";
 import { useUserStore } from "../../stores/userStore.ts";
 import { QueryPostCreateOrder } from "../../services/queries/query-post.ts";
 import { useNavigate } from "react-router";
+import { QueryGetAddressByUserId } from "../../services/queries/query-get.ts";
+import CenteredLoader from "../../components/Common/CenteredLoader.tsx";
+import React from "react";
+import { Link } from "react-router-dom";
+import { PopupModal } from "../../components/Common/PopupModal.tsx";
+import { toast } from "react-toastify";
 
 const Checkout = () => {
   const navigate = useNavigate();
   const userStore = useUserStore();
   const cartStore = useCartStore();
   const queryPostCreateOrder = QueryPostCreateOrder();
+
+  const queryGetAddressByUserId = QueryGetAddressByUserId(userStore.user.id);
 
   const checkout = () => {
     const order = {
@@ -45,10 +43,17 @@ const Checkout = () => {
     };
     queryPostCreateOrder.mutate(orderSent, {
       onSuccess: (data) => {
-        console.log(data);
+        toast.info("Đặt hàng thành công");
+        setTimeout(() => {
+          navigate("/home");
+        }, 1800);
       }
     });
   };
+
+  if (queryGetAddressByUserId?.isLoading) {
+    return <CenteredLoader />;
+  }
 
   return (
     <div className="checkout-container">
@@ -63,27 +68,16 @@ const Checkout = () => {
                             <h2>Thông tin mua hàng</h2>
                         </span>
             <div className="content">
-              <TextField id="outlined-basic" label="Số điện thoại" variant="outlined" />
-              <TextField id="outlined-basic" label="Email" variant="outlined" />
-              <TextField value={"Việt Nam"} id="outlined-basic" variant="outlined" />
-              <Autocomplete
-                id="free-solo-demo"
-                freeSolo
-                options={OptionsList.map((option) => option.title)}
-                renderInput={(params) => <TextField {...params} label="Tỉnh" />}
-              />
-              <Autocomplete
-                id="free-solo-demo"
-                freeSolo
-                options={OptionsList.map((option) => option.title)}
-                renderInput={(params) => <TextField {...params} label="Thành phố" />}
-              />
-              <Autocomplete
-                id="free-solo-demo"
-                freeSolo
-                options={OptionsList.map((option) => option.title)}
-                renderInput={(params) => <TextField {...params} label="Địa chỉ" />}
-              />
+              {queryGetAddressByUserId?.data === "" && <h2>Bạn cần cập nhật địa chỉ trước khi mua hàng</h2>}
+              {queryGetAddressByUserId?.data !== "" && <>
+                <h2>ĐỊA CHỈ CỦA BẠN</h2>
+                Quốc gia: {queryGetAddressByUserId?.data?.country}<br /><br />
+                Tỉnh: {queryGetAddressByUserId?.data?.province}<br /><br />
+                Thành phố: {queryGetAddressByUserId?.data?.city}<br /><br />
+                Địa chỉ: {queryGetAddressByUserId?.data?.address}<br /><br />
+                <h3 style={{ color: "red" }}>Sai địa chỉ, cập nhật <Link to={"/info"}>tại đây</Link></h3><br />
+              </>
+              }
               {/*<FormControlLabel control={<Checkbox defaultChecked />} label="Giao hàng đến địa chỉ khác" />*/}
               <TextField
                 id="outlined-multiline-static"
@@ -99,7 +93,7 @@ const Checkout = () => {
             <Stack direction="row" alignItems="center" justifyContent="space-between"
                    sx={{ mb: "20px" }}>
               <FormControlLabel checked={true} value="giaoHang" control={<Radio />} label="Giao hàng" />
-              <span>40.000đ</span>
+              <span>{VNDCurrency(0)}</span>
             </Stack>
             <h2 className="heading">Giao hàng</h2>
             <RadioGroup
@@ -120,13 +114,11 @@ const Checkout = () => {
                   fontSize: "18px",
                   lineHeight: "25px"
                 }}>
-                  Quý khách vui lòng thanh toán qua số tài khoản:
+                  Quý khách vui lòng thanh toán qua số tài khoản: <br />
 
-                  - Số Tài Khoản: 108317919999 (Vietinbank)
+                  - Số Tài Khoản: 108317919999 (HSBC) <br />
 
                   - Chủ Tài Khoản: Dung Nguyen Nash
-
-                  - Nội dung: SĐT+ Mã SP
 
                 </p>
               </Box>
@@ -221,6 +213,7 @@ const Checkout = () => {
           </div>
         </Box>
       </div>
+      <PopupModal />
     </div>
   );
 };

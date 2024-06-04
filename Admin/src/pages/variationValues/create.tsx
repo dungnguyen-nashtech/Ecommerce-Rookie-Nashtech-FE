@@ -18,9 +18,7 @@ export const VariationValueCreate = () => {
     if (queryAllVariation.isLoading) {
         return <div>Loading...</div>;
     }
-
-    console.log(queryAllVariation)
-
+    
     const onSubmit: SubmitHandler<any> = async (dataSubmit) => {
         const submittedValue = await commonAxiosInstance.post(`/variationValue/${selectVariation}`,
             dataSubmit.name,
@@ -58,7 +56,7 @@ export const VariationValueCreate = () => {
             />
 
             <FormControl style={{marginTop: "12px"}} fullWidth>
-                <InputLabel id="role-select-label">Roles</InputLabel>
+                <InputLabel id="role-select-label">Variation</InputLabel>
                 <Select
                     labelId="role-select-label"
                     id="roles"

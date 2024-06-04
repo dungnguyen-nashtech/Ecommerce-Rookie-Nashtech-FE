@@ -1,9 +1,11 @@
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { useCartStore } from "../../stores/cartStore.ts";
 import { VNDCurrency } from "../../utils/functions.ts";
+import { useNavigate } from "react-router";
 
 export const HeaderCartItems = () => {
   const cartStore = useCartStore();
+  const navigate = useNavigate();
   return (
     <>
       <div className="header-account-item-cart has-products">
@@ -69,7 +71,7 @@ export const HeaderCartItems = () => {
                     {VNDCurrency(cartStore?.totalPrice)}
                   </span>
           </div>
-          <button className="cart-footer-button">
+          <button onClick={() => navigate("/cart")} className="cart-footer-button">
             Xem giỏ hàng
           </button>
         </div>

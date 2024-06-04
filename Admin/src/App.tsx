@@ -50,6 +50,7 @@ import {VariationValueCreate, VariationValueList} from "./pages/variationValues"
 import {getAllVariations} from "./providers/getAllVariation";
 import {VariationCreate, VariationEdit, VariationList} from "./pages/variations";
 import {OrderList} from "./pages/orders/list";
+import {OrderDetailList} from "./pages/orderDetails/list";
 
 function App() {
     const dataProvider = {
@@ -139,6 +140,12 @@ function App() {
                                     </Route>
                                     <Route path="/order">
                                         <Route index element={<OrderList/>}/>
+                                        <Route path="create" element={<ProductCreate/>}/>
+                                        <Route path=":id/edit" element={<UserEdit/>}/>
+                                        <Route path="show/:id" element={<ProductShow/>}/>
+                                    </Route>
+                                    <Route path="/orderDetail">
+                                        <Route index element={<OrderDetailList/>}/>
                                         <Route path="create" element={<ProductCreate/>}/>
                                         <Route path=":id/edit" element={<UserEdit/>}/>
                                         <Route path="show/:id" element={<ProductShow/>}/>
