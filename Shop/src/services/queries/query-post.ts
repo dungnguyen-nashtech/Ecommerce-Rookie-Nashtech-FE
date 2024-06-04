@@ -1,5 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
-import { postActiveAccount, postCanUserComment, postCreateOrder, postLogin, postRegister } from "../apis/api-post.ts";
+import {
+  postActiveAccount,
+  postCanUserComment,
+  postCreateAddressForUser,
+  postCreateOrder,
+  postLogin,
+  postRegister
+} from "../apis/api-post.ts";
 import { IFormLogin, IFormRegister } from "../../payloads/interface/formInput.ts";
 
 
@@ -35,5 +42,12 @@ export function QueryCanUserComment() {
   return useMutation({
     mutationKey: ["canUserComment"],
     mutationFn: (data: any) => postCanUserComment(data)
+  });
+}
+
+export function QueryPostCreateAddressForUser() {
+  return useMutation({
+    mutationKey: ["createAddressForUser"],
+    mutationFn: (data: any) => postCreateAddressForUser(data)
   });
 }

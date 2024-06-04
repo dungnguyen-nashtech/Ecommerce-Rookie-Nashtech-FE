@@ -3,8 +3,10 @@ import { Rating } from "@mui/material";
 import React from "react";
 import { VNDCurrency } from "../../utils/functions.ts";
 import { useNavigate } from "react-router";
+import { DEFAULT_IMAGE_PRODUCT } from "../../utils/constant.ts";
 
 export const ProductCard = ({ product, index }) => {
+  console.log(product);
   const navigate = useNavigate();
   return (<>
     <div onClick={() => navigate(`/product/${product.id}`)} className="item" key={index}>
@@ -19,7 +21,9 @@ export const ProductCard = ({ product, index }) => {
 
         </div>
         <img
-          src="https://bizweb.dktcdn.net/thumb/large/100/462/587/products/12-4d67873d-2641-4391-8b3d-b7a3699e9728.png?v=1698485974000"
+          src={product?.imageUrl ?
+            product?.imageUrl :
+            DEFAULT_IMAGE_PRODUCT}
           alt="Product Image "
           className="item-image-content"
         />
@@ -27,8 +31,9 @@ export const ProductCard = ({ product, index }) => {
       <div className="item-content">
         <h2 className="title">{product?.name}</h2>
         <span className="price">
-                        <span>{VNDCurrency(450000)} | </span> <Rating name="read-only" value={product?.averageRating}
-                                                                      readOnly />
+                        <span>{VNDCurrency(product?.price)} | </span> <Rating name="read-only"
+                                                                              value={product?.averageRating}
+                                                                              readOnly />
                       </span>
       </div>
     </div>

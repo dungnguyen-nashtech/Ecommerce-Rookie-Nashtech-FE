@@ -42,9 +42,16 @@ export const postCreateOrder = async (data: { order: object, orderDetails: objec
 };
 
 export const postCanUserComment = async (data: { productId: string, userId: string }) => {
-  const response = await axiosInstance.post(`/rating/can-comment`, {
+  const response = await axiosInstance.post(`/order/canUserComment`, {
     productId: data.productId,
     userId: data.userId
   });
+  return response.data;
+};
+
+export const postCreateAddressForUser = async (data: any) => {
+  const response = await axiosInstance.post(`/address`,
+    data
+  );
   return response.data;
 };

@@ -1,5 +1,5 @@
-import { ChevronDown, Heart, MapPin, Phone, Search, ShoppingCart, User } from "lucide-react";
-import { listHeaderItem } from "../../data";
+import { ChevronDown, Heart, MapPin, Phone, ShoppingCart, User } from "lucide-react";
+
 import { IHeaderItem } from "../../interface";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -8,22 +8,102 @@ import { HeaderCartItems } from "../HeaderCartItems";
 import { useCartStore } from "../../stores/cartStore.ts";
 import { CART_URL } from "../../utils/urls.ts";
 import { useUserStore } from "../../stores/userStore.ts";
+import { QueryListCategory } from "../../services/queries/query-get.ts";
+import CenteredLoader from "../Common/CenteredLoader.tsx";
+import React, { useEffect, useState } from "react";
+import { InputSearch } from "./InputSearch.tsx";
+
+export const listHeaderItemInit: IHeaderItem[] = [
+  {
+    name: "Trang chủ",
+    path: "/home"
+  },
+  {
+    name: "Thời trang nữ",
+    path: "/shop"
+  },
+  {
+    name: "Danh Mục",
+    path: "",
+    children: []
+  },
+  {
+    name: "Tin tức thời trang",
+    path: "",
+    children: [
+      {
+        name: "Chanel",
+        path: ""
+      },
+      {
+        name: "Gucci",
+        path: ""
+      },
+      {
+        name: "Hermès",
+        path: ""
+      },
+      {
+        name: "Louis Vuitton",
+        path: ""
+      }
+    ]
+  },
+  {
+    name: "Trợ giúp",
+    path: ""
+  },
+  {
+    name: "Khuyến mãi",
+    path: ""
+  }
+];
+
+function addChildsToDanhMuc(products: any[]): any[] {
+  const danhMucItem = listHeaderItemInit.find(item => item.name === "Danh Mục");
+  if (danhMucItem && danhMucItem.children) {
+    products.forEach((category: { name: any; id: any; }) => {
+      danhMucItem.children.push({
+        name: category.name,
+        path: `/category/${category.name}`
+      });
+    });
+  } else {
+    console.error("Danh Mục not found");
+  }
+
+  return listHeaderItemInit;
+}
 
 function Header() {
+
+  const queryListCategory = QueryListCategory();
+  const [listHeaderItem, setListHeaderItem] = useState([]);
 
   const navigate = useNavigate();
   const cartStore = useCartStore();
   const userStore = useUserStore();
+
+  useEffect(() => {
+    if (queryListCategory?.data) {
+      const updatedListHeaderItem = addChildsToDanhMuc(queryListCategory.data);
+      setListHeaderItem(updatedListHeaderItem);
+    }
+  }, [queryListCategory?.data]);
 
   const logout = () => {
     userStore.removeUser();
     navigate("/home");
   };
 
+  if (queryListCategory.isLoading) {
+    return <CenteredLoader />;
+  }
+
   return (
     <header className="header">
       <div className="header_container header-content-header">
-        <div className="header-logo">
+        <div onClick={() => navigate("/home")} className="header-logo">
           <img src="/logo.webp" alt="Website logo image" className="header-logo-image" />
         </div>
         <div className="header-navbar">
@@ -45,36 +125,12 @@ function Header() {
               </span>
             </div>
             <div className="header-navbar-top-search">
-              <div className="input">
-                <input type="text" placeholder="Tìm kiếm sản phẩm" />
-                <span>
-                  <Search className="icon" />
-                </span>
-                <div className="list-search">
-                  {
-                    Array.from({ length: 3 }).map((_, index: number) => (
-                      <div key={index} className="list-search-item">
-                        <div className="image">
-                          <img
-                            src="https://bizweb.dktcdn.net/thumb/large/100/462/587/products/12-4d67873d-2641-4391-8b3d-b7a3699e9728.png?v=1698485974000"
-                            alt="" />
-                        </div>
-                        <div className="content">
-                          <h2>Áo thun nữ</h2>
-                          <span>
-                            450.000đ
-                          </span>
-                        </div>
-                      </div>
-                    ))
-                  }
-                </div>
-              </div>
+              <InputSearch />
             </div>
           </div>
           <div className="header-navbar-bottom">
             <ul className="header-navbar-bottom-list">
-              {listHeaderItem.map((item: IHeaderItem, index: number) => (
+              {listHeaderItem?.map((item: IHeaderItem, index: number) => (
                 <li onClick={() => navigate(item.path)} key={index} className="header-navbar-bottom-item">
                   <div className="header-navbar-bottom-item-handle">
                     <span>
@@ -96,7 +152,8 @@ function Header() {
                       <ul className="header-navbar-bottom-children">
                         {
                           item.children.map((child: IHeaderItem, i: number) => (
-                            <li key={i} className="header-navbar-bottom-children-item">
+                            <li onClick={() => navigate(`/category/${child.name}`)} key={i}
+                                className="header-navbar-bottom-children-item">
                               {child.name}
                             </li>
                           ))
@@ -127,7 +184,7 @@ function Header() {
           <div className="header-account-item">
             <div onClick={() => navigate("/info")} className="header-account-item-handle">
               <span className="background-icon">
-                <User />
+                <User color={userStore.isAuthenticated ? "black" : ""} />
               </span>
               <span className="title">
                 Tài khoản

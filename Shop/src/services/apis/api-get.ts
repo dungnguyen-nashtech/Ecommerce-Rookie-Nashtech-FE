@@ -24,7 +24,56 @@ export const getAllProduct = async () => {
   return response.data;
 };
 
+export const getProductPagination = async (page: number) => {
+
+  const response = await axiosInstance.post(`/product/search/paginated`,
+    GetSearchPayLoad({
+      fieldRequestDtos: [],
+      pageRequestDto: {
+        pageNo: page,
+        pageSize: 6,
+        sort: "DESC",
+        sortByColumn: "createdOn"
+      }
+    })
+  );
+  return response.data;
+
+};
+
+export const getProductItemFilterPagination = async (
+  fieldRequestDtos: any[]
+  , sortType: string
+  , sortField: string) => {
+
+  const response = await axiosInstance.post(`/productItem/search/paginated`,
+    GetSearchPayLoad({
+      fieldRequestDtos: fieldRequestDtos,
+      pageRequestDto: {
+        pageNo: 1,
+        pageSize: 100,
+        sort: sortType,
+        sortByColumn: sortField
+      }
+    })
+  );
+  return response.data;
+
+};
+
+export const getProductByCategoryName = async (categoryName: string) => {
+  const response = await axiosInstance.post(`/product/category`, {
+    name: categoryName
+  });
+  return response.data;
+};
+
 export const getProductItemByProductId = async (id: string) => {
   const response = await axiosInstance.get(`/productItem/product/${id}`);
+  return response.data;
+};
+
+export const getAddressByUserId = async (id: string) => {
+  const response = await axiosInstance.get(`/address/user/${id}`);
   return response.data;
 };

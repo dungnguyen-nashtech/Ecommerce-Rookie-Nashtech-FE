@@ -1,0 +1,14 @@
+@mixin btn($bgColor:black,$textColor:white,$bgHover:white,$textHover:black,$borderColor:transparent) {
+  background-color: $bgColor;
+  color: $textColor;
+  text-align: center;
+  padding: 10px 20px;
+  border: 1px solid $borderColor;
+  border-radius: 5px;
+  transition: all 0.2s linear;
+  cursor: pointer;
+  &:hover {
+    background-color: $bgHover;
+    color: $textHover;
+  }
+}

@@ -1,7 +1,10 @@
 import { Breadcrumbs } from "@mui/material";
 import { ChevronRight } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 import { ProductCard } from "../../components/ProductCard";
+import { useParams } from "react-router";
+import { QuerySearchOneFilter } from "../../services/queries/query-search.ts";
+import CenteredLoader from "../../components/Common/CenteredLoader.tsx";
 
 const breadcrumbs: JSX.Element[] = [
   <span className="breadcrumb-item">
@@ -13,6 +16,25 @@ const breadcrumbs: JSX.Element[] = [
 ];
 
 const Search = () => {
+  const { productName } = useParams();
+
+  const querySearchOneFilterProduct = QuerySearchOneFilter();
+  useEffect(() => {
+    querySearchOneFilterProduct.mutate({
+        data: {
+          field: "name",
+          operator: "CONTAINS",
+          value: productName
+        },
+        url: "/product/search"
+      }
+    );
+  }, [productName]);
+
+
+  if (querySearchOneFilterProduct.isPending) {
+    return <CenteredLoader />;
+  }
 
   return (
     <main className="main-content">
@@ -31,8 +53,8 @@ const Search = () => {
           <h2 className="title-result">Có 10 kết quả tìm kiếm phù hợp </h2>
           <div className="main-content-search-list">
             {
-              Array.from({ length: 9 }).map((_, index: number) => (
-                  <ProductCard index={index} />
+              querySearchOneFilterProduct?.data?.map((product, index: number) => (
+                  <ProductCard index={index} product={product} />
                 )
               )
             }

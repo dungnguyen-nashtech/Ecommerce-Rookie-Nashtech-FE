@@ -16,6 +16,8 @@ import SignUp from "./pages/Register";
 import SignIn from "./pages/Login";
 import { PrivateRoute } from "./components/Common/PrivateRoute.tsx";
 import { MailVerifyCode } from "./pages/Mail";
+import Filter from "./pages/SearchFilter";
+import Category from "./pages/SearchCategory";
 
 const Layout: React.FC<{ children: ReactNode; }> = ({ children }) =>
   (
@@ -111,10 +113,28 @@ const router = createBrowserRouter([
     errorElement: <NotFoundPage />
   },
   {
-    path: "/search",
+    path: "/search/:productName",
     element: (
       <Layout>
         <Search />
+      </Layout>
+    ),
+    errorElement: <NotFoundPage />
+  },
+  {
+    path: "/filter",
+    element: (
+      <Layout>
+        <Filter />
+      </Layout>
+    ),
+    errorElement: <NotFoundPage />
+  },
+  {
+    path: "/category/:categoryName",
+    element: (
+      <Layout>
+        <Category />
       </Layout>
     ),
     errorElement: <NotFoundPage />

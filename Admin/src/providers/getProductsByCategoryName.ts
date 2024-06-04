@@ -39,7 +39,7 @@ export const getProductsByCategoryName: DataProvider = {
         console.log(response)
         return {
             data: response?.data,
-            total: response?.data?.length, // We'll cover this in the next steps.
+            total: response?.data?.length,
         };
     },
     create: async ({resource, variables}) => {

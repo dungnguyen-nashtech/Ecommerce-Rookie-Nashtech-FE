@@ -2,7 +2,7 @@ import { create, StateCreator } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { devtools, persist } from "zustand/middleware";
 import { createSelectors } from "../utils/createSelectors.ts";
-import { LOCALSTORAGE_USER_STORE } from "../utils/constants.ts";
+import { LOCALSTORAGE_USER_STORE } from "../utils/address.ts";
 
 type UserInfo = {
   id: string;

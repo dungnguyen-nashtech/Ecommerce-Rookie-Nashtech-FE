@@ -6,8 +6,8 @@ import { Button } from "@mui/material";
 
 export const MailVerifyCode = () => {
   const [type, setType] = useState("");
-  const location = useLocation();
   const navigate = useNavigate();
+  const location = useLocation();
   const findParams = new URLSearchParams(location.search);
   const queryPostActiveAccount = QueryPostActiveAccount();
 

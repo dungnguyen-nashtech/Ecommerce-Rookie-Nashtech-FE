@@ -1,88 +1,86 @@
+import { Rating } from "@mui/material";
 import { CreditCard, Heart, Package, PackageOpen, Settings } from "lucide-react";
 import React, { useEffect } from "react";
 import Slider, { Settings as SettingSilder } from "react-slick";
-import { randomNumber } from "../../utils/randomNumber.ts";
-import { QueryListCategory } from "../../services/queries/query-get.ts";
 import { QuerySearchOneFilter } from "../../services/queries/query-search.ts";
+import { VNDCurrency } from "../../utils/functions.ts";
+import { DEFAULT_IMAGE_PRODUCT } from "../../utils/constant.ts";
+import { useNavigate } from "react-router";
+import CenteredLoader from "../../components/Common/CenteredLoader.tsx";
 
+const listCaurousel: string[] = [
+  "/slider_1.webp",
+  "/slider_2.webp",
+  "/slider_3.webp"
+];
+const listCategory: any[] = [
+  {
+    name: "Quần nữ",
+    img: "https://bizweb.dktcdn.net/thumb/large/100/462/587/products/hinh-san-pham-up-website-b71782cd-9bbb-4e82-9c5b-a1ef980bf36c.png?v=1668108227000"
+  },
+  {
+    name: "Áo nữ",
+    img: "https://bizweb.dktcdn.net/thumb/large/100/462/587/products/66c5d96c-04ab-478d-91f8-529f17a17f3e.png?v=1679418018000"
+  },
+  {
+    name: "Váy dài",
+    img: "https://bizweb.dktcdn.net/thumb/large/100/462/587/products/29-1dd6a935-d5de-4234-beee-bfbf480293f8.png?v=1717221145633"
+  }
+];
+const settings: SettingSilder = {
+  dots: false,
+  infinite: true,
+  speed: 1000,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  autoplaySpeed: 1000,
+  autoplay: true,
+  arrows: false
+};
+
+const settingCategory: SettingSilder = {
+  autoplay: true,
+  slidesToShow: 3,
+  slidesToScroll: 1,
+  centerPadding: "40px",
+  speed: 1000,
+  arrows: true
+};
+const settingProducts: SettingSilder = {
+  slidesToShow: 4,
+  centerPadding: "40px",
+  slidesToScroll: 1,
+  speed: 1000,
+  arrows: true
+};
 const Home = () => {
+  const navigate = useNavigate();
 
   const querySearchOneFilterProduct = QuerySearchOneFilter();
-
   useEffect(() => {
     querySearchOneFilterProduct.mutate({
-      field: "isFeatured",
-      operator: "EQM",
-      value: "true"
-    });
+        data: {
+          field: "isFeatured",
+          operator: "EQM",
+          value: "true"
+        },
+        url: "/product/search"
+      }
+    );
   }, []);
 
 
   if (querySearchOneFilterProduct.isPending) {
-    return <div>Loading...</div>;
+    return <CenteredLoader />;
   }
 
-  const listCarousel: string[] = [
-    "/slider_1.webp",
-    "/slider_2.webp",
-    "/slider_3.webp"
-  ];
 
-  const listCarousel1 = [
-    {
-      img: "https://bizweb.dktcdn.net/thumb/large/100/462/587/collections/2.png?v=1681111963803",
-      title: "Áo nữ 1"
-    },
-    {
-      img: "https://bizweb.dktcdn.net/thumb/large/100/462/587/collections/2.png?v=1681111963803",
-      title: "Áo nữ 2"
-    },
-    {
-      img: "https://bizweb.dktcdn.net/thumb/large/100/462/587/collections/2.png?v=1681111963803",
-      title: "Áo nữ 3"
-    }
-  ];
-
-  const listCategory: string[] = [
-    "Áo nữ",
-    "Quần nữ",
-    "Áo Nam",
-    "Quần Nam"
-  ];
-  const settings: SettingSilder = {
-    dots: false,
-    infinite: true,
-    speed: 1000,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplaySpeed: 1000,
-    autoplay: true,
-    arrows: false
-  };
-
-  const settingCategory: SettingSilder = {
-    autoplay: true,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    centerPadding: "40px",
-    speed: 1000,
-    arrows: true
-  };
-  const settingProducts: SettingSilder = {
-    // autoplay: true,
-    slidesToShow: 4,
-    centerPadding: "40px",
-
-    slidesToScroll: 1,
-    speed: 1000,
-    arrows: true
-  };
   return (
     <main className="main-content">
       <div className="main-content-slider">
         <Slider {...settings}>
           {
-            listCarousel.map((item: string, index: number) => (
+            listCaurousel.map((item: string, index: number) => (
               <div className="main-content-slider-item" key={index}>
                 <img src={`${item}`} alt="banner image home page" className="image" />
               </div>))
@@ -123,14 +121,13 @@ const Home = () => {
         <div className="content-home-category">
           <Slider {...settingCategory}>
             {
-              listCarousel1.map((item, index: number) => (
+              listCategory.map((item: any, index: number) => (
                 <div className="content-home-category-item" key={index}>
                   <div className="content-home-category-item-content">
                     <img src={item.img}
                          alt="banner image home page" className="image" />
                     <div className="name">
-                      <span>{item.title}</span>
-                      <span className="quantity-category">{randomNumber(5, 15)}</span>
+                      <span className="name">{item?.name}</span>
                     </div>
                   </div>
                 </div>))
@@ -139,14 +136,13 @@ const Home = () => {
         </div>
         <div className="content-home-heading">
           <h2 className="title">Sản Phẩm Bán Chạy</h2>
-          <span className="line">
-
-                    </span>
+          <span className="line"></span>
         </div>
         <div className="content-home-products">
           <Slider {...settingProducts}>
+
             {
-              Array.from({ length: 5 }).map((_, index: number) => (
+              querySearchOneFilterProduct?.isSuccess && querySearchOneFilterProduct.data.map((productItem, index: number) => (
                 <div className="item" key={index}>
                   <div className="content">
                     <div className="item-image">
@@ -156,7 +152,8 @@ const Home = () => {
                                             </span>
                                         </span>
                       <div className="item-image-bg">
-                                                <span className="item">
+                                                <span onClick={() => navigate(`/product/${productItem.id}`)}
+                                                      className="item">
                                                     <Settings />
                                                 </span>
                         <span className="item">
@@ -164,15 +161,20 @@ const Home = () => {
                                                 </span>
                       </div>
                       <img
-                        src="https://bizweb.dktcdn.net/thumb/large/100/462/587/products/12-4d67873d-2641-4391-8b3d-b7a3699e9728.png?v=1698485974000"
+                        src={productItem?.imageUrl ?
+                          productItem?.imageUrl :
+                          DEFAULT_IMAGE_PRODUCT
+                        }
                         alt="Product Image "
                         className="item-image-content"
                       />
                     </div>
                     <div className="item-content">
-                      <h2 className="title">Quần dài nữ Yaki Jan.</h2>
+                      <h2 className="title">{productItem.name}</h2>
                       <span className="price">
-                                                450,000đ
+                                                <span>{VNDCurrency(productItem.price)} | </span> <Rating
+                        name="read-only" value={productItem.averageRating}
+                        readOnly />
                                             </span>
                     </div>
                   </div>

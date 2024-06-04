@@ -16,8 +16,13 @@ import CategoryItemChildren from "./CategoryItemChildren.tsx";
 import { ProductCard } from "../../components/ProductCard";
 import { VNDCurrency } from "../../utils/functions.ts";
 import CenteredLoader from "../../components/Common/CenteredLoader.tsx";
-import { QueryAllProduct, QueryListCategory } from "../../services/queries/query-get.ts";
+import { QueryListCategory, QueryProductPagination } from "../../services/queries/query-get.ts";
 import { CreateCategoryMenu } from "../../config/utils.ts";
+import { useCounter, useList } from "@react-hookz/web";
+import { PopupModal } from "../../components/Common/PopupModal.tsx";
+import { toast } from "react-toastify";
+import { clsx } from "clsx";
+import { useNavigate } from "react-router";
 
 export interface IItemCategory {
   id?: number
@@ -39,18 +44,48 @@ const COLOR_FILTER = ["ALL", "Trắng", "Đen", "Hồng Nhạt", "Cam Nhạt", "
 
 function LayoutProductFilter() {
   const [priceRange, setPriceRange] = React.useState<number[]>([100_000, 1_500_000]);
+  const [sortObj, setSortObj] = React.useState({ field: "createdOn", type: "DESC" });
+  const [
+    variationCombination,
+    {
+      updateAt: updateVariationCombinationAt,
+      reset: resetVariationCombination
+    }
+  ] = useList(["ALL", "ALL"]);
+  const [page, { inc: incPage, dec: decPage, set: setPage }] = useCounter(1, 100, 1);
+
   const queryListCategory = QueryListCategory();
-  const queryAllProduct = QueryAllProduct();
+  const queryAllProduct = QueryProductPagination(page);
+
+  const navigate = useNavigate();
 
   if (queryListCategory.isLoading || queryAllProduct.isLoading) {
     return <CenteredLoader />;
   }
-  console.log(queryAllProduct?.data);
 
-  const handleChange = (_event: Event, newValue: number | number[]) => {
+  const handleChangePrice = (_event: Event, newValue: number | number[]) => {
     setPriceRange(newValue as number[]);
   };
+  const decPagePagination = () => {
+    if (page === 1) {
+      toast.info("Đây là trang đầu tiên");
+      return;
+    }
+    decPage(1);
+  };
+  const incPagePagination = () => {
+    if (page === queryAllProduct?.data.totalPages) {
+      toast.info("Đây là trang cuối cùng tiên");
+      return;
+    }
+    incPage(1);
+  };
 
+  const handleSubmitFilter = () => {
+    navigate("/filter?priceRange=" + priceRange.join(",") + "&variationCombination=" + variationCombination.join(":") + "&sortField=" + sortObj.field + "&sortType=" + sortObj.type);
+    // console.log(priceRange, sortObj);
+    // console.log(variationCombination);
+  };
   return (
     <main className="main-content">
       <div className="main-content-breadcrumb">
@@ -90,7 +125,7 @@ function LayoutProductFilter() {
                 <div className="filter-list-item-option filter-list-item-price">
                   <Slider
                     value={priceRange}
-                    onChange={handleChange}
+                    onChange={handleChangePrice}
                     valueLabelDisplay={"on"}
                     step={100_000}
                     getAriaValueText={(value: number) => `${value} VNĐ`}
@@ -101,22 +136,6 @@ function LayoutProductFilter() {
                 </div>
               </div>
               <div className="filter-list-item">
-                <h2 className="name">Màu sắc</h2>
-                <div className="filter-list-item-option">
-                  <FormControl style={{ marginTop: "0.7rem" }} fullWidth>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      defaultValue={"ALL"}
-                    >
-                      {COLOR_FILTER.map((color: string, index) => (
-                        <MenuItem key={index} value={color}>{color}</MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </div>
-              </div>
-              <div className="filter-list-item">
                 <h2 className="name">KÍCH CỠ</h2>
                 <div className="filter-list-item-option">
                   <FormControl style={{ marginTop: "0.7rem" }} fullWidth>
@@ -124,9 +143,28 @@ function LayoutProductFilter() {
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       defaultValue={"ALL"}
+                      onChange={(e) => updateVariationCombinationAt(0, e.target.value as string)}
                     >
                       {SIZE_FILTER.map((size: string, index) => (
                         <MenuItem key={index} value={size}>{size}</MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </div>
+              </div>
+
+              <div className="filter-list-item">
+                <h2 className="name">Màu sắc</h2>
+                <div className="filter-list-item-option">
+                  <FormControl style={{ marginTop: "0.7rem" }} fullWidth>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      defaultValue={"ALL"}
+                      onChange={(e) => updateVariationCombinationAt(1, e.target.value as string)}
+                    >
+                      {COLOR_FILTER.map((color: string, index) => (
+                        <MenuItem key={index} value={color}>{color}</MenuItem>
                       ))}
                     </Select>
                   </FormControl>
@@ -140,14 +178,17 @@ function LayoutProductFilter() {
                     <Select
                       labelId="sort-label"
                       id="sort-label-select"
-                      value={10}
+                      value={"createdOn"}
                       label="Sắp Xếp"
-                      // onChange={handleChange}
+                      onChange={(e) => setSortObj((prevSortObj) => ({
+                        ...prevSortObj,
+                        field: e.target.value as string
+                      }))}
                     >
-                      <MenuItem value={10}>Ngày tạo</MenuItem>
-                      <MenuItem value={20}>Ngày cập nhật</MenuItem>
-                      <MenuItem value={30}>Tên</MenuItem>
-                      <MenuItem value={40}>Giá</MenuItem>
+                      <MenuItem value={"createdOn"}>Ngày tạo</MenuItem>
+                      <MenuItem value={"lastUpdatedOn"}>Ngày cập nhật</MenuItem>
+                      <MenuItem value={"price"}>Giá</MenuItem>
+                      <MenuItem value={"availableStock"}>Tồn Kho</MenuItem>
                       <MenuItem value={50}>Đánh giá</MenuItem>
                       <MenuItem value={60}>Nổi bật</MenuItem>
                     </Select>
@@ -157,16 +198,20 @@ function LayoutProductFilter() {
                     <Select
                       labelId="sort-label"
                       id="sort-label-select"
-                      value={20}
+                      value={"DESC"}
                       label="Loại"
-                      // onChange={handleChange}
+                      onChange={(e) => setSortObj((prevSortObj) => ({
+                        ...prevSortObj,
+                        type: e.target.value as string
+                      }))}
                     >
-                      <MenuItem value={10}>Tăng dần</MenuItem>
-                      <MenuItem value={20}>Giảm dần</MenuItem>
+                      <MenuItem value={"ASC"}>Tăng dần</MenuItem>
+                      <MenuItem value={"DESC"}>Giảm dần</MenuItem>
                     </Select>
                   </FormControl>
                 </div>
-                <Button>Xoá sắp xếp</Button>
+                <Button onClick={handleSubmitFilter} style={{ marginTop: "0.8rem" }} variant={"contained"}>Tìm
+                  Kiếm</Button>
               </div>
 
             </div>
@@ -178,30 +223,26 @@ function LayoutProductFilter() {
             </div>
             <div className="list-product-filter-category">
               {
-                queryAllProduct?.data.map((productGet: any, index: number) => (
+                queryAllProduct?.data.content.map((productGet: any, index: number) => (
                   <ProductCard product={productGet} index={index} />
                 ))
               }
             </div>
             <div className="list-product-filter-pagination">
               <ul className="list-product-filter-pagination-list">
-                <li className="list-product-filter-pagination-item">
+                <li onClick={() => decPagePagination()} className="list-product-filter-pagination-item">
                   <ChevronsLeft size={16} />
                 </li>
                 {
-                  Array.from({ length: 1 }).map((_, index: number) => (
-                    <li key={index} className="list-product-filter-pagination-item active">
+                  Array.from({ length: queryAllProduct?.data.totalPages }).map((_, index: number) => (
+                    <li key={index}
+                        onClick={() => setPage(index + 1)}
+                        className={clsx("list-product-filter-pagination-item", index + 1 === page && "active")}>
                       {index + 1}
                     </li>
                   ))
                 }
-                {/*<li className="list-product-filter-pagination-item">*/}
-                {/*  ...*/}
-                {/*</li>*/}
-                {/*<li className="list-product-filter-pagination-item active">*/}
-                {/*  9*/}
-                {/*</li>*/}
-                <li className="list-product-filter-pagination-item">
+                <li onClick={() => incPagePagination()} className="list-product-filter-pagination-item">
                   <ChevronsRight size={16} />
                 </li>
               </ul>
@@ -209,7 +250,9 @@ function LayoutProductFilter() {
           </div>
         </div>
       </div>
+      <PopupModal />
     </main>
+
   );
 }
 

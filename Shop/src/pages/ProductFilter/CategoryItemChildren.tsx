@@ -39,7 +39,7 @@ const CategoryItemChildren = ({ item, itemChildren }: ICategoryItemChildren): JS
             {
               itemChildren?.map((child: IItemCategory, index: number) => (
                 <li key={index}>
-                  <Link to={`${location.pathname}?categoryId=${child.path}`}> {child.name} </Link>
+                  <Link to={`/category/${child.name}`}> {child.name} </Link>
                 </li>
               ))
             }

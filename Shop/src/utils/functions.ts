@@ -31,7 +31,6 @@ export function processProductItems(data: ProductItem[]): {
   colors: string[]
 } {
   const combinationMap: Record<string, string[]> = {};
-  console.log(data);
   data.forEach(item => {
     const [size, color] = item.variationCombination.split(":");
     if (!combinationMap[size]) {

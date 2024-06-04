@@ -85,18 +85,6 @@ export const listResourceApi = [
         },
     },
     {
-        name: "address",
-        list: "/address",
-        create: "/address/create",
-        edit: "/user/:id/edit",
-        meta: {
-            canDelete: true,
-            label: "Address Info",
-            parent: "User",
-            hide: roleCanAccess(ADMIN_INVENTORY_PERMISSION)
-        },
-    },
-    {
         name: "variation",
         list: "/variation",
         create: "/variation/create",
@@ -116,6 +104,17 @@ export const listResourceApi = [
             canDelete: true,
             label: "Variation Value",
             parent: "Product Attributes",
+            hide: roleCanAccess(ADMIN_INVENTORY_PERMISSION)
+        },
+    },
+    {
+        name: "order",
+        list: "/order",
+        create: "/order/create",
+        meta: {
+            canDelete: true,
+            label: "Order Value",
+            parent: "Order",
             hide: roleCanAccess(ADMIN_INVENTORY_PERMISSION)
         },
     },
