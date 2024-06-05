@@ -44,7 +44,7 @@ export function AddressInfo() {
         queryGetAddressByUserId.refetch().then(r => console.log(r));
       },
       onError: () => {
-        alert("Thêm địa chỉ thất bại");
+        alert("Hãy điền đầy đủ thông tin");
       }
     });
   };

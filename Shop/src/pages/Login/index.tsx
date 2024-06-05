@@ -12,13 +12,13 @@ import { IFormLogin } from "../../payloads/interface/formInput.ts";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { CommonValidation } from "../../payloads/variable/commonValidation.ts";
 import { QueryPostLogin } from "../../services/queries/query-post.ts";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useUserStore } from "../../stores/userStore.ts";
 import { jwtDecode } from "jwt-decode";
 import { PopupModal } from "../../components/Common/PopupModal.tsx";
 import { Navigate } from "react-router";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function SignIn() {
 
@@ -31,15 +31,16 @@ export default function SignIn() {
       onSuccess: (dataLoginResponse) => {
         userStore.addUserInfoAndLogin(jwtDecode(dataLoginResponse.accessToken));
         userStore.addToken(dataLoginResponse);
-      },
-      onError: (error) => {
-        toast.error(error.message);
       }
     });
   };
 
   if (userStore?.isAuthenticated) {
     return <Navigate to="/home" />;
+  }
+
+  if (queryPostLogin?.error) {
+    toast.error("Wrong Username Or Password");
   }
 
   return (
@@ -103,11 +104,11 @@ export default function SignIn() {
               </Link>
             </Grid>
           </Grid>
+          <PopupModal />
         </Box>
       </Box>
 
       <Copyright sx={{ mt: 8, mb: 4 }} />
-      <PopupModal />
     </Container>
   );
 }

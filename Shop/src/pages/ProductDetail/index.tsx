@@ -289,7 +289,9 @@ const ProductDetail = () => {
                 <span onClick={() => incMin(1)} className="btn plus"><Plus /></span>
               </div>
               <div className="add-product">
-                <button onClick={addToCart} className="add-product-btn">THÊM VÀO GIỎ HÀNG</button>
+                <button disabled={selectedProductItem && quantityView > selectedProductItem.availableStock}
+                        onClick={addToCart} className="add-product-btn">THÊM VÀO GIỎ HÀNG
+                </button>
                 <span className="add-product-wishlist">
                                     <FavoriteBorderIcon />
                                 </span>

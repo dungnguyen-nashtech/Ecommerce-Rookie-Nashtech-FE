@@ -69,3 +69,8 @@ export const postCreateRating = async (data: any) => {
   );
   return response.data;
 };
+
+export const postLogout = async (email: string) => {
+  const response = await axiosInstance.post(`/auth/logout/${email}`);
+  return response.data;
+};

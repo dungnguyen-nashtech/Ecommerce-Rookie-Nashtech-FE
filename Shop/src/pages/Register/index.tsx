@@ -32,14 +32,14 @@ export default function SignUp() {
         toast.info("Please check your email to verify your account before login.");
         setTimeout(() => {
           navigate("/sign-in");
-        }, 4000);
+        }, 2000);
       },
       onError: (error) => {
-        toast.error(error.message);
+        toast.error("Something Wrong");
       }
     });
-
   };
+
 
   if (userStore?.isAuthenticated) {
     return <Navigate to="/home" />;

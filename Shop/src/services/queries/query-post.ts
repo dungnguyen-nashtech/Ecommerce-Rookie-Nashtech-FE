@@ -6,6 +6,7 @@ import {
   postCreateOrder,
   postCreateRating,
   postLogin,
+  postLogout,
   postRegister,
   postUpdateAddressForUser
 } from "../apis/api-post.ts";
@@ -65,5 +66,12 @@ export function QueryPostCreateRating() {
   return useMutation({
     mutationKey: ["createRating"],
     mutationFn: (data: any) => postCreateRating(data)
+  });
+}
+
+export function QueryPostLogout(email: string) {
+  return useMutation({
+    mutationKey: ["logout"],
+    mutationFn: () => postLogout(email)
   });
 }

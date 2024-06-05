@@ -119,7 +119,7 @@ export const ProductList = () => {
 
     return (
         <List>
-            <DataGrid {...dataGridProps} columns={columns} autoHeight/>
+            <DataGrid pageSizeOptions={[5, 10, 25]} {...dataGridProps} columns={columns} autoHeight/>
         </List>
     );
 };

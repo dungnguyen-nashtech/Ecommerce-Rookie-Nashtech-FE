@@ -12,6 +12,7 @@ import { QueryListCategory } from "../../services/queries/query-get.ts";
 import CenteredLoader from "../Common/CenteredLoader.tsx";
 import React, { useEffect, useState } from "react";
 import { InputSearch } from "./InputSearch.tsx";
+import { QueryPostLogout } from "../../services/queries/query-post.ts";
 
 export const listHeaderItemInit: IHeaderItem[] = [
   {
@@ -84,6 +85,9 @@ function Header() {
   const cartStore = useCartStore();
   const userStore = useUserStore();
 
+  const queryPostLogout = QueryPostLogout(userStore.user.email);
+
+
   useEffect(() => {
     if (queryListCategory?.data) {
       const updatedListHeaderItem = addChildsToDanhMuc(queryListCategory.data);
@@ -92,8 +96,12 @@ function Header() {
   }, [queryListCategory?.data]);
 
   const logout = () => {
-    userStore.removeUser();
-    navigate("/home");
+    queryPostLogout.mutate(null, {
+      onSuccess: () => {
+        userStore.removeUser();
+        navigate("/home");
+      }
+    });
   };
 
   if (queryListCategory.isLoading) {
