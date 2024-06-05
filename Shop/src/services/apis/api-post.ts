@@ -62,3 +62,10 @@ export const postUpdateAddressForUser = async (data: any) => {
   );
   return response.data;
 };
+
+export const postCreateRating = async (data: any) => {
+  const response = await axiosInstance.post(`/rating`,
+    data
+  );
+  return response.data;
+};

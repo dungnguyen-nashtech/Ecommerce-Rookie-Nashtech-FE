@@ -10,3 +10,13 @@ export function QueryPostCreateProductItem() {
         }
     });
 }
+
+export function QueryPostUpdateProductItem() {
+    return useMutation({
+        mutationKey: ["updateProduct"],
+        mutationFn: async (data: any) => {
+            const response = await commonAxiosInstance.put(`http://localhost:8080/api/v1/productItem/${data.productItemId}`, data)
+            return response.data;
+        }
+    });
+}

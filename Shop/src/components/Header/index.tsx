@@ -113,7 +113,7 @@ function Header() {
                 <Phone />
               </span>
               <span className="title">
-                HOTLINE: <b>070 347 0938</b>
+                HOTLINE: <b>028 3810 6200</b>
               </span>
             </div>
             <div className="header-navbar-top-item">

@@ -20,8 +20,8 @@ export const MailVerifyCode = () => {
       if (queryPostActiveAccount.isSuccess) {
         setType(findParams.get("type"));
       }
-    } else if (findParams.get("type") == "resetPassword") {
-      setType("resetPassword");
+    } else if (findParams.get("type") == "forgotPassword") {
+      navigate(`/reset-password/${findParams.get("code")}/${findParams.get("email")}`);
     }
   }, []);
 

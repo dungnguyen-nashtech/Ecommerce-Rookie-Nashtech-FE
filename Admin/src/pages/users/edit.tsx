@@ -82,7 +82,7 @@ export const UserEdit = () => {
                             multiple
                             value={selectedRole}
                             label="Roles"
-                            {...register("roleNames")}
+                            {...register("roleNames", {required: true})}
                             onChange={(event) => setSelectedRole(event.target.value as string[])}
                         >
                             {queryListRole.data.map((role: { roleName: string }) => (

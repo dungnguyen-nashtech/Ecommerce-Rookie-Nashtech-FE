@@ -6,6 +6,7 @@ import {SubmitHandler} from "react-hook-form";
 import {useLocation} from "react-router-dom";
 import {QueryPostUploadImage} from "../products/queries";
 import {QueryPostCreateProductItem} from "./queries";
+import CenteredLoader from "../../components/CenteredLoader";
 
 export const ProductItemCreate = () => {
     const [selectedImgBase64, setSelectedImgBase64] = useState(import.meta.env.VITE_IMAGE_SHOW_WHEN_NOT_FOUND);
@@ -69,16 +70,10 @@ export const ProductItemCreate = () => {
                 },
             })
         }
-        // const submittedValue = await commonAxiosInstance.post(`/productItem`, dataSubmit)
-        // if (submittedValue.status === 200) {
-        //     if (fromProduct) {
-        //         window.location.href = `/product/show/${fromProduct}`;
-        //         return;
-        //     }
-        //     window.location.href = "/productItem";
-        // } else {
-        //     alert("Failed to submit")
-        // }
+    }
+
+    if (queryPostUploadImage?.isPending || queryPostCreateProductItem.isPending) {
+        return <CenteredLoader/>;
     }
 
     return (

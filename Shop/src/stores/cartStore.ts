@@ -19,15 +19,16 @@ export type CartStoreState = {
   totalPrice: number;
   addProductItemToCart: (productItem: {
     quantity: number;
-    productId: number;
+    productId: string;
     price: number;
-    imageUrl: string;
+    imageUrl: any;
     description: string;
-    productName: string
+    productName: any
   }) => void;
   removeProductItemFromCart: (productName: string, description: string) => void;
   incrementProductQuantity: (productName: string, description: string) => void;
   decrementProductQuantity: (productName: string, description: string) => void;
+  emptyCart: () => void;
 };
 
 const createCartSlice: StateCreator<
@@ -41,6 +42,8 @@ const createCartSlice: StateCreator<
   listCartItem: [],
   totalQuantity: 0,
   totalPrice: 0,
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
   addProductItemToCart: (productItem: CartItemInfo) => {
     set((state) => {
       const existingItem = state.listCartItem.find(
@@ -130,6 +133,13 @@ const createCartSlice: StateCreator<
         (total, item) => total + item.price * item.quantity,
         0
       );
+    });
+  },
+  emptyCart: () => {
+    set((state) => {
+      state.listCartItem = [];
+      state.totalQuantity = 0;
+      state.totalPrice = 0;
     });
   }
 });

@@ -77,3 +77,8 @@ export const getAddressByUserId = async (id: string) => {
   const response = await axiosInstance.get(`/address/user/${id}`);
   return response.data;
 };
+
+export const getOrderDetailsByUserId = async (id: string) => {
+  const response = await axiosInstance.get(`/orderDetail/user/${id}`);
+  return response.data;
+};

@@ -41,6 +41,9 @@ const Checkout = () => {
     const orderSent = {
       order, orderDetails
     };
+    
+    cartStore.emptyCart();
+
     queryPostCreateOrder.mutate(orderSent, {
       onSuccess: (data) => {
         toast.info("Đặt hàng thành công");
@@ -68,7 +71,8 @@ const Checkout = () => {
                             <h2>Thông tin mua hàng</h2>
                         </span>
             <div className="content">
-              {queryGetAddressByUserId?.data === "" && <h2>Bạn cần cập nhật địa chỉ trước khi mua hàng</h2>}
+              {queryGetAddressByUserId?.data === "" &&
+                <h2>Bạn cần cập nhật địa chỉ trước khi mua hàng <Link to={"/info"}>tại đây</Link></h2>}
               {queryGetAddressByUserId?.data !== "" && <>
                 <h2>ĐỊA CHỈ CỦA BẠN</h2>
                 Quốc gia: {queryGetAddressByUserId?.data?.country}<br /><br />
@@ -209,7 +213,7 @@ const Checkout = () => {
                                 Quay về giỏ hàng
                             </span>
                         </span>
-            <button onClick={checkout}>ĐẶT HÀNG</button>
+            {cartStore.listCartItem.length != 0 && <button onClick={checkout}>ĐẶT HÀNG</button>}
           </div>
         </Box>
       </div>

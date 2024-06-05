@@ -4,6 +4,7 @@ import {
   postCanUserComment,
   postCreateAddressForUser,
   postCreateOrder,
+  postCreateRating,
   postLogin,
   postRegister,
   postUpdateAddressForUser
@@ -57,5 +58,12 @@ export function QueryPostUpdateAddressForUser() {
   return useMutation({
     mutationKey: ["updateAddressForUser"],
     mutationFn: (data: any) => postUpdateAddressForUser(data)
+  });
+}
+
+export function QueryPostCreateRating() {
+  return useMutation({
+    mutationKey: ["createRating"],
+    mutationFn: (data: any) => postCreateRating(data)
   });
 }

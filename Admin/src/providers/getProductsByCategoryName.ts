@@ -29,6 +29,7 @@ export const getProductsByCategoryName: DataProvider = {
         };
     },
     getList: async ({meta}) => {
+        if (meta?.categoryName === "") return {data: [], total: 0};
         const response = await commonAxiosInstance.post(
             `${API_URL}/product/category`, {
                 name: meta?.categoryName

@@ -18,6 +18,8 @@ import { PrivateRoute } from "./components/Common/PrivateRoute.tsx";
 import { MailVerifyCode } from "./pages/Mail";
 import Filter from "./pages/SearchFilter";
 import Category from "./pages/SearchCategory";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 const Layout: React.FC<{ children: ReactNode; }> = ({ children }) =>
   (
@@ -66,6 +68,24 @@ const router = createBrowserRouter([
     errorElement: <NotFoundPage />
   },
   {
+    path: "/forgot-password",
+    element: (
+      <Layout>
+        <ForgotPassword />
+      </Layout>
+    ),
+    errorElement: <NotFoundPage />
+  },
+  {
+    path: "/reset-password/:code/:email",
+    element: (
+      <Layout>
+        <ResetPassword />
+      </Layout>
+    ),
+    errorElement: <NotFoundPage />
+  },
+  {
     path: "/sign-up",
     element: (
       <Layout>
@@ -98,7 +118,8 @@ const router = createBrowserRouter([
     path: "/wishlist",
     element: (
       <Layout>
-        <WishList />
+        <PrivateRoute><WishList /></PrivateRoute>
+
       </Layout>
     ),
     errorElement: <NotFoundPage />
@@ -107,7 +128,8 @@ const router = createBrowserRouter([
     path: "/info",
     element: (
       <Layout>
-        <Info />
+        <PrivateRoute><Info /></PrivateRoute>
+
       </Layout>
     ),
     errorElement: <NotFoundPage />
@@ -160,7 +182,8 @@ const router = createBrowserRouter([
   {
     path: "/checkout",
     element: (
-      <Checkout />
+      <PrivateRoute><Checkout /></PrivateRoute>
+
     ),
     errorElement: <NotFoundPage />
   },

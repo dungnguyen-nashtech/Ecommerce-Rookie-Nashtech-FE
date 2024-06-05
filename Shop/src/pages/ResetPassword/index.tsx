@@ -7,40 +7,42 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import Copyright from "./Copyright.tsx";
-import { IFormLogin } from "../../payloads/interface/formInput.ts";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { CommonValidation } from "../../payloads/variable/commonValidation.ts";
-import { QueryPostLogin } from "../../services/queries/query-post.ts";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useUserStore } from "../../stores/userStore.ts";
-import { jwtDecode } from "jwt-decode";
 import { PopupModal } from "../../components/Common/PopupModal.tsx";
-import { Navigate } from "react-router";
 import { Link } from "react-router-dom";
+import { useNavigate, useParams } from "react-router";
+import axiosInstance from "../../config/axiosInstance.ts";
 
-export default function SignIn() {
+interface IFormResetPassword {
+  password: string;
+  repeatPassword: string;
+  otp: string;
+}
 
-  const { register, handleSubmit, formState: { errors } } = useForm<IFormLogin>();
-  const queryPostLogin = QueryPostLogin();
-  const userStore = useUserStore();
+export default function ResetPassword() {
 
-  const onSubmit: SubmitHandler<IFormLogin> = (loginRequest) => {
-    queryPostLogin.mutate(loginRequest, {
-      onSuccess: (dataLoginResponse) => {
-        userStore.addUserInfoAndLogin(jwtDecode(dataLoginResponse.accessToken));
-        userStore.addToken(dataLoginResponse);
-      },
-      onError: (error) => {
-        toast.error(error.message);
-      }
+  const { code, email } = useParams();
+  const navigate = useNavigate();
+  const { register, handleSubmit } = useForm<IFormResetPassword>();
+  const onSubmit: SubmitHandler<IFormResetPassword> = async (forgotPasswordRequest) => {
+    if (forgotPasswordRequest.password !== forgotPasswordRequest.repeatPassword) {
+      alert("Password and Repeat Password must be the same");
+      return;
+    }
+
+    const response = await axiosInstance.post(`/auth/forgot-password/${email}`, {
+      password: forgotPasswordRequest.password,
+      repeatPassword: forgotPasswordRequest.repeatPassword,
+      otp: code
     });
-  };
 
-  if (userStore?.isAuthenticated) {
-    return <Navigate to="/home" />;
-  }
+    if (response?.status === 200) {
+      alert("Password has been reset");
+      navigate("/sign-in");
+    }
+  };
 
   return (
     <Container style={{ marginTop: "8rem" }} component="main" maxWidth="xs">
@@ -60,25 +62,23 @@ export default function SignIn() {
         </Typography>
         <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
           <TextField
-            {...register("email", CommonValidation)}
-            helperText={errors.email ? "Invalid Email" : ""}
+            {...register("password", CommonValidation)}
             margin="normal"
             required
             fullWidth
             id="email"
-            label="Email"
-            name="email"
-            autoComplete="email"
+            label="Password"
+            name="password"
+            type="password"
             autoFocus
           />
           <TextField
-            {...register("password", CommonValidation)}
-            helperText={errors.password ? "Invalid Password" : ""}
+            {...register("repeatPassword", CommonValidation)}
             margin="normal"
             required
             fullWidth
-            name="password"
-            label="Password"
+            name="repeatPassword"
+            label="Repeat Password"
             type="password"
             id="password"
             autoComplete="current-password"
@@ -106,7 +106,6 @@ export default function SignIn() {
         </Box>
       </Box>
 
-      <Copyright sx={{ mt: 8, mb: 4 }} />
       <PopupModal />
     </Container>
   );

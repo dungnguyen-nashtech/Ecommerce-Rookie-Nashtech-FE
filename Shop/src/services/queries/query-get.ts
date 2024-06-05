@@ -3,6 +3,7 @@ import {
   getAddressByUserId,
   getAllProduct,
   getListCategory,
+  getOrderDetailsByUserId,
   getProductByCategoryName,
   getProductItemByProductId,
   getProductItemFilterPagination,
@@ -63,6 +64,16 @@ export function QueryGetAddressByUserId(userId: string) {
     {
       queryKey: ["getAddressByUserId", userId],
       queryFn: () => getAddressByUserId(userId),
+      enabled: !!userId
+    }
+  );
+}
+
+export function QueryGetOrderDetailsByUserId(userId: string) {
+  return useQuery(
+    {
+      queryKey: ["getOrderDetailsByUserId", userId],
+      queryFn: () => getOrderDetailsByUserId(userId),
       enabled: !!userId
     }
   );

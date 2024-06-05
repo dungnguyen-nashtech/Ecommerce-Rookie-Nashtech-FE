@@ -1,14 +1,9 @@
 import {TOKEN_ROLE} from "./authProviders";
 
-const roleCanAccess = (roles: string[]) => {
-    const role = localStorage.getItem(TOKEN_ROLE) || "USER";
-    return roles.includes(role);
+const inventoryManagerCanNotAccess = () => {
+    const roles = localStorage.getItem(TOKEN_ROLE) || "USER";
+    return roles.includes("INVENTORY_MANAGER");
 }
-
-const ADMIN_INVENTORY_PERMISSION: string[] = ["ADMIN, INVENTORY_MANAGER"];
-const INVENTORY_PERMISSION = ["INVENTORY_MANAGER"];
-const NO_ACCESS = [""]
-
 
 export const listResourceApi = [
     {
@@ -21,7 +16,6 @@ export const listResourceApi = [
             label: "Parent Category",
             canDelete: true,
             parent: "Product Attributes",
-            hide: roleCanAccess(ADMIN_INVENTORY_PERMISSION)
         },
     },
     {
@@ -34,7 +28,6 @@ export const listResourceApi = [
             label: "Category",
             canDelete: true,
             parent: "Product Attributes",
-            hide: roleCanAccess(ADMIN_INVENTORY_PERMISSION)
         },
     },
     {
@@ -44,7 +37,6 @@ export const listResourceApi = [
             label: "Category - Product",
             canDelete: true,
             parent: "Product Attributes",
-            hide: roleCanAccess(ADMIN_INVENTORY_PERMISSION)
         },
     },
     {
@@ -57,7 +49,6 @@ export const listResourceApi = [
             canDelete: true,
             label: "Product",
             parent: "Products",
-            hide: roleCanAccess(ADMIN_INVENTORY_PERMISSION)
         },
     },
     {
@@ -69,7 +60,6 @@ export const listResourceApi = [
             canDelete: true,
             label: "Product Item",
             parent: "Products",
-            hide: roleCanAccess(ADMIN_INVENTORY_PERMISSION)
         },
     },
     {
@@ -81,7 +71,7 @@ export const listResourceApi = [
             canDelete: true,
             label: "User Info",
             parent: "User",
-            hide: roleCanAccess(ADMIN_INVENTORY_PERMISSION)
+            hide: inventoryManagerCanNotAccess()
         },
     },
     {
@@ -93,7 +83,6 @@ export const listResourceApi = [
             canDelete: true,
             label: "Variation",
             parent: "Product Attributes",
-            hide: roleCanAccess(ADMIN_INVENTORY_PERMISSION)
         },
     },
     {
@@ -104,7 +93,6 @@ export const listResourceApi = [
             canDelete: true,
             label: "Variation Value",
             parent: "Product Attributes",
-            hide: roleCanAccess(ADMIN_INVENTORY_PERMISSION)
         },
     },
     {
@@ -115,7 +103,7 @@ export const listResourceApi = [
             canDelete: true,
             label: "Order",
             parent: "Order",
-            hide: roleCanAccess(ADMIN_INVENTORY_PERMISSION)
+            hide: inventoryManagerCanNotAccess()
         },
     },
     {
@@ -125,7 +113,7 @@ export const listResourceApi = [
             canDelete: true,
             label: "Order Detail",
             parent: "Order",
-            hide: roleCanAccess(ADMIN_INVENTORY_PERMISSION)
+            hide: inventoryManagerCanNotAccess()
         },
     },
 ];

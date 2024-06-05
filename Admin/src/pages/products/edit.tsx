@@ -1,20 +1,10 @@
-import {
-    Box,
-    Button,
-    FormControl,
-    Input,
-    InputLabel,
-    MenuItem,
-    Select,
-    Stack,
-    TextField,
-    Typography
-} from "@mui/material";
-import {DateField, Edit} from "@refinedev/mui";
+import {Button, FormControl, Input, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import {useForm} from "@refinedev/react-hook-form";
 import React, {useState} from "react";
 import {useList} from "@refinedev/core";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import {SubmitHandler} from "react-hook-form";
+import {QueryPostUpdateProduct, QueryPostUploadImage} from "./queries";
 
 export const ProductEdit = () => {
     const [featured, setFeatured] = useState('');
@@ -23,11 +13,13 @@ export const ProductEdit = () => {
     const [selectedImgBase64, setSelectedImgBase64] = useState<any>(null);
     const [selectedImgFile, setSelectedImgFile] = useState<FormData | null>(null);
 
+    const queryPostUpdateProduct = QueryPostUpdateProduct()
+    const queryPostUploadImage = QueryPostUploadImage()
+
 
     const {
-        saveButtonProps,
         refineCore: {queryResult, formLoading}, // queryResult?.data?.data
-        register,
+        register, handleSubmit
     } = useForm({});
 
     const data = queryResult?.data?.data;
@@ -65,126 +57,145 @@ export const ProductEdit = () => {
         }
     }
 
-    if (formLoading || isLoading) {
+    const onSubmit: SubmitHandler<any> = async (dataSubmit) => {
+        dataSubmit.productId = data?.id;
+        dataSubmit.averageRating = 0;
+        dataSubmit.isFeatured = featured;
+        dataSubmit.imageUrl = data?.imageUrl;
+
+        if (dataSubmit.categoryIds === "") {
+            dataSubmit.categoryIds = []
+        }
+
+        if (selectedImgFile != null) {
+            queryPostUploadImage.mutate(selectedImgFile, {
+                onSettled: (data) => {
+                    dataSubmit.imageUrl = data.data?.url
+                    queryPostUpdateProduct.mutate(dataSubmit, {
+                        onSettled: () => {
+                            window.location.href = "/product";
+                        },
+                        onError: () => {
+                            alert("Failed to submit")
+                        },
+                    })
+                },
+            })
+        } else {
+            queryPostUpdateProduct.mutate(dataSubmit, {
+                onSettled: () => {
+                    window.location.href = "/product";
+                },
+                onError: () => {
+                    alert("Failed to submit")
+                }
+            })
+        }
+    }
+
+    if (formLoading || isLoading || queryPostUploadImage.isPending || queryPostUpdateProduct.isPending) {
         return <div>Loading...</div>;
     }
 
     return (
         <>
-            <Edit isLoading={formLoading} saveButtonProps={saveButtonProps}>
-                <Box
-                    component="form"
-                    sx={{display: "flex", flexDirection: "column"}}
-                    autoComplete="off"
+            <form onSubmit={handleSubmit(onSubmit)}
+                  style={{display: "flex", flexDirection: "column"}}>
+                <TextField
+                    {...register("name")}
+                    margin="normal"
+                    fullWidth
+                    InputLabelProps={{shrink: true}}
+                    type="text"
+                    label={"Name"}
+                    name="name"
+                />
+                <TextField
+                    {...register("description")}
+                    margin="normal"
+                    fullWidth
+                    InputLabelProps={{shrink: true}}
+                    multiline
+                    label={"Description"}
+                    name="description"
+                    rows={4}
+                />
+                <Button
+                    component="label"
+                    role={undefined}
+                    variant="contained"
+                    tabIndex={-1}
+                    startIcon={<CloudUploadIcon/>}
+                    style={{"margin": "10px 0 10px 0"}}
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    onChange={handleFileChange}
                 >
-                    <TextField
-                        {...register("name")}
-                        margin="normal"
-                        fullWidth
-                        InputLabelProps={{shrink: true}}
-                        type="text"
-                        label={"Name"}
-                        name="name"
-                    />
-                    <TextField
-                        {...register("description")}
-                        margin="normal"
-                        fullWidth
-                        InputLabelProps={{shrink: true}}
-                        multiline
-                        label={"Description"}
-                        name="description"
-                        rows={4}
-                    />
-                    <Button
-                        component="label"
-                        role={undefined}
-                        variant="contained"
-                        tabIndex={-1}
-                        startIcon={<CloudUploadIcon/>}
-                        style={{"margin": "10px 0 10px 0"}}
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-ignore
-                        onChange={handleFileChange}
+                    <Input fullWidth={true} type="file"/>
+                </Button>
+                <br/>
+                <img
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    src={!selectedImgBase64 ? data?.imageUrl : selectedImgBase64}
+                    alt={"Uploaded file"}
+                    style={{maxWidth: '20%', height: 'auto'}}/>
+                <TextField
+                    {...register("price")}
+                    margin="normal"
+                    fullWidth
+                    InputLabelProps={{shrink: true}}
+                    type="text"
+                    label={"Display Price"}
+                    name="price"
+                />
+                <FormControl style={{marginTop: "25px"}} fullWidth>
+                    <InputLabel id="featured-select-label">Featured</InputLabel>
+                    <Select
+                        labelId="featured-select-label"
+                        id="featured"
+                        value={featured == '' ? data?.isFeatured : featured}
+                        label="Featured"
+                        {...register("isFeatured")}
+                        onChange={(event) => setFeatured(event.target.value as string)}
                     >
-                        <Input fullWidth={true} type="file"/>
-                    </Button>
-                    <img
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-ignore
-                        src={!selectedImgBase64 ? queryResult?.data?.data?.imageUrl : selectedImgBase64}
-                        alt={"Uploaded file"}
-                        style={{maxWidth: '20%', height: 'auto'}}/>
+                        <MenuItem value={"true"}>True</MenuItem>
+                        <MenuItem value={"false"}>False</MenuItem>
+                    </Select>
+                </FormControl>
+                <FormControl style={{marginTop: "12px"}} fullWidth>
+                    <InputLabel id="category-select-label">Category</InputLabel>
+                    <Select
+                        labelId="category-select-label"
+                        id="category"
+                        multiple
+                        value={selectedCategory}
+                        label="Category"
+                        {...register("categoryIds")}
+                        onChange={(event) => setSelectedCategory(event.target.value as string[])}
+                    >
+                        {allCategories?.data.map((category) => (
+                            <MenuItem key={category.id} value={category.id}>
+                                {category.name}
+                            </MenuItem>
+                        ))}
+                    </Select>
                     <TextField
-                        {...register("price")}
                         margin="normal"
                         fullWidth
                         InputLabelProps={{shrink: true}}
                         type="text"
-                        label={"Price"}
-                        name="price"
+                        label={"Current Categories"}
+                        disabled={true}
+                        value={listCurrentCategories()}
                     />
-                    <FormControl style={{marginTop: "25px"}} fullWidth>
-                        <InputLabel id="featured-select-label">Featured</InputLabel>
-                        <Select
-                            labelId="featured-select-label"
-                            id="featured"
-                            value={featured == '' ? data?.isFeatured : featured}
-                            label="Featured"
-                            {...register("isFeatured")}
-                            onChange={(event) => setFeatured(event.target.value as string)}
-                        >
-                            <MenuItem value={"true"}>True</MenuItem>
-                            <MenuItem value={"false"}>False</MenuItem>
-                        </Select>
-                    </FormControl>
-                    <FormControl style={{marginTop: "12px"}} fullWidth>
-                        <InputLabel id="category-select-label">Category</InputLabel>
-                        <Select
-                            labelId="category-select-label"
-                            id="category"
-                            multiple
-                            value={selectedCategory}
-                            label="Category"
-                            {...register("categoryIds")}
-                            onChange={(event) => setSelectedCategory(event.target.value as string[])}
-                        >
-                            {allCategories?.data.map((category) => (
-                                <MenuItem key={category.id} value={category.id}>
-                                    {category.name}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                        <TextField
-                            margin="normal"
-                            fullWidth
-                            InputLabelProps={{shrink: true}}
-                            type="text"
-                            label={"Current Categories"}
-                            disabled={true}
-                            value={listCurrentCategories()}
-                        />
-                    </FormControl>
-                </Box>
-            </Edit>
+
+                </FormControl>
+                <br/>
+                <br/>
+                <Button type={"submit"}>Submit</Button>
+            </form>
             <br/>
-            <Stack gap={1}>
-                <Typography variant="body1" fontWeight="bold">
-                    {"ID"} : {data?.id}
-                </Typography>
-                <Typography variant="body1" fontWeight="bold">
-                    {"Created On"}
-                </Typography>
-                <DateField
-                    format={"DD:MM:YYYY HH:mm hh:mm:ss A"}
-                    value={data?.createdOn}/>
-                <Typography variant="body1" fontWeight="bold">
-                    {"Last Updated On"}
-                </Typography>
-                <DateField
-                    format={"DD:MM:YYYY HH:mm hh:mm:ss A"}
-                    value={data?.lastUpdatedOn}/>
-            </Stack>
         </>
     );
 };

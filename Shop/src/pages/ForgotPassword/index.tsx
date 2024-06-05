@@ -12,38 +12,24 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { CommonValidation } from "../../payloads/variable/commonValidation.ts";
 import { QueryPostRegister } from "../../services/queries/query-post.ts";
 import "react-toastify/dist/ReactToastify.css";
-import { useUserStore } from "../../stores/userStore.ts";
-import { Navigate, useNavigate } from "react-router";
-import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
 import { PopupModal } from "../../components/Common/PopupModal.tsx";
 import { Link } from "react-router-dom";
+import axiosInstance from "../../config/axiosInstance.ts";
 
 
-export default function SignUp() {
+export default function ForgotPassword() {
 
-  const { register, handleSubmit, formState: { errors } } = useForm<IFormRegister>();
+  const { register, handleSubmit, formState: { errors } } = useForm<{ email: string }>();
   const navigate = useNavigate();
   const queryPostRegister = QueryPostRegister();
-  const userStore = useUserStore();
 
-  const onSubmit: SubmitHandler<IFormRegister> = (registerRequest) => {
-    queryPostRegister.mutate(registerRequest, {
-      onSuccess: () => {
-        toast.info("Please check your email to verify your account before login.");
-        setTimeout(() => {
-          navigate("/sign-in");
-        }, 4000);
-      },
-      onError: (error) => {
-        toast.error(error.message);
-      }
-    });
-
+  const onSubmit: SubmitHandler<IFormRegister> = async (registerRequest) => {
+    const response = await axiosInstance.post(`mail/send-forgot-password/${registerRequest.email}`);
+    if (response?.status === 200) {
+      console.log(response);
+    }
   };
-
-  if (userStore?.isAuthenticated) {
-    return <Navigate to="/home" />;
-  }
 
   return (
     <Container style={{ marginTop: "8rem", marginBottom: "5rem" }} component="main" maxWidth="xs">
@@ -59,7 +45,7 @@ export default function SignUp() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign up
+          Forgot Password
         </Typography>
         <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
           <TextField
@@ -73,47 +59,13 @@ export default function SignUp() {
             name="email"
             autoFocus
           />
-          <TextField
-            {...register("password", CommonValidation)}
-            helperText={errors.password ? "Invalid Password" : ""}
-            margin="normal"
-            required
-            fullWidth
-            label="Password"
-            type="password"
-          />
-          <TextField
-            {...register("confirmPassword", CommonValidation)}
-            helperText={errors.password ? "Invalid Confirm Password" : ""}
-            margin="normal"
-            required
-            fullWidth
-            label="Confirm Password"
-            type="password"
-          />
-          <TextField
-            {...register("firstName", CommonValidation)}
-            helperText={errors.password ? "Invalid First Name" : ""}
-            margin="normal"
-            required
-            fullWidth
-            label="First Name"
-          />
-          <TextField
-            {...register("lastName", CommonValidation)}
-            helperText={errors.password ? "Invalid Last Name" : ""}
-            margin="normal"
-            required
-            fullWidth
-            label="Last Name"
-          />
           <Button
             type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Sign Up
+            Send Verification Code To My Email
           </Button>
           <Grid container>
             <Grid item xs>

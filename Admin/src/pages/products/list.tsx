@@ -102,7 +102,9 @@ export const ProductList = () => {
                 sortable: false,
                 renderCell: ({row}) => (
                     <>
-                        <EditButton hideText recordItemId={row.id}/>
+                        <EditButton onClick={() => {
+                            window.location.href = `${window.location.origin}/product/${row.id}/edit`
+                        }} hideText/>
                         <ShowButton hideText recordItemId={row.id}/>
                         <DeleteButton hideText recordItemId={row.id}/>
                     </>

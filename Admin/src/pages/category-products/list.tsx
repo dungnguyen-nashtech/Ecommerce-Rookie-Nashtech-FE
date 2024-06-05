@@ -116,7 +116,9 @@ export const CategoryProductList = () => {
     } = useForm({});
 
     const onSubmit: SubmitHandler<any> = async (dataSubmit) => {
-        setCategorySearchName(dataSubmit.categoryName);
+        if (dataSubmit.categoryName !== "" || dataSubmit.categoryName !== null) {
+            setCategorySearchName(dataSubmit.categoryName);
+        }
     }
 
     return (

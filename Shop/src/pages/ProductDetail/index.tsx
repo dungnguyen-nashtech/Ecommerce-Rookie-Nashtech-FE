@@ -19,11 +19,12 @@ import { processProductItems, VNDCurrency } from "../../utils/functions.ts";
 import { useCounter } from "@react-hookz/web";
 import { useCartStore } from "../../stores/cartStore.ts";
 import { QuerySearchOneFilter } from "../../services/queries/query-search.ts";
-import { QueryCanUserComment } from "../../services/queries/query-post.ts";
+import { QueryCanUserComment, QueryPostCreateRating } from "../../services/queries/query-post.ts";
 import { useUserStore } from "../../stores/userStore.ts";
 import Avatar from "@mui/material/Avatar";
 import { Clear } from "@mui/icons-material";
 import { QueryDeleteRating } from "../../services/queries/query-delete.ts";
+import { useInput } from "../../utils/useInput.ts";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -43,16 +44,15 @@ const breadcrumbs = [
         </span>
 ];
 
-const listImagesView: string[] = [
-  "/view1.webp",
-  "/view2.webp",
-  "/view3.webp",
-  "/view4.webp"
-];
-
 const getProductByVariation = (products: any[], variationCombination: string) => {
   return products.find(product => product.variationCombination === variationCombination);
 };
+
+function extractImageUrls(product: any, productItem: any): string[] {
+  const listImagesView: string[] = productItem.map((variation: { imageUrl: string; }) => variation.imageUrl);
+  listImagesView.push(product.imageUrl);
+  return listImagesView;
+}
 
 const ProductDetail = () => {
   const [quantityView, { inc: incMin, dec: decMin }] = useCounter(1, 100, 1);
@@ -62,6 +62,7 @@ const ProductDetail = () => {
   const [tab, setTab] = React.useState(0);
   const [valueStar, setValueStar] = React.useState<number | null>(0);
   const [imageView, setImageView] = React.useState<number>(0);
+  const userReviewText = useInput("");
 
   const [productInfo, setProductInfo] = React.useState<any>({});
   const [selectedProductItem, setSelectedProductItem] = React.useState(null);
@@ -75,6 +76,9 @@ const ProductDetail = () => {
   const queryGetProductById = QuerySearchOneFilter();
   const queryCanUserComment = QueryCanUserComment();
   const queryDeleteRating = QueryDeleteRating();
+  const queryPostCreateRating = QueryPostCreateRating();
+
+  const listImagesView = useRef([]);
 
   useEffect(() => {
     queryGetProductById.mutate({
@@ -110,7 +114,7 @@ const ProductDetail = () => {
     return <div>Loading...</div>;
   }
   productItemFilter.current = processProductItems(queryProductItemByProductId?.data);
-
+  listImagesView.current = extractImageUrls(productInfo, queryProductItemByProductId?.data);
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTab(newValue);
   };
@@ -128,14 +132,14 @@ const ProductDetail = () => {
       productId: productId,
       productName: productInfo?.name,
       quantity: quantityView,
-      price: 123,
+      price: selectedProductItem.price,
       description: sizeView + ":" + colorView,
-      imageUrl: productInfo.imageUrl
+      imageUrl: selectedProductItem.imageUrl
     });
   };
 
   const availableColors = sizeView != "" ? productItemFilter.current.combinationMap[sizeView] : [];
-  console.log(productInfo);
+  console.log(productInfo, queryProductItemByProductId?.data, queryCanUserComment);
   const deleteRating = (ratingId: string) => {
     const confirmed = window.confirm("Are you sure you want to delete this rating?");
     if (confirmed) {
@@ -145,6 +149,23 @@ const ProductDetail = () => {
         }
       });
     }
+  };
+  console.log(queryCanUserComment?.data);
+  const addRating = () => {
+    const ratingSubmit = {
+      orderDetailId: queryCanUserComment?.data,
+      userId: userStore.user.id,
+      userName: userStore.user.firstName + " " + userStore.user.lastName,
+      productId: productInfo.id,
+      ratingValue: valueStar,
+      reviewValue: userReviewText.value
+    };
+
+    queryPostCreateRating.mutate(ratingSubmit, {
+      onSuccess: () => {
+        window.location.reload();
+      }
+    });
   };
 
   return (
@@ -167,28 +188,28 @@ const ProductDetail = () => {
                             <span
                               className="icon pre"
                               onClick={() => {
-                                setImageView((pre) => pre === 0 ? listImagesView.length - 1 : pre - 1);
+                                setImageView((pre) => pre === 0 ? listImagesView.current.length - 1 : pre - 1);
                               }}
                             >
                                 <ChevronLeft size={32} />
                             </span>
               <span
                 className="icon next"
-                onClick={() => setImageView((pre) => pre === listImagesView.length - 1 ? 0 : pre + 1)}
+                onClick={() => setImageView((pre) => pre === listImagesView.current.length - 1 ? 0 : pre + 1)}
               >
                                 <ChevronRight size={32} />
                             </span>
               <div
                 className="view-main-image"
                 style={{
-                  backgroundImage: `url(${listImagesView[imageView]})`
+                  backgroundImage: `url(${listImagesView.current[imageView]})`
                 }}
 
               />
             </div>
             <div className="view-subs">
               {
-                listImagesView.map((item: string, index: number) => (
+                listImagesView?.current.map((item: string, index: number) => (
                   <div
                     key={index}
                     className={`view-subs-item ${index === imageView && "active"}`}
@@ -222,7 +243,7 @@ const ProductDetail = () => {
             }
                         </span>
             <span className="main-content-product-info-star">
-                            <Rating name="read-only" value={4} readOnly />
+                            <Rating name="read-only" value={productInfo.averageRating} readOnly />
                             <span className="sub-title">{productInfo.averageRating}</span>
                         </span>
             <span className="main-content-product-info-price">
@@ -350,7 +371,7 @@ const ProductDetail = () => {
                         <Avatar alt="Remy Sharp" />
                       </div>
                       <div className="review-content-feedback">
-                        <h2 className="name">Nguyễn Văn A</h2>
+                        <h2 className="name">{ratingOfProduct.userName}</h2>
                         <Rating name="read-only" value={ratingOfProduct.ratingValue} readOnly />
                         <p className="feedback">
                           {ratingOfProduct.reviewValue}
@@ -381,9 +402,9 @@ const ProductDetail = () => {
                       />
                     </div>
                     <div className="feedback">
-                      <input type="text"
+                      <input {...userReviewText} type="text"
                              placeholder="Nhập bình luận tại đây" />
-                      <Send className="icon" />
+                      <Send onClick={addRating} className="icon" />
                     </div>
                   </>
                 }
