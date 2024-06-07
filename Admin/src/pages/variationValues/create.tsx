@@ -18,7 +18,7 @@ export const VariationValueCreate = () => {
     if (queryAllVariation.isLoading) {
         return <div>Loading...</div>;
     }
-    
+
     const onSubmit: SubmitHandler<any> = async (dataSubmit) => {
         const submittedValue = await commonAxiosInstance.post(`/variationValue/${selectVariation}`,
             dataSubmit.name,
@@ -29,7 +29,7 @@ export const VariationValueCreate = () => {
             }
         )
 
-        if (submittedValue.status === 200) {
+        if (submittedValue.status < 300) {
             window.location.href = "/variationValue";
         } else {
             alert("Failed to submit")

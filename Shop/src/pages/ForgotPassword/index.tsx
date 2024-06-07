@@ -27,7 +27,7 @@ export default function ForgotPassword() {
   const onSubmit: SubmitHandler<IFormRegister> = async (registerRequest) => {
     const response = await axiosInstance.post(`mail/send-forgot-password/${registerRequest.email}`);
     if (response?.status === 200) {
-      console.log(response);
+      alert("Please check your email to get the verification code");
     }
   };
 

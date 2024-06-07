@@ -25,7 +25,7 @@ export const UserCreate = () => {
     const onSubmit: SubmitHandler<any> = async (dataSubmit) => {
         dataSubmit.enabled = enabled;
         const submittedValue = await commonAxiosInstance.post(`http://localhost:8080/api/v1/user`, dataSubmit)
-        if (submittedValue.status === 200) {
+        if (submittedValue.status < 300) {
             window.location.href = "/user";
         } else {
             alert("Failed to submit")

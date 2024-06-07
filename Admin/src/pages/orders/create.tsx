@@ -69,16 +69,6 @@ export const ProductItemCreate = () => {
                 },
             })
         }
-        // const submittedValue = await commonAxiosInstance.post(`/productItem`, dataSubmit)
-        // if (submittedValue.status === 200) {
-        //     if (fromProduct) {
-        //         window.location.href = `/product/show/${fromProduct}`;
-        //         return;
-        //     }
-        //     window.location.href = "/productItem";
-        // } else {
-        //     alert("Failed to submit")
-        // }
     }
 
     return (

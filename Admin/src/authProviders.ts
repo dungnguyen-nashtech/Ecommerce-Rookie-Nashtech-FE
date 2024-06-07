@@ -36,6 +36,8 @@ export const authProviders: AuthProvider = {
                     };
                 }
                 localStorage.setItem(TOKEN_KEY, accessToken);
+                window.location.reload();
+                
                 return {
                     success: true,
                     redirectTo: "/productItem",

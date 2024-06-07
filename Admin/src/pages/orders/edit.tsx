@@ -42,7 +42,7 @@ export const ProductItemEdit = () => {
             dataSubmit.imageUrl = selectedImgUrl;
         }
         const submittedValue = await commonAxiosInstance.put(`/productItem/${data?.id}`, dataSubmit)
-        if (submittedValue.status === 200) {
+        if (submittedValue.status < 300) {
             if (fromProduct) {
                 window.location.href = `/product/show/${fromProduct}`;
                 return;

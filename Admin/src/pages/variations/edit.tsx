@@ -22,7 +22,7 @@ export const VariationEdit = () => {
             }
         )
 
-        if (submittedValue.status === 200) {
+        if (submittedValue.status < 300) {
             window.location.href = "/variation";
         } else {
             alert("Failed to submit")

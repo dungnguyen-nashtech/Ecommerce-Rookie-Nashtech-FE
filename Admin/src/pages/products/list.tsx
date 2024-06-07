@@ -69,14 +69,14 @@ export const ProductList = () => {
                 filterOperators: commonFilterOperators,
             },
             {
-                field: "isFeatured",
+                field: "featured",
                 flex: 1,
                 headerName: "Featured",
                 minWidth: 50,
                 maxWidth: 70,
                 align: "center",
                 filterOperators: commonFilterOperators,
-                renderCell: ({row}) => (<>{row?.isFeatured ? "✔️" : "❌"}</>),
+                renderCell: ({row}) => (<>{row?.featured ? "✔️" : "❌"}</>),
             },
             {
                 field: "createdOn",
