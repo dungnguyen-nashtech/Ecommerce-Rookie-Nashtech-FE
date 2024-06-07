@@ -1,6 +1,7 @@
 @import '../abstracts/container';
 @import '../abstracts/style';
 @import '../abstracts/variable';
+@import '../components/button';
 
 .main-content-heading-cart {
   @include colSpan(12);
@@ -18,11 +19,23 @@
 
   &-products {
     @include colSpan(9);
+    @include mobile() {
+      @include colSpan(12);
+    }
     margin-top: 30px;
   }
 
   &-discounts {
     @include colSpan(3);
+    @include mobile() {
+      @include colSpan(12);
+      margin: 0 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      margin-bottom: 30px;
+    }
 
     .box {
       margin-top: 30px;
@@ -32,6 +45,11 @@
       border-radius: 10px;
       border: 1px dashed black;
       background-color: white;
+      @include mobile() {
+        width: auto;
+        gap: 20px;
+
+      }
 
       .heading {
         display: flex;
@@ -40,6 +58,10 @@
 
         b {
           font-weight: bold;
+        }
+
+        @include mobile() {
+          gap: 20px;
         }
       }
 
@@ -62,7 +84,7 @@
 
 .quantity-product {
   border: 1px solid black;
-  display: inline-block;
+  display: inline-flex;
   border-radius: 50px;
 
   input {
@@ -104,6 +126,12 @@
   .remove {
     transition: all 0.3s linear;
     cursor: pointer;
+    padding: 2px 10px;
+    background-color: $primary;
+    color: white;
+    border-radius: 3px;
+    margin-top: 10px;
+    display: inline-block;
 
     &:hover {
       color: $primary;
@@ -118,6 +146,22 @@
   align-items: center;
   justify-content: space-between;
   margin: 30px 0;
+  flex-direction: column;
+  gap: 30px;
+  @include mobile() {
+    margin: 30px 20px;
+  }
+
+  .delete-all {
+    display: block;
+    border-radius: 5px;
+    background-color: $primary;
+    color: white;
+    width: 100%;
+    margin: 0 20px;
+    @include flexCenter();
+    @include btn($primary, white, $primary, white);
+  }
 
   .product-total-buy {
     width: 300px;

@@ -10,6 +10,10 @@
     @include colSpan(8);
     padding: 30px;
     gap: 20px;
+    @include mobile() {
+      order: 2;
+      @include colSpan(12);
+    }
 
     .checkout-container-content {
       @include gridColumn(2);
@@ -22,11 +26,25 @@
         img {
           height: 100%;
         }
+
+        @include mobile() {
+          position: fixed;
+          top: 0;
+          right: 0;
+          left: 0;
+          background-color: white;
+          padding: 20px;
+          z-index: 30;
+
+        }
       }
 
       &-info {
         @include colSpan(1);
         padding: 10px;
+        @include mobile() {
+          @include colSpan(2);
+        }
 
         .heading {
           font-weight: 600;
@@ -53,6 +71,9 @@
 
       &-shipping {
         @include colSpan(1);
+        @include mobile() {
+          @include colSpan(2);
+        }
         padding: 20px;
         margin-top: 40px;
 
@@ -72,6 +93,11 @@
   .checkout-container-order {
     @include colSpan(4);
     background-color: rgb(243, 243, 243);
+    @include mobile() {
+      order: 1;
+      @include colSpan(12);
+      margin-top: 130px;
+    }
 
     &-list {
       display: flex;
@@ -146,12 +172,51 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+    @include mobile() {
+      display: none;
+    }
 
     .item {
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-size: 18px;
+
+      .price {
+        color: $primary;
+        font-weight: 600;
+        font-size: 20px;
+      }
+
+      .return {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: $primary;
+      }
+
+      button {
+        @include btn();
+      }
+
+    }
+  }
+
+  .checkout-container-order-total-mobile {
+    @include desktop() {
+      display: none;
+    }
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .item {
+      display: flex;
+      justify-content: space-between;
+      font-size: 18px;
+      flex-direction: column;
+      gap: 20px;
 
       .price {
         color: $primary;

@@ -11,7 +11,7 @@ import {
   Select,
   Slider
 } from "@mui/material";
-import { ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
+import { ChevronRight, ChevronsLeft, ChevronsRight, Filter, X } from "lucide-react";
 import CategoryItemChildren from "./CategoryItemChildren.tsx";
 import { ProductCard } from "../../components/ProductCard";
 import { VNDCurrency } from "../../utils/functions.ts";
@@ -43,6 +43,8 @@ const SIZE_FILTER = ["ALL", "XS", "S", "M", "L", "XL"];
 const COLOR_FILTER = ["ALL", "Trắng", "Đen", "Hồng Nhạt", "Cam Nhạt", "Da Đậm", "Nâu", "Xanh Lá", "Tím Nhạt", "Xám", "Đỏ"];
 
 function LayoutProductFilter() {
+  const [openFilterMobile, setOpenFilterMobile] = React.useState<boolean>(false);
+
   const [priceRange, setPriceRange] = React.useState<number[]>([100_000, 1_500_000]);
   const [sortObj, setSortObj] = React.useState({ field: "createdOn", type: "DESC" });
   const [
@@ -100,7 +102,18 @@ function LayoutProductFilter() {
       </div>
       <div className="main-content-container">
         <div className="main-content-product-filter">
-          <div className="filter-product-left">
+          <div
+            className="main-content-filter-mobile"
+            onClick={() => setOpenFilterMobile(r => !r)}
+          >
+            <Filter />
+          </div>
+          <div className={`filter-product-left ${openFilterMobile ? "active" : ""}`}>
+            <div className="filter-close-mobile">
+              <span onClick={() => setOpenFilterMobile(r => !r)}>
+                <X />
+              </span>
+            </div>
             <div className="filter-product-left-category">
               <h2 className="title">DANH MỤC SẢN PHẨM</h2>
               <ul className="category-list">
@@ -178,7 +191,7 @@ function LayoutProductFilter() {
                     <Select
                       labelId="sort-label"
                       id="sort-label-select"
-                      value={"createdOn"}
+                      value={sortObj.field}
                       label="Sắp Xếp"
                       onChange={(e) => setSortObj((prevSortObj) => ({
                         ...prevSortObj,
@@ -198,7 +211,7 @@ function LayoutProductFilter() {
                     <Select
                       labelId="sort-label"
                       id="sort-label-select"
-                      value={"DESC"}
+                      value={sortObj.type}
                       label="Loại"
                       onChange={(e) => setSortObj((prevSortObj) => ({
                         ...prevSortObj,

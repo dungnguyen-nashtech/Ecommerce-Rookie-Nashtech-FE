@@ -1,4 +1,4 @@
-import { ChevronDown, Heart, MapPin, Phone, ShoppingCart, User } from "lucide-react";
+import { ChevronDown, Heart, MapPin, Menu, Phone, Search, ShoppingCart, User, X } from "lucide-react";
 
 import { IHeaderItem } from "../../interface";
 import LoginIcon from "@mui/icons-material/Login";
@@ -13,6 +13,9 @@ import CenteredLoader from "../Common/CenteredLoader.tsx";
 import React, { useEffect, useState } from "react";
 import { InputSearch } from "./InputSearch.tsx";
 import { QueryPostLogout } from "../../services/queries/query-post.ts";
+import CategoryItemChildren from "../../pages/ProductFilter/CategoryItemChildren.tsx";
+import { IItemCategory } from "../../pages/ProductFilter";
+import { InputSearchMobile } from "./InputSearchMobile.tsx";
 
 export const listHeaderItemInit: IHeaderItem[] = [
   {
@@ -78,6 +81,9 @@ function addChildsToDanhMuc(products: any[]): any[] {
 
 function Header() {
 
+  const [openNavbarMobile, setOpenNavbarMobile] = React.useState<boolean>(false);
+  const [openSearchMobile, setOpenSearchMobile] = React.useState<boolean>(false);
+
   const queryListCategory = QueryListCategory();
   const [listHeaderItem, setListHeaderItem] = useState([]);
 
@@ -111,6 +117,41 @@ function Header() {
   return (
     <header className="header">
       <div className="header_container header-content-header">
+        <div className="header-navbar-mobile">
+          <div className="header-navbar-mobile-icons">
+            <span onClick={() => setOpenNavbarMobile(r => !r)}>
+              <Menu className="icon" />
+            </span>
+            <span onClick={() => setOpenSearchMobile(r => !r)}>
+              <Search className="icon" />
+            </span>
+          </div>
+          <div className={`header-mobile-search ${openSearchMobile && "active"}`}>
+            <div className="input">
+              <InputSearchMobile />
+              <span onClick={() => setOpenSearchMobile(r => !r)}>
+                  <X className="icon" />
+                </span>
+            </div>
+          </div>
+          <div className={`header-navbar-mobile-content ${openNavbarMobile && "active"}`}>
+            <div className="header-navbar-mobile-content-heading">
+              <h2>DANH MỤC SẢN PHẨM</h2>
+              <span onClick={() => setOpenNavbarMobile(r => !r)}>
+                <X className="icon-close" />
+              </span>
+            </div>
+            <div>
+              <ul className="header-navbar-mobile-content-list">
+                {
+                  listHeaderItem?.map((item: IItemCategory, index: number) => (
+                    <CategoryItemChildren key={index} item={item} itemChildren={item.children} />
+                  ))
+                }
+              </ul>
+            </div>
+          </div>
+        </div>
         <div onClick={() => navigate("/home")} className="header-logo">
           <img src="/logo.webp" alt="Website logo image" className="header-logo-image" />
         </div>

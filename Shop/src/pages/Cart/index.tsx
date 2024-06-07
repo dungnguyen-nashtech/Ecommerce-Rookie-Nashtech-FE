@@ -114,7 +114,7 @@ const Cart = (): JSX.Element => {
                 <span className="price">
                                     <h2>TỔNG TIỀN</h2>
                                     <span>
-                                        {cartStore.totalPrice}
+                                        {VNDCurrency(cartStore.totalPrice)}
                                     </span>
                                 </span>
                 <button onClick={() => navigate(CHECKOUT_URL)}>

@@ -1,5 +1,5 @@
 import {DataGrid, GridColDef} from "@mui/x-data-grid";
-import {DateField, DeleteButton, EditButton, List, ShowButton, useDataGrid} from "@refinedev/mui";
+import {DateField, DeleteButton, EditButton, List, useDataGrid} from "@refinedev/mui";
 import React from "react";
 import {commonFilterOperators} from "../../commonFilters";
 
@@ -87,7 +87,6 @@ export const UserList = () => {
                 renderCell: ({row}) => (
                     <>
                         <EditButton hideText recordItemId={row.id}/>
-                        <ShowButton hideText recordItemId={row.id}/>
                         <DeleteButton hideText recordItemId={row.id}/>
                     </>
                 ),

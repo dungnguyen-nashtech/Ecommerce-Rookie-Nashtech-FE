@@ -8,7 +8,7 @@ import WishList from "./pages/WishList";
 import Info from "./pages/Info";
 import ProductDetail from "./pages/ProductDetail";
 import Checkout from "./pages/Checkout";
-import { RouterProvider } from "react-router";
+import { Navigate, RouterProvider } from "react-router";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import React, { ReactNode } from "react";
@@ -34,20 +34,8 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <Layout>
-        <Home />
-      </Layout>
-    ),
-    errorElement: <NotFoundPage />
-  },
-  {
-    path: "/test",
-    element: (
-      <Layout>
-        <div style={{ minHeight: "700px" }}>Zoom in Zoom out xem có bị vỡ footer header không</div>
-      </Layout>
-    ),
-    errorElement: <NotFoundPage />
+      <Navigate to={"/home"} />
+    )
   },
   {
     path: "/home",
@@ -118,8 +106,9 @@ const router = createBrowserRouter([
     path: "/wishlist",
     element: (
       <Layout>
-        <PrivateRoute><WishList /></PrivateRoute>
-
+        <PrivateRoute>
+          <WishList />
+        </PrivateRoute>
       </Layout>
     ),
     errorElement: <NotFoundPage />

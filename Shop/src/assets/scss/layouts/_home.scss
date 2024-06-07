@@ -3,9 +3,11 @@
 @import '../abstracts/variable';
 
 .main-content {
+
   &-search {
     @include colSpan(12);
   }
+
 
   &-slider {
     margin-top: 100px;
@@ -29,6 +31,10 @@
 
     .content-home-shipping {
       @include gridColumn(4);
+      @include mobile() {
+        @include gridColumn(2);
+        margin: 0 20px;
+      }
       gap: 20px;
 
       &-item {
@@ -37,12 +43,18 @@
         padding: 10px;
         @include flexCenter();
         gap: 20px;
+        @include mobile() {
+          flex-direction: column;
+        }
 
         .content {
           display: flex;
           flex-direction: column;
           gap: 10px;
           font-size: 18px;
+          @include mobile() {
+            font-size: 12px;
+          }
 
           b {
             font-weight: bold;

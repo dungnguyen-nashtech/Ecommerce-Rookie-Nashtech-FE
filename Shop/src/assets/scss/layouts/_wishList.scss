@@ -43,6 +43,9 @@
     margin-top: 20px;
     width: 100%;
     @include gridColumn(5);
+    @include mobile {
+      @include gridColumn(2)
+    }
     gap: 20px;
 
     .item {
@@ -63,6 +66,9 @@
           left: 10px;
           gap: 10px;
           color: $white;
+          @include mobile {
+            width: 50%;
+          }
 
           .item {
             color: red;
@@ -88,6 +94,10 @@
           display: flex;
           align-items: center;
           gap: 10px;
+          @include mobile {
+            flex-direction: column;
+            align-items: start;
+          }
         }
       }
     }

@@ -27,6 +27,10 @@ export default function SignUp() {
   const userStore = useUserStore();
 
   const onSubmit: SubmitHandler<IFormRegister> = (registerRequest) => {
+    if (registerRequest.password !== registerRequest.confirmPassword) {
+      alert("Password and Confirm Password must be the same");
+      return;
+    }
     queryPostRegister.mutate(registerRequest, {
       onSuccess: () => {
         toast.info("Please check your email to verify your account before login.");

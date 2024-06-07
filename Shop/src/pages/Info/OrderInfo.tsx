@@ -4,16 +4,6 @@ import { QueryGetOrderDetailsByUserId } from "../../services/queries/query-get.t
 import { useUserStore } from "../../stores/userStore.ts";
 import CenteredLoader from "../../components/Common/CenteredLoader.tsx";
 
-function createData(
-  name: string,
-  image: string,
-  category: string,
-  price: string,
-  quantity: number,
-  totalPrice: string
-) {
-  return { name, image, category, price, quantity, totalPrice };
-}
 
 export function OrderInfo() {
 
@@ -28,8 +18,6 @@ export function OrderInfo() {
 
   return <>{
     <>
-      {/*<Typography sx={{ fontSize: 26, fontWeight: 600, color: "#871b1b" }}>Mã đơn hàng:*/}
-      {/*  #000{index + 1} - Ngày 12/04/2024 - 19:00</Typography>*/}
       <TableContainer component={Paper}
                       sx={{
                         mb: "90px",

@@ -35,12 +35,7 @@ function TabPanel(props: TabPanelProps) {
       }}
     >
       {value === index && (
-        <Box className="not-scroll-ui" sx={{
-          p: 3,
-          overflowY: "scroll",
-          height: 400,
-          width: "100%"
-        }}>
+        <Box className="not-scroll-ui">
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -80,9 +75,10 @@ const Info = (): JSX.Element => {
         <div className="main-content-info">
           <div className="main-content-info-tabs">
             <Box
-              sx={{ flexGrow: 1, bgcolor: "background.paper", display: "flex", height: 500 }}
+              className={"tabs-container"}
+              sx={{ flexGrow: 1, bgcolor: "background.paper", display: "flex" }}
             >
-              <div style={{ width: "200px" }}>
+              <div className={"tab-info"} style={{ width: "200px" }}>
                 <div style={{ display: "flex", flexDirection: "column", gap: 40, width: "200px" }}>
                 </div>
                 <Tabs
@@ -116,66 +112,69 @@ const Info = (): JSX.Element => {
                 </Tabs>
 
               </div>
-              <TabPanel value={value} index={0}>
-                <AccountInfo />
-              </TabPanel>
-              <TabPanel value={value} index={1}>
-                <OrderInfo />
-              </TabPanel>
-              <TabPanel value={value} index={2}>
-                <h2>ĐỔI MẬT KHẨU</h2>
-                <div>
-                  <h3>Để đảm bảo tính bảo mật bạn vui lòng đặt lại mật khẩu khó đoán</h3>
-                  <div style={{
-                    display: "flex",
-                    flexDirection: "column", gap: "20px",
-                    marginTop: "30px"
-                  }}>
-                    <TextField
-                      required
-                      id="filled-required"
-                      label="Mật khẩu cũ"
-                      variant="standard"
-                      sx={{
-                        width: "400px"
-                      }}
-                    />
-                    <TextField
-                      required
-                      id="filled-required"
-                      label="Mật khẩu mới"
-                      variant="standard"
-                      sx={{
-                        width: "400px"
-                      }}
-                    />
-                    <TextField
-                      required
-                      id="filled-required"
-                      label="Xác nhận mật khẩu"
-                      variant="standard"
-                      sx={{
-                        width: "400px"
-                      }}
-                    />
-                    <button style={{
-                      backgroundColor: "black",
-                      borderRadius: "5px",
-                      padding: "10px 0",
-                      display: "inline-flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      color: "white",
-                      width: "300px"
+              <div className={"tab-content"}>
+                <TabPanel value={value} index={0}>
+                  <AccountInfo />
+                </TabPanel>
+                <TabPanel value={value} index={1}>
+                  <OrderInfo />
+                </TabPanel>
+                <TabPanel value={value} index={2}>
+                  <h2>ĐỔI MẬT KHẨU</h2>
+                  <div>
+                    <h3>Để đảm bảo tính bảo mật bạn vui lòng đặt lại mật khẩu khó đoán</h3>
+                    <div style={{
+                      display: "flex",
+                      flexDirection: "column", gap: "20px",
+                      marginTop: "30px"
                     }}>
-                      ĐẶT LẠI MẬT KHẨU
-                    </button>
+                      <TextField
+                        required
+                        id="filled-required"
+                        label="Mật khẩu cũ"
+                        variant="standard"
+                        sx={{
+                          width: "400px"
+                        }}
+                      />
+                      <TextField
+                        required
+                        id="filled-required"
+                        label="Mật khẩu mới"
+                        variant="standard"
+                        sx={{
+                          width: "400px"
+                        }}
+                      />
+                      <TextField
+                        required
+                        id="filled-required"
+                        label="Xác nhận mật khẩu"
+                        variant="standard"
+                        sx={{
+                          width: "400px"
+                        }}
+                      />
+                      <button style={{
+                        backgroundColor: "black",
+                        borderRadius: "5px",
+                        padding: "10px 0",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "white",
+                        width: "300px"
+                      }}>
+                        ĐẶT LẠI MẬT KHẨU
+                      </button>
+                    </div>
                   </div>
-                </div>
-              </TabPanel>
-              <TabPanel value={value} index={3}>
-                <AddressInfo />
-              </TabPanel>
+                </TabPanel>
+                <TabPanel value={value} index={3}>
+                  <AddressInfo />
+                </TabPanel>
+              </div>
+
             </Box>
           </div>
         </div>

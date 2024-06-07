@@ -1,7 +1,7 @@
 @import '../abstracts/variable';
 
 @mixin mobile {
-  @media only screen and (max-width: #{$mobile-width - 1px}) {
+  @media only screen and (max-width: #{$tablet-width - 1px}) {
     @content;
   }
 }

@@ -41,7 +41,7 @@ const Checkout = () => {
     const orderSent = {
       order, orderDetails
     };
-    
+
     cartStore.emptyCart();
 
     queryPostCreateOrder.mutate(orderSent, {
@@ -82,7 +82,6 @@ const Checkout = () => {
                 <h3 style={{ color: "red" }}>Sai địa chỉ, cập nhật <Link to={"/info"}>tại đây</Link></h3><br />
               </>
               }
-              {/*<FormControlLabel control={<Checkbox defaultChecked />} label="Giao hàng đến địa chỉ khác" />*/}
               <TextField
                 id="outlined-multiline-static"
                 label="Ghi chú"
@@ -143,6 +142,21 @@ const Checkout = () => {
                 </p>
               </Box>
             </RadioGroup>
+            <Box className="checkout-container-order-total-mobile">
+              <div className="item">
+                <span>Tổng cộng</span>
+                <span className="price">520.000đ</span>
+              </div>
+              <div className="item">
+                            <span className="return">
+                                <ChevronLeft />
+                                <span>
+                                    Quay về giỏ hàng
+                                </span>
+                            </span>
+                <button>ĐẶT HÀNG</button>
+              </div>
+            </Box>
           </div>
         </div>
       </div>

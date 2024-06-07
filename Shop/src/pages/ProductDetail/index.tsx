@@ -387,9 +387,8 @@ const ProductDetail = () => {
                   ))
                 }
               </div>
-
               <div className="review-content-input">
-                {queryCanUserComment?.data == -1 ?
+                {!userStore.isAuthenticated || queryCanUserComment?.data == -1 ?
                   <span className="warning">Mỗi lần mua chỉ có thể bình luận 1 lần, có thể bạn đã bình luận cho tất cả lần mua</span>
                   :
                   <>

@@ -42,9 +42,60 @@
     @include gridColumn(12);
     gap: 20px;
 
+    .main-content-filter-mobile {
+      display: none;
+      @include mobile() {
+        position: fixed;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 0;
+        background-color: black;
+        width: 50px;
+        height: 50px;
+        @include flexCenter();
+        color: white;
+        z-index: 20;
+      }
+    }
+
     .filter-product-left {
-      @include colSpan(3);
       margin-top: 10px;
+
+      &.active {
+        transform: translateX(0);
+
+      }
+
+      @include colSpan(3);
+      @include mobile() {
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 30;
+        background-color: white;
+        overflow-y: scroll;
+        margin: 0;
+        transform: translateX(100%);
+        transition: all cubic-bezier(0.19, 1, 0.22, 1) 0.3s;
+        padding-top: 60px;
+      }
+
+      .filter-close-mobile {
+        @include desktop() {
+          display: none;
+        }
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        background-color: black;
+        display: flex;
+        padding: 10px;
+        justify-content: flex-end;
+        color: white;
+      }
 
       &-category {
         background-color: $gray;
@@ -124,6 +175,9 @@
     .list-product-right {
       @include colSpan(9);
       margin-top: 10px;
+      @include mobile() {
+        @include colSpan(12);
+      }
 
       .category-product-title {
         background-color: $gray;
@@ -148,7 +202,10 @@
         margin-top: 20px;
         width: 100%;
         @include gridColumn(3);
-        gap: 25px;
+        gap: 5px;
+        @include mobile() {
+          @include gridColumn(2);
+        }
 
         .item {
           &-image {
@@ -184,7 +241,7 @@
             }
 
             &:hover {
-              transition: all 0.3 linear;
+              transition: all 0.3s linear;
 
               .item-image-bg {
                 background-color: #0000008c;
@@ -211,6 +268,11 @@
               display: flex;
               align-items: center;
               gap: 10px;
+              @include mobile() {
+                flex-direction: column;
+                align-items: start;
+                font-size: 20px;
+              }
             }
           }
         }
@@ -224,6 +286,9 @@
           align-items: center;
           justify-content: flex-end;
           gap: 10px;
+          @include mobile() {
+            justify-content: center;
+          }
         }
 
         &-item {

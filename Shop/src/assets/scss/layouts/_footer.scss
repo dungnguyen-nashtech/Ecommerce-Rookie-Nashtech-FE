@@ -13,7 +13,43 @@
 
     &-item {
       color: $white;
-      @include colSpan(3)
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      .title {
+        font-weight: 600;
+      }
+
+      b {
+        font-weight: bold;
+      }
+
+      &-socials {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+
+        &-icon {
+
+        }
+      }
+
+      ul {
+        list-style: disc;
+        margin-left: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        font-size: 17px;
+      }
+
+      @include colSpan(3);
+      @include mobile() {
+        @include colSpan(12);
+        padding: 10px;
+
+      }
     }
   }
 }

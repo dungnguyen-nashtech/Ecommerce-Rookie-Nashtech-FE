@@ -1,5 +1,38 @@
-@import '../abstracts/container';
+@import "../abstracts/container";
+@import "../abstracts/style";
+@import "../abstracts/variable";
 
 .main-content-info {
   @include colSpan(12);
+}
+
+.tabs-container {
+  @include mobile() {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tab-info {
+    @include mobile() {
+    }
+  }
+
+  .tab-content {
+    @include mobile() {
+      width: 100vw;
+      overflow-x: scroll;
+      height: 600px;
+    }
+  }
+}
+
+.not-scroll-ui {
+  padding: 20px;
+  overflow-y: scroll;
+  height: 600px;
+  width: 100%;
+  @include mobile() {
+    width: auto;
+    padding: 0;
+  }
 }

@@ -47,6 +47,7 @@ export const ProductItemCreate = () => {
         dataSubmit.imageUrl = "";
         dataSubmit.productId = fromProduct;
         if (selectedImgFile != null) {
+            console.log("zzz")
             queryPostUploadImage.mutate(selectedImgFile, {
                 onSettled: (data) => {
                     dataSubmit.imageUrl = data.data?.url

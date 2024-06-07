@@ -35,7 +35,17 @@ const settings: SettingSilder = {
   slidesToScroll: 1,
   autoplaySpeed: 1000,
   autoplay: true,
-  arrows: false
+  arrows: false,
+  responsive: [
+    {
+      breakpoint: 640,
+      settings: {
+        slidesToScroll: 1,
+        slidesToShow: 1,
+        arrows: false
+      }
+    }
+  ]
 };
 
 const settingCategory: SettingSilder = {
@@ -44,15 +54,36 @@ const settingCategory: SettingSilder = {
   slidesToScroll: 1,
   centerPadding: "40px",
   speed: 1000,
-  arrows: true
+  arrows: true,
+  responsive: [
+    {
+      breakpoint: 640,
+      settings: {
+        slidesToScroll: 1,
+        slidesToShow: 1,
+        arrows: false
+      }
+    }
+  ]
 };
 const settingProducts: SettingSilder = {
   slidesToShow: 4,
   centerPadding: "40px",
   slidesToScroll: 1,
   speed: 1000,
-  arrows: true
+  arrows: true,
+  responsive: [
+    {
+      breakpoint: 640,
+      settings: {
+        slidesToScroll: 1,
+        slidesToShow: 1,
+        arrows: false
+      }
+    }
+  ]
 };
+
 const Home = () => {
   const navigate = useNavigate();
 

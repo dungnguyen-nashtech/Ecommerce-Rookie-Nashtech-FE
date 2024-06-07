@@ -50,7 +50,6 @@ const Search = () => {
       </div>
       <div className="main-content-container">
         <div className="main-content-search">
-          <h2 className="title-result">Có 10 kết quả tìm kiếm phù hợp </h2>
           <div className="main-content-search-list">
             {
               querySearchOneFilterProduct?.data?.map((product, index: number) => (
