@@ -96,7 +96,13 @@ export const ProductItemEdit = () => {
             <form onSubmit={handleSubmit(onSubmit)} style={{display: "flex", flexDirection: "column"}}>
 
                 <TextField
-                    {...register("price")}
+                    {...register("price", {
+                        required: "This field is required",
+                        pattern: {
+                            value: /^[0-9]+$/,
+                            message: "Please enter a valid number",
+                        },
+                    })}
                     error={!!(errors as any)?.price}
                     helperText={(errors as any)?.price?.message}
                     margin="normal"
@@ -105,6 +111,10 @@ export const ProductItemEdit = () => {
                     type="text"
                     label={"Price"}
                     name="price"
+                    inputProps={{
+                        inputMode: 'numeric',
+                        pattern: '[0-9]*',
+                    }}
                 />
                 <Button
                     component="label"
@@ -127,7 +137,13 @@ export const ProductItemEdit = () => {
                     alt={"Uploaded file"}
                     style={{maxWidth: '20%', height: 'auto'}}/>
                 <TextField
-                    {...register("availableStock")}
+                    {...register("availableStock", {
+                        required: "This field is required",
+                        pattern: {
+                            value: /^[0-9]+$/,
+                            message: "Please enter a valid number",
+                        },
+                    })}
                     error={!!(errors as any)?.availableStock}
                     helperText={(errors as any)?.availableStock?.message}
                     margin="normal"
@@ -136,6 +152,10 @@ export const ProductItemEdit = () => {
                     type="text"
                     label={"Available Stock"}
                     name="availableStock"
+                    inputProps={{
+                        inputMode: 'numeric',
+                        pattern: '[0-9]*',
+                    }}
                 />
                 <TextField
                     {...register("variationCombination")}

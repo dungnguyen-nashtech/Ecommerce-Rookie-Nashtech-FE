@@ -12,7 +12,7 @@ export const ProductCreate = () => {
 
     const [featured, setFeatured] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
-    
+
     const queryPostUploadImage = QueryPostUploadImage()
     const queryPostCreateProduct = QueryPostCreateProduct()
 
@@ -103,7 +103,7 @@ export const ProductCreate = () => {
             />
             <TextField
                 {...register("description", {
-                    required: "This field is required",
+                    required: "This field is required"
                 })}
                 error={!!(errors as any)?.content}
                 helperText={(errors as any)?.content?.message}
@@ -117,15 +117,24 @@ export const ProductCreate = () => {
             <TextField
                 {...register("price", {
                     required: "This field is required",
+                    pattern: {
+                        value: /^[0-9]+$/,
+                        message: "Please enter a valid number",
+                    },
                 })}
-                error={!!(errors as any)?.content}
-                helperText={(errors as any)?.content?.message}
+                error={!!(errors as any)?.price}
+                helperText={(errors as any)?.price?.message}
                 margin="normal"
                 fullWidth
                 InputLabelProps={{shrink: true}}
                 multiline
-                label={"Display Price"}
+                type="text"
+                label="Display Price"
                 name="price"
+                inputProps={{
+                    inputMode: 'numeric',
+                    pattern: '[0-9]*',
+                }}
             />
             <Button
                 component="label"

@@ -141,7 +141,17 @@ export const ProductEdit = () => {
                     alt={"Uploaded file"}
                     style={{maxWidth: '20%', height: 'auto'}}/>
                 <TextField
-                    {...register("price")}
+                    {...register("price", {
+                        required: "This field is required",
+                        pattern: {
+                            value: /^[0-9]+$/,
+                            message: "Please enter a valid number",
+                        },
+                    })}
+                    inputProps={{
+                        inputMode: 'numeric',
+                        pattern: '[0-9]*',
+                    }}
                     margin="normal"
                     fullWidth
                     InputLabelProps={{shrink: true}}

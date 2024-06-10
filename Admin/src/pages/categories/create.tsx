@@ -69,7 +69,9 @@ export const CategoryCreate = () => {
                     id="category"
                     value={selectedCategory}
                     label="Category"
-                    {...register("parentCategoryId")}
+                    {...register("parentCategoryId", {
+                        required: "This field is required",
+                    })}
                     onChange={(event) => setSelectedCategory(event.target.value as string)}
                 >
                     {data?.data.map((category) => (

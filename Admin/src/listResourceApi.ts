@@ -98,7 +98,6 @@ export const listResourceApi = [
     {
         name: "order",
         list: "/order",
-        create: "/order/create",
         meta: {
             canDelete: true,
             label: "Order",
